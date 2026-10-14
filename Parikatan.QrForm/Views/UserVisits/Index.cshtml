@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Parikatan.QrForm.Models.Entities.UserVisit>
+
+@{
+ViewBag.Title = "فهرست " ;
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                      columns.Bound(model => model.Ip);
+        columns.Bound(model => model.CreationDate);
+		 
+		})
+	     
+		.DataSource(dataSource => dataSource
+									.Server()
+							
+									.Model(model => model.Id(item => item.Id))
+					)              
+	)

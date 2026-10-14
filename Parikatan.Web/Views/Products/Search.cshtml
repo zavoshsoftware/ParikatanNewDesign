@@ -1,0 +1,104 @@
+﻿@model ViewModels.Products.ProductListViewModel
+@{
+	ViewBag.Title = "جستجو در سایت";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+
+<div class="breadcrumbs_area">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">خانه</a></li>
+						<li>/</li>
+						@if (@Model.CurrentProductGroup != null)
+						{
+							<li>@Model.CurrentProductGroup.Title</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--breadcrumbs area end-->
+<!--shop  area start-->
+<div class="shop_area shop_fullwidth shop_reverse">
+	<div class="container">
+		<div class="shop_inner_area">
+			<div class="row">
+				<div class="col-12">
+					<!--shop toolbar start-->
+					<div class="shop_toolbar_wrapper">
+						@*<div class="shop_toolbar_btn">
+
+									<button data-role="grid_3" type="button" class=" btn-grid-3" data-bs-toggle="tooltip" title="3"></button>
+
+									<button data-role="grid_4" type="button" class="active btn-grid-4" data-bs-toggle="tooltip" title="4"></button>
+
+									<button data-role="grid_5" type="button" class="btn-grid-5" data-bs-toggle="tooltip" title="5"></button>
+
+									<button data-role="grid_list" type="button" class="btn-list" data-bs-toggle="tooltip" title="List"></button>
+							</div>*@
+
+						<div class="page_amount">
+							<p>تعداد کل محصولات این جستجو: @Model.TotalProductCount</p>
+						</div>
+					</div>
+
+					<div class="row shop_wrapper">
+
+						@foreach (var product in Model.Products)
+						{
+							<div class="col-lg-4 col-md-4 col-12 ">
+								<div class="single_product">
+									<div class="product_thumb">
+										<a class="primary_img" href="/product-detail/@product.Id"><img src="@product.ImageUrl" alt="@product.Title"></a>
+										<a class="secondary_img" href="/product-detail/@product.Id"><img src="@product.SecondImageUrl" alt="@product.Title"></a>
+										@if (!product.IsAvailable)
+										{
+											<div class="product_sale">
+												<span>ناموجود</span>
+											</div>
+										}
+										else if (product.DiscountPercent != null && product.DiscountPercent != 0)
+										{
+											<div class="product_sale">
+												<span>@product.DiscountPercent%</span>
+											</div>
+										}
+									</div>
+
+									<div class="product_content grid_content">
+										<h3><a href="/product-detail/@product.Id">@product.Title</a></h3>
+
+										@if (product.IsAvailable && product.Stock > 0)
+										{
+											if (product.IsInPromotion)
+											{
+												<span class="current_price">@product.DiscountAmountStr</span>
+												<span class="old_price">@product.AmountStr</span>
+											}
+											else
+											{
+												<span class="current_price">@product.AmountStr</span>
+
+											}
+										}
+									</div>
+
+
+								</div>
+							</div>
+						}
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+

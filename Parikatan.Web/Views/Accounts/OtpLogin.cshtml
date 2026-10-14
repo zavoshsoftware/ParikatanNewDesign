@@ -1,0 +1,73 @@
+﻿@model ViewModels.ForgetPasswordViewModel
+@{
+	ViewBag.Title = "ورود";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+
+@section head{
+
+	<link href="~/Assets_Old/css/style.css" rel="stylesheet" />
+	@*<link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />*@
+
+}
+
+<div class="breadcrumbs_area other_bread">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a href="/">خانه</a></li>
+						<li>/</li>
+						<li>ورود</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="customer_login">
+	<div class="container">
+		<div class="row justify-content-center align-items-center pt-5" style="min-height: 500px">
+			<!--login area start-->
+		
+			<div class="col-lg-6 col-md-6">
+                <div class="account_form text-center">
+
+                    @using (Html.BeginForm("OtpLogin", "Accounts", FormMethod.Post, new { }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="@Model.ReturnUrl">
+
+                        if (TempData["WrongMobile"] != null)
+                        {
+                            <p class="alert alert-danger" id="wrongEmail">@TempData["WrongMobile"]</p>
+                        }
+                        <img src="/Assets/images/Asset 2.png" style="width: auto; height: 100px ; margin:auto;">
+                        <h3 class="mt-4">ورود به حساب کاربری</h3>
+                        <p class="">
+                            برای تکمیل سفارش شماره موبایل خود را وارد نمایید.
+                        </p>
+                        <p>
+                           
+
+                            <input type="text" class="form-control m-auto w-75" name="UserCellNumber" id="UserCellNumber" placeholder="شماره موبایل: *********09" pattern="\d*" inputmode="numeric" />
+                        </p>
+
+                        <div class="">
+
+                            <button type="submit" class=" m-auto w-75" style="" id="btnLogin">ورود</button>
+
+                        </div>
+
+                    }
+                </div>
+			</div>
+
+		</div>
+	</div>
+</div>
+

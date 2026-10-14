@@ -1,0 +1,311 @@
+﻿@model ViewModels.Products.ProductDetailViewModel
+
+@{
+		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+		ViewBag.Canonical = "https://parikatan.shop/product-detail/" + Model.Product.Id;
+	ViewBag.Description = Model.Product.PageDescription;
+}
+@section head{
+	<style>
+		.slider-nav {
+			width: 100% !important;
+		}
+	</style>
+}
+<div class="container-fluid p-0 m-0">
+	<section id="section08">
+		<div class="container">
+			<div class="row d-flex justify-content-center align-items-center shop-row position-relative">
+				<div class="col-lg-5 col-10 text-center order-lg-2 order-0  position-relative" dir="ltr">
+					<div class="row justify-content-center align-content-center slider-for ">
+						@foreach (var image in Model.ProductImages)
+						{
+							<img class="slider-for-img" src="@image.ImageUrl" alt="@image.Title" />
+						}
+					</div>
+					<div class="row justify-content-center align-content-center ">
+						<div class="col-9 slider-nav">
+							@foreach (var image in Model.ProductImages)
+							{<img class="slider-for-img" src="@image.ImageUrl" alt="@image.Title" style="width: 100px !important; height: 100px" />}
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-2 d-none d-lg-block text-center order-1">
+					<img class="flower-top" src="~/Assets/images/Asset 03.png" />
+					<img class="flower-down" src="~/Assets/images/Asset 02.png" />
+				</div>
+
+				<div class="col-lg-5 text-center order-lg-0 order-1 shop-box-contain">
+					<div class="shop-box">
+						<h1>@Model.Product.Title</h1>
+						<div class="row d-flex" dir="rtl">
+							<div class="col-6"><span> قیمت:</span></div>
+							@if (Model.Product.IsInPromotion)
+							{
+								<div class="col-6">
+
+									<span style="text-decoration: line-through;  display: block">@Model.Product.AmountStr</span>
+									<span style="  display: block">@Model.Product.DiscountAmountStr</span>
+								</div>
+							}
+							else
+							{
+								<div class="col-6">
+									<span>@Model.Product.AmountStr</span>
+								</div>
+							}
+						</div>
+						@if (Model.Product.Stock > 0)
+						{
+							<div class="row d-flex" dir="rtl">
+								<div class="col-6 "><span> تعداد:</span></div>
+								<div class="col-6 ">
+									<div class="counter-box">
+										<button type="button" class="btn btn-number basket-plus" onclick="updateCounter(@Model.Product.Id, 1)">+</button>
+										<span class="counter txt-qty-@Model.Product.Id" id="counter-product-@Model.Product.Id" data-product-id="@Model.Product.Id">1</span>
+										<button type="button" class="btn btn-number basket-min" onclick="updateCounter(@Model.Product.Id, -1)">-</button>
+									</div>
+								</div>
+
+							</div>
+						}
+						else
+						{
+							<span class="alert alert-danger">
+								ناموجود
+							</span>
+						}
+					</div>
+					<div class="col-12 text-center">
+						@if (Model.Product.Stock > 0)
+						{
+							<button onclick="addToBasket('@Model.Product.Id')" role="button" class="btn  navbar-btn-top" id="add-to-basket-pdp">
+								<img class="shop-icon" src="~/Assets/images/shopicon.png" />افزودن به سبد خرید
+							</button>
+						}
+					</div>
+					<div class="row d-flex" dir="rtl">
+						<div class="col-12">
+							<p class="text-justify">@Model.Product.Summery</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="section09">
+		<div class="container" dir="rtl">
+			<div class="row">@Html.Raw(Model.Product.Body)</div>
+		</div>
+		<img class="img" src="~/Assets/images/Asset 05.png" />
+	</section>
+	<section style="direction: rtl; padding: 20px 0;text-align: center">
+		<div class="container">
+
+			<div class="shop_inner_area">
+				<div class="row">
+					<div class="col-12">
+						<h2 style="margin-bottom: 30px">محصولات مرتبط پریکاتن</h2>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12">
+						<!--shop toolbar start-->
+
+						<div class="row shop_wrapper">
+
+							@foreach (var product in Model.RelatedProducts)
+							{
+								<div class="col-lg-4 col-md-4 col-12 ">
+									<div class="single_product mb-2">
+										<div class="product_thumb">
+											<a class="primary_img" href="/product-detail/@product.Id">
+												<img src="@System.Configuration.ConfigurationManager.AppSettings["baseUrl"]@product.ImageUrl" alt="@product.Title" style="max-width: 100%">
+											</a>
+
+
+										</div>
+
+										<div class="product_content grid_content">
+											<h3><a href="/product-detail/@product.Id">@product.Title</a></h3>
+											@if (product.IsAvailable && product.Stock > 0)
+											{
+												if (product.IsInPromotion)
+												{
+													<span style="text-decoration: line-through;  display: block" class="old_price">@product.AmountStr</span>
+													<span style=" display: block" class="current_price">@product.DiscountAmountStr</span>
+
+												}
+												else
+												{
+
+													<span class="current_price">@product.AmountStr</span>
+												}
+											
+
+											}
+											else
+											{
+												<span style="color:red">ناموجود</span>
+												<button class="btn  navbar-btn-top" style="background-color:#adadad !important " disabled="disabled">
+													<img class="shop-icon" src="~/Assets/images/shopicon.png" />ناموجود
+												</button>
+											}
+
+										</div>
+
+
+									</div>
+								</div>
+							}
+
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+
+		</div>
+	</section>
+
+
+	@*<section id="section12">
+			<div class="container" dir="rtl">
+							<div class="row">
+									<div class="col-12 text-end">
+											<h3 class="my-5">
+													نــــــــــــــــظــــرات
+											</h3>
+
+									</div>
+									<div class="col-12">
+											<div class="faq-box">
+													<div class="col-6 text-end">
+															<span>
+																	میهمان
+															</span>
+													</div>
+													<div class="col-6 text-start">
+															<span>1401/05/12</span>
+													</div>
+													<div class="col-12 text-end">
+															<p>
+																	لطفااا ابرسان و برای دورچشم این محصول و شارژ کینین با قیمت خیلی مناسب!
+															</p>
+													</div>
+													<div class="col-12 text-start">
+															<span>
+																	این دیدگاه مفید بود؟
+
+															</span>
+															<img class="like" src="~/Assets/images/Asset like.png" />
+													</div>
+
+											</div>
+
+									</div>
+
+									<div class="col-12 text-end">
+											<h3 class="my-5">
+													نـــــــــــظــــر  شما
+											</h3>
+
+									</div>
+									<div class="col-12 d-flex flex-wrap">
+											<div class="col-lg-6 col-12">
+													<div class="input-group mb-3 me-lg-0">
+															<button class="btn btn-outline-secondary" type="button" id="button-addon1">نام و نام خانوادگی</button>
+															<input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+													</div>
+											</div>
+											<div class="col-lg-6 col-12">
+													<div class="input-group mb-3 ms-lg-0">
+															<button class="btn btn-outline-secondary" type="button" id="button-addon1">ایمیل</button>
+															<input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+													</div>
+											</div>
+									</div>
+									<div class="col-12 mb-3">
+
+
+
+											<textarea type="text" rows="8" class="textarea" placeholder=""></textarea>
+
+
+
+									</div>
+									<div class="col-12 text-center">
+											<a role="button" class="btn contact-us-send m-auto  navbar-btn-top d-inline-block" href="/product-detail//1">
+													ارسال
+											</a>
+									</div>
+							</div>
+			</div>
+		</section>*@
+</div>
+<div class="container-fluid p-0 m-0 d-md-none d-block">
+    <div class="btn-fix-box">
+	    <div class=" text-center mb-3">
+	    @if (Model.Product.Stock > 0)
+	    {
+		    <button onclick="addToBasket('@Model.Product.Id')" role="button" class="btn m-auto navbar-btn-top justify-content-center" id="add-to-basket-pdp-bottom">
+			    <img class="shop-icon me-3" src="~/Assets/images/shopicon.png"/>افزودن به سبد خرید
+		    </button>
+		    }
+	    else
+	    {
+		    <span class="alert alert-danger">
+			    ناموجود
+		    </span>
+	    }
+	    </div>
+    </div>
+</div>
+@section scripts
+{
+	<link rel="stylesheet" href="/dist/slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+	<script src="~/Assets/scripts/counter.js"></script>
+
+    <script>
+        function addToBasket(productCode) {
+            var isValid = true;
+        
+            var qtyElement = $('#counter-product-' + productCode);
+            var qty = parseInt(qtyElement.html());
+            var stock = parseInt($('#hiddenStock').val());
+
+      
+            if (qty > stock) {
+                alert('حداکثر تعداد سفارش از این محصول ' + stock + ' عدد است.');
+                isValid = false;
+            }
+
+           
+            if (isValid) {
+                $.ajax({
+                    url: "/Basket/AddToCart",
+                    data: {
+                        code: productCode,
+                        qty: qty
+                    },
+                    type: "POST"
+                }).done(function (result) {
+                    if (result === "true") {
+                        window.location.href = "/basket";
+                    } else if (result === "invalid") {
+                        alert('محصول انتخابی شما موجود نمی‌باشد.');
+                    } else if (result === "false") {
+                        alert('خطایی رخ داده است.');
+                    }
+                });
+            }
+        }
+    </script>
+}
+

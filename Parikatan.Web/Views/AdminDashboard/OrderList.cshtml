@@ -1,0 +1,264 @@
+﻿@model  ViewModels.OrderDashboardViewModel
+
+@{
+	ViewBag.Title = "گزارش سفارشات سایت از تاریخ " + ViewBag.startDate + " لغایت " + ViewBag.endDate;
+}
+
+@section head{
+	<style>
+		.dashboarditembox {
+			padding: 10px;
+			border-radius: 5px;
+			background-color: #10068e;
+			color: #fff;
+			text-align: center;
+			font-size: 16px;
+		}
+
+		.panel {
+			margin-top: 20px;
+		}
+
+		.panel-body {
+			padding: 20px;
+		}
+	</style>
+}
+<h2>@ViewBag.Title</h2>
+<div class="row">
+	<div class="col-md-2">
+		<input type="text" onclick="PersianDatePicker.Show(this,'@DateTime.Now');" placeholder="تاریخ شروع" class="form-control" width="150" id="startDate" value="@ViewBag.startDate" />
+	</div>
+	<div class="col-md-2">
+		<input type="text" onclick="PersianDatePicker.Show(this,'@DateTime.Now');" placeholder="تاریخ ‍‍پایان" class="form-control" width="150" id="endDate" value="@ViewBag.endDate" />
+	</div>
+	@*<div class="col-md-2">
+						@Html.DropDownList("ddlStatus", null, "وضعیت", new { @id = "ddlSatus", @placeholder = "وضعیت", @class = "form-control" })
+		</div>*@
+	<div class="col-md-1">
+		<input type="button" id="btnSubmit" value="فیلتر" class="btn btn-success" />
+	</div>
+
+</div>
+<br />
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				تعداد کل سفارشات:
+			</p><p>
+				@Model.TotalOrderQty
+			</p>
+
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				جمع کل سفارشات:
+			</p><p>
+
+				@Model.TotamOrderAmount.ToString("n0") تومان
+			</p>
+
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				تعداد سفارشات در حال پردازش:
+			</p><p>@Model.TotalOnProgressOrderQty</p>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				تعداد سفارشات رسیدگی شده:
+			</p><p>
+				@Model.TotalFinalOrderQty
+			</p>
+
+		</div>
+	</div>
+
+</div>
+
+<div class="row"  style="margin-block-start: 2rem;">
+	
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				جمع تخفیفات:
+			</p><p>
+		 
+				@(Model.TotalDiscountAmount.Value.ToString("n0"))
+			 
+				</p>
+
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				جمع هزینه ارسال دریافتی:
+			</p><p>
+		 
+				@(Model.TotalShipmentAmountIncome.Value.ToString("n0"))
+			 
+				</p>
+
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="dashboarditembox">
+			<p>
+				جمع هزینه ارسال پرداختی:
+			</p><p>
+		 
+				@(Model.TotalShipmentAmountPaid.Value.ToString("n0"))
+			 
+				</p>
+
+		</div>
+	</div>
+ 
+</div>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+	var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+	string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+	if (role == "UltraSuperAdmin")
+	{
+
+
+		<div class="row" style="margin-block-start: 2rem;">
+
+			<div class="col-md-3">
+				<div class="dashboarditembox">
+					<p>
+						هزینه ها:
+					</p>
+					<p>
+						@((Model.TotalCosts).ToString("n0"))
+					</p>
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="dashboarditembox">
+					<p>
+						جمع مبلغ خرید
+					</p>
+					<p>
+						@Model.TotalPurchaseAmount.ToString("n0")
+					</p>
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="dashboarditembox">
+					<p>
+						جمع هزینه ها
+					</p>
+					<p>
+						@((Model.TotalPurchaseAmount + Model.TotalCosts).ToString("n0"))
+					</p>
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="dashboarditembox">
+					<p>
+						درآمد نهایی:
+					</p>
+					<p>
+						@((Model.TotamOrderAmount - (Model.TotalPurchaseAmount + Model.TotalCosts)).ToString("n0"))
+					</p>
+
+				</div>
+			</div>
+		</div>
+	}
+}
+<div class="panel panel-primary">
+	<div class="panel-heading">سفارشات به تفکیک محصول</div>
+	<div class="panel-body">
+		<table class="table table-bordered">
+			<thead>
+			<tr>
+				<td>عنوان محصول</td>
+				<td>تعداد فروش</td>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var orderItem in Model.OrderItems)
+			{
+				<tr>
+					<td>@orderItem.ProductTitle</td>
+					<td>@orderItem.Quantity</td>
+				</tr>
+			}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>
+						<b>
+						جمع کل محصولات فروش رفته:
+						</b>
+						</td>
+					<td>
+						<b>
+						@Model.TotalProductCount
+						</b>
+						</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+<div class="panel panel-primary">
+	<div class="panel-heading">سفارشات به تفکیک استان</div>
+	<div class="panel-body">
+	</div>
+	@(Html.Kendo().Grid(Model.OrderByProvince)
+				.Name("Grid")
+
+				.Columns(columns =>
+				{
+				columns.Bound(model => model.ProvinceTitle);
+				 columns.Bound(model => model.TotalOrderQtyByProvince);
+				columns.Bound(model => model.TotamOrderAmountByProvinceStr);
+
+				}).Filterable().Sortable()
+
+				.DataSource(dataSource => dataSource
+																		.Server()
+
+										)
+
+	  )
+</div>
+<script src="~/Scripts/AdminJS/PersianDatePicker.min.js"></script>
+<link href="~/Content/Admin/PersianDatePicker.min.css" rel="stylesheet" />
+<script type="text/javascript">
+	$("#btnSubmit").click(function () {
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+		//var lblTotal = $("#lblTotal");
+		//lblTotal.removeClass('hidden');
+		//var ddlSatus = document.getElementById("ddlSatus");
+		//var selectedStatus = ddlSatus.options[ddlSatus.selectedIndex].value;
+
+		window.location.href = "/adminDashboard/OrderList?startDate=" + startDate + "&&endDate=" + endDate;
+
+	});
+	$(document).ready(function () {
+
+			document.getElementById("startDate").value = '@ViewBag.startDate';
+			document.getElementById("endDate").value = '@ViewBag.endDate';
+
+	});
+</script>

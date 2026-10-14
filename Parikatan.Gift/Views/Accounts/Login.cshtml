@@ -1,0 +1,82 @@
+﻿@model Parikatan.Gift.ViewModel.LoginPageViewModel
+
+@{
+	ViewBag.Title = "ورود";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en" class="bg-dark">
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>ورود</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link href="~/Content/Admin/Login/main.css" rel="stylesheet" />
+	<link href="~/Content/Admin/Login/style.css" rel="stylesheet" />
+
+	<style>
+		body, html {
+			height: 100%;
+			margin: 0;
+		}
+
+		.card-body {
+			text-align: right;
+		}
+
+			.card-body h5 {
+				text-align: center;
+				font-size: 1.3rem;
+			}
+
+		.btn-primary {
+			width: 100%;
+			font-size: 1rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+		<div class="container">
+
+
+			<div class="row" style="padding-top: 50px;">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<div class="main-card mb-3 card">
+						<div class="card-body">
+							<div style="text-align: center; padding-bottom: 30px">
+								<img src="~/Content/Admin/logo.png" style="max-width: 100%" />
+							</div>				<h5 style="direction:rtl" class="card-title">ورود به پنل مدیریت وب سایت پریکاتن</h5>
+							@using (Html.BeginForm("Login", "Accounts", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "panel-body wrapper-lg", role = "form" }))
+							{
+								@Html.AntiForgeryToken()
+								@Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+
+								<div class="position-relative form-group">
+									@Html.LabelFor(model => model.Username, new { @for = "Username" })
+									@Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Username) })
+
+								</div>
+								<div class="position-relative form-group">
+									@Html.LabelFor(model => model.Password, new { @for = "Password" })
+									@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password) })
+
+
+								</div>
+								<button style="background-color:#f5aa3b; color:black;" type="submit" class="mt-1 btn btn-primary">ورود</button>
+
+							}
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<script src="~/Content/Admin/Login/main.js"></script>
+</body>
+</html>
+

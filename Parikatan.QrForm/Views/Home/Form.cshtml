@@ -1,0 +1,98 @@
+﻿
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Form</title>
+
+	@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">*@
+
+	<link href="/dist/bootstrap-v-5-2/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/styles/style.css">
+
+	@*<script src="/dist/popper/popper.min.js">
+	</script>*@
+	<script src="~/Assets/scripts/jquery.min.js"></script>
+	<script src="/dist/bootstrap-v-5-2/bootstrap.min.js"></script>
+	<script src="/dist/jquery-1.11.0.min.js"></script>
+	<script src="/dist/jquery-migrate-1.2.1.min.js"></script>
+	<link href="~/Assets/styles/style.css" rel="stylesheet" />
+</head>
+<body>
+<div>
+	<div class="container p-form">
+		<div class="row">
+			<div class="col-md-4">
+			</div>
+			<div class="col-md-4">
+
+				<div class="row">
+
+				</div>
+
+				<div class="row">
+				</div>
+
+
+
+				<div class="row">
+					<div class="form-box">
+						<div class="card-img">
+							<img src="~/Images/img-proucts.jpg" style="max-width: 100%" />
+						</div>
+						<p style="padding: 15px 0">شماره موبایل خود را ثبت کنید تا همکاران ما جهت ارسال محصول با شما تماس بگیرند</p>
+
+						<p id="SuccessDiv" class="alert alert-success" style="text-align: justify">
+							شماره موبایل شما با موفقیت ثبت گردید. همکاران ما جهت هماهنگی ارسال با شما تماس خواهند گرفت.
+							<br />
+							همچنین برای خرید آنلاین میتوانید روی لینک زیر کلیک کنید:
+							<br />
+							<a href="https://parikatan.shop/product" style="color: blue; text-decoration: underline">لینک خرید آنلاین</a>
+						</p>
+						<p id="errorDiv" class="alert alert-danger"></p>
+						<div id="phone-insert">
+							<div class="form-group">
+								<label for="exampleInputEmail1">شماره موبایل</label>
+								<input type="text" class="form-control" id="phoneNumber" placeholder="شماره موبایل"   pattern="\d*"  inputmode="numeric">
+							</div>
+
+							<button type="button" onclick="SubmitForm();" id="btnSubmit" class="btn btn-primary" style="width: 100%">ثبت شماره موبایل</button>
+							<div id="loading-box">
+								<img src="~/Images/loading.gif" />
+							</div>
+						</div>
+						<div class="online-shop">
+							<p>
+								یا برای خرید آنلاین وارد فروشگاه اینترنتی شوید
+
+							</p>
+							<a href="https://parikatan.shop/product" class="btn btn-success">خرید اینترنتی محصول</a>
+						</div>
+					</div>
+				</div>
+
+				@*<div class="row">
+
+							<div class="card-img">
+								<img src="~/Images/img-proucts.jpg" style="max-width: 100%"/>
+							</div>
+						</div>*@
+
+
+
+			</div>
+
+			<div class="col-md-4">
+			</div>
+		</div>
+	</div>
+</div>
+<script src="~/Scripts/function.js"></script>
+
+</body>
+</html>

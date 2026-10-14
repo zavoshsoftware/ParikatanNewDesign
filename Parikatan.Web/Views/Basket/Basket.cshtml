@@ -1,0 +1,241 @@
+﻿@model ViewModels.Basket.CartViewModel
+
+@{
+    ViewBag.Title = "سبد خرید";
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+@section head{
+
+    <style>
+        #errorDiv-discount {
+            display: none;
+        }
+        .h-200{
+            height:190px;
+        }
+        @@media only screen and (max-width: 990px) {
+            footer {
+                margin-bottom:75px;
+            }
+            .h-200 {
+                height: 100%;
+            }
+        }
+    </style>
+  
+}
+<div class="container-fluid p-0 m-0">
+    <section id="section10" dir="rtl" style="height: auto">
+        <img class="top-flower d-none d-lg-block" src="~/Assets/images/Asset 020.png" />
+        <div class="container mt-5">
+            <div class="row justify-content-end ">
+                <div class="col-12">
+                    <h3 class="h1 mb-5">
+                        سبـــد خــــــرید   شـــــــما
+                        <img class="cart-icon" src="~/Assets/images/shopicon.png" />
+                    </h3>
+                </div>
+            </div>
+            @if (Model.Products.Any())
+            {
+                <div class="row justify-content-center align-items-start">
+                    <div class="col-lg-8">
+                        <div class="row justify-content-center align-items-center m-3 m-lg-0">
+                            @foreach (var product in Model.Products)
+                            {
+                                <div class="col-12 product-card">
+                                    <div class="row align-items-center justify-content-center">
+                                        <div class="col-lg-3 col-12 p-0 order-lg-0 order-0 h-200">
+                                            <img class="product-img" src="@product.Product.ImageUrl" />
+                                        </div>
+                                        <div class="col-lg-9 order-lg-1 order-2">
+                                            <div class="shop-box">
+                                                <div class="row w-100 mb-3 d-flex justify-content-between align-items-center">
+                                                    <h3 class=" card-title p-0" style="width:fit-content;">
+                                                        @product.Product.Title
+                                                    </h3>
+                                                    <a href="/Basket/remove/@product.Product.Id" class="btn close-btn p-0" style="width:fit-content;">
+                                                        <img class="icon" src="~/Assets/images/close-btn.png" />
+                                                    </a>
+                                                </div>
+                                                <div class="row w-100 d-flex mb-4 align-items-center" dir="rtl">
+                                                    <div class="col-6 text-end p-0">
+                                                        <div class="counter-box">
+                                                            <button type="button" class="btn btn-number basket-plus" onclick="updateCounter(@product.Product.Id, 1)">+</button>
+                                                            <span class="counter txt-qty-@product.Product.Id" id="counter-product-@product.Product.Id" data-product-id="@product.Product.Id">@product.Quantity</span>
+                                                            <button type="button" class="btn btn-number basket-min" onclick="updateCounter(@product.Product.Id, -1)">-</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 text-start p-0">
+                                                        @product.Amount
+                                                    </div>
+                                                </div>
+                                                <div class="row w-100 d-flex align-items-center" dir="rtl">
+                                                    <div class="col-12 p-0 d-flex text-end amount-box">
+                                                        <div class="col-5 text-center">
+                                                            <span class="amount-title">جمع</span>
+                                                        </div>
+                                                        <div class="col-7 text-start d-flex justify-content-end">
+                                                            <span class="amount-amount">@product.RowAmount</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-1 col-2 order-lg-2 order-1">
+                                            <a href="/Basket/remove/@product.Product.Id" class="btn close-btn">
+                                                <img class="icon" src="~/Assets/images/close-btn.png" />
+                                            </a>
+                                        </div>*@
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 ">
+                        <div class="row justify-content-start align-items-start m-3 m-lg-0">
+                            <div class="col-12  factor-details p-lg-5 p-3">
+                                <h4 class="mb-5 title">
+                                    جزیـــیات فـــاکـــــتور
+                                </h4>
+                                <div id="errorDiv-discount" class="alert alert-danger"></div>
+
+                                <div class="col-lg-12" style="		border: 1px solid #22489e;
+		padding: 10px;
+		margin-bottom: 10px
+">
+                                    <p>
+                                        اگر کد تخفیف دارید اینجا وارد کنید:
+                                    </p>
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="coupon" class="form-control" placeholder=" کد تخفیف" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                        <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="addDiscountCode();">بررسی کد</button>
+                                    </div>
+                                </div>
+                                <div class="row d-flex mb-4" dir="rtl">
+                                    <div class="col-6">
+                                        <span> قیمت کالاها:</span>
+
+                                    </div>
+                                    <div class="col-6 text-start">
+                                        <span>@Model.SubTotal</span>
+                                    </div>
+
+                                </div>
+                                <div class="row d-flex mb-4" dir="rtl">
+                                    <div class="col-6">
+                                        <span> تخفیف:</span>
+
+                                    </div>
+                                    <div class="col-6 text-start">
+                                        <span>@Model.DiscountAmount</span>
+                                    </div>
+
+
+                                </div>
+                                <div class="row d-flex mb-4" dir="rtl">
+                                    <div class="col-6">
+                                        <span> هزینه ارسال:</span>
+
+                                    </div>
+                                    <div class="col-6 text-start">
+                                        <span>@Model.ShipmentAmount</span>
+                                    </div>
+
+                                </div>
+                                <hr />
+                                <div class="row d-flex mb-3" dir="rtl">
+                                    <div class="col-6">
+                                        <strong>
+                                            جمع کل:
+                                        </strong>
+
+                                    </div>
+                                    <div class="col-6 text-start">
+                                        <strong>
+                                            @Model.Total
+                                        </strong>
+                                    </div>
+
+
+                                </div>
+                                <div class=" text-center mb-3">
+                                    <a role="button" class="btn m-auto   navbar-btn-top complete-basket" href="/checkout">
+                                        تکمیل سفارش
+
+									</a>
+								</div>
+								<div class=" text-center ">
+									<p class=" p-2 mt-4" style="border: 1px solid #22489e; color:red">
+										هزینه ارسال برای سفارشات بالای یک میلیون تومان رایگان خواهد بود
+									</p>
+								</div>
+						
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+				<p class="alert alert-danger">
+					سبد خرید شما خالی است
+					<br/>
+					<a href="/product-detail/1" class="btn btn-info">کرم ضد چروک اصل پریکاتن</a>
+					<a href="/product-detail/2" class="btn btn-info">کرم دور چشم اصل پریکاتن</a>
+				</p>
+			}
+			
+			
+			
+			
+			<div class="row justify-content-center align-items-start mt-5 " style="background-color: #fff; padding: 25px 0" id="relatedproductinBasket"> 
+				<h2 class="h1 m-0 text-center">سایر محصولات پیشنهادی</h2>
+				@foreach (var product in Model.RelatedProducts)
+				{
+					<div class="col-lg-4 col-md-4 col-12 ">
+						<div class="single_product">
+							<div class="product_thumb">
+								<a class="primary_img" href="/product-detail/@product.Id">
+									<img src="@System.Configuration.ConfigurationManager.AppSettings["baseUrl"]@product.ImageUrl" alt="@product.Title" style="max-width: 100%">
+								</a>
+
+
+							</div>
+
+							<div class="product_content grid_content">
+								<h3 class=" text-center mt-3" style=" color: #22489e;"><a href="/product-detail/@product.Id">@product.Title</a></h3>
+								@if (product.IsAvailable && product.Stock > 0)
+								{
+
+									<span class="current_price text-center d-block" style=" color: #22489e;">@product.AmountStr</span>
+
+
+								}
+							
+							</div>
+
+
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+</div>
+<div class="container-fluid p-0 m-0 d-md-none d-block">
+    <div class="btn-fix-box">
+        <div class=" text-center mb-3">
+            <a role="button" class="btn m-auto   navbar-btn-top complete-basket" href="/checkout">تکمیل سفارش</a>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Assets/scripts/counter.js"></script>
+    <script src="~/Scripts/function.js"></script>
+}

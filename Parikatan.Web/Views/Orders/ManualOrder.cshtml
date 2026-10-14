@@ -1,0 +1,126 @@
+﻿@model Parikatan.Web.ViewModels.Orders.ManualOrderViewModel
+@{
+	ViewBag.Title = "ManualOrder";
+	Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+@section styles{
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+<h2 style="margin-block-end:3rem;">ثبت سفارش دستی</h2>
+@using (Html.BeginForm("ManualOrder", "Orders", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true)
+
+		<div class="form-group">
+			<div class="form-group">
+				@Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.FullName)
+
+					@Html.ValidationMessageFor(model => model.FullName)
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PhoneNumber)
+
+					@Html.ValidationMessageFor(model => model.PhoneNumber)
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+				<div class="col-md-5">
+					@Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
+
+					@Html.ValidationMessageFor(model => model.Address)
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.PostalCode, new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EditorFor(model => model.PostalCode)
+
+					@Html.ValidationMessageFor(model => model.PostalCode)
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.ShipmentAmount, new { @class = "control-label col-md-2" })
+				<div class="col-md-5">
+					@Html.EditorFor(model => model.ShipmentAmount, new { @class = "form-control" })
+
+					@Html.ValidationMessageFor(model => model.ShipmentAmount)
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.DiscountCodeId, new { @class = "control-label col-md-2" })
+				<div class="col-md-5">
+					@Html.EditorFor(model => model.DiscountCodeId, new { @class = "form-control" })
+
+					@Html.ValidationMessageFor(model => model.DiscountCodeId)
+				</div>
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(model => model.OrderType, new { @class = "control-label col-md-2" })
+				<div class="col-md-10">
+					@Html.EnumDropDownListFor(model => model.OrderType)
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.Products, new { @class = "select-2 control-label col-md-2", })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model => model.ProductId, Model.Products, "انتخاب محصول")
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				@Html.LabelFor(model => model.Cities, new { @class = "select-2 control-label col-md-2", })
+				<div class="col-md-10">
+					@Html.DropDownListFor(model => model.SelectedCity, Model.Cities, "انتخاب محصول")
+
+				</div>
+			</div>
+
+
+			<input type="hidden" name="SelectedProduct" id="SelectedProduct" value="" />
+			<div class="form-group" id="buttons">
+				<div class="col-md-offset-2 col-md-10">
+					<input type="submit" value="ایجاد" class="btn btn-primary" />
+					@Html.ActionLink("بازگشت به فهرست", "Index")
+				</div>
+			</div>
+
+		</div>
+	</div>
+}
+
+@section scripts{
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script>
+        $(document).ready(function () {
+            $('#ProductId').select2({
+                dir: "rtl"
+						}); $('#SelectedCity').select2({
+                dir: "rtl"
+            });
+				});
+
+		$("#ProductId").change(function () {
+			var selectedProducts = $('#SelectedProduct').val();
+			var thisValue = $(this).val();
+			if (thisValue=== '') {
+				thisValue = 0;
+			}
+			selectedProducts = selectedProducts + '-' + thisValue;
+			$('#SelectedProduct').val(selectedProducts); 
+			//alert(selectedProducts);
+        });
+	</script>
+}

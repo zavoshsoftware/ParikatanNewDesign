@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Parikatan.QrForm.Models.Entities.NewsLetter>
+
+@{
+ 
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                      columns.Bound(model => model.PhoneNumber);
+        columns.Bound(model => model.CreationDate);
+					 
+		})
+	        .ToolBar(toolbar =>
+	        {
+		        toolbar.Custom().Action("Export", "newsletters").HtmlAttributes(new { @class = "font-medium" }).Text("خروجی اکسل");
+		      
+	        })
+		.DataSource(dataSource => dataSource
+									.Server()
+							
+									.Model(model => model.Id(item => item.Id))
+					)              
+	)

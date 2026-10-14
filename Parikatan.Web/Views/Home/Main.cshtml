@@ -1,0 +1,21 @@
+﻿@model List<string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Main</title>
+</head>
+<body>
+<div>
+  @foreach (var code in Model)
+  {
+	  <p>@code</p> 
+  }
+</div>
+</body>
+</html>

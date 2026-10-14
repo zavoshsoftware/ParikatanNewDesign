@@ -1,0 +1,85 @@
+﻿@model ViewModels.Orders.ChangeAddressViewModel
+
+ 
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("ChangeAddress", "Orders",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+			 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProvinceId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProvinceId", String.Empty)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CityId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CityId", String.Empty)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                                  @Html.EditorFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PostalCode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                                  @Html.EditorFor(model => model.PostalCode)
+                @Html.ValidationMessageFor(model => model.PostalCode)
+            </div>
+        </div>
+			 
+        <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ثبت" class="btn btn-primary" />
+				@Html.ActionLink("بازگشت به فهرست", "Index")
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+	<script>
+
+
+		$('#ProvinceId').on('change',
+			function() {
+				var SelectedValue = $(this).val();
+				if (SelectedValue !== "") {
+					var procemessage = "<option value='0'> صبرکنید...</option>";
+					$("#CityId").html(procemessage).show();
+					$.ajax(
+						{
+							url: "/Basket/FillCities",
+							data: { id: SelectedValue },
+							cache: false,
+							type: "POST",
+							success: function(data) {
+								var markup = "<option value='0'>انتخاب شهر</option>";
+								for (var x = 0; x < data.length; x++) {
+									markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+								}
+								$("#CityId").html(markup).show();
+							},
+							error: function(reponse) {
+								alert("error : " + reponse);
+							}
+						});
+				}
+			});
+
+	</script>
+}

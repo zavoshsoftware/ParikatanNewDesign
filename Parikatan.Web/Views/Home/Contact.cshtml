@@ -1,0 +1,143 @@
+﻿@{
+	ViewBag.Title = "فروشگاه اینترنتی پریکاتن";
+	//ViewBag.Description = "فروش کرم ضد چروک اصل پریکاتن به همراه کرم دور چشم پریکاتن از فروشگاه اینترنتی رسمی شرکت پریکاتن";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+	ViewBag.Canonical = "https://parikatan.shop/contact";
+}
+@section head{
+	<style>
+		#errorDivContact,#SuccessDivContact {
+			display: none;
+		}
+	</style>
+}
+<div class="container-fluid p-0 m-0">
+	<section id="section13" dir="rtl">
+
+		<div class="row justify-content-center align-content-center align-items-center">
+			<div class="col-lg-6 text-center">
+				<img class="contact-text" src="~/Assets/images/Asset contact-text.png" />
+			</div>
+			<div class="col-lg-6 text-center">
+				<img class="contact-img-top" src="~/Assets/images/Asset contact-img-top.png" />
+			</div>
+
+		</div>
+
+	</section>
+	<section id="section14">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 text-center">
+					<div class="card">
+
+						<img class="card-img-top" src="~/Assets/images/Asset time.png" />
+						<div class="card-body" dir="rtl">
+							<di>
+								شنبه تا چهارشنبه :
+							</di>
+							<di class="mb-4">
+								8:00 تا 17:00
+							</di>
+							<di>
+								پنجشنبه :
+
+							</di>
+							<di>
+								8:00 تا 13:00
+							</di>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 text-center">
+					<div class="card">
+
+						<img class="card-img-top" src="~/Assets/images/Asset phone.png" />
+						<div class="card-body" dir="rtl">
+							<div>
+								<a href="tel:02144063290" class="d-block">
+									تلفن تماس: 44063290-021
+								</a>
+							</div>
+							<div>
+								<a href="https://web.whatsapp.com/send?phone=989014852865&text=با سلام" class="d-block">
+									واتس اپ: 09014852865
+								</a>
+							</div>
+							<div>
+								<a href="mail:info@parikatan.shop">
+									ایمیل: info@parikatan.shop
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 text-center">
+					<div class="card">
+
+						<img class="card-img-top" src="~/Assets/images/Asset loc.png" />
+						<div class="card-body" dir="rtl">
+							<p>
+								تهران ، بزرگراه اشرفی اصفهانــی ، بیـن بلوار مرزداران و پل حکیم ، خـیابان گـــلسـتان 26 ، پللـاک 1 ، واحـد 6 ، طبقه سوم
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="section15">
+		<div class="container text-center">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2278.136537305028!2d51.34755572545765!3d35.736942467079935!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e07335f7c0df1%3A0xe9a7b036ed2311e7!2z2KrYtNix24zZgdin2Kog2LTZh9in2Kg!5e0!3m2!1sen!2sus!4v1705312273098!5m2!1sen!2sus" width="97%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+		</div>
+	</section>
+	<section id="section12" class="pb-5" style=" background-color: #efeef1;">
+		<div class="container" dir="rtl">
+			<div class="row">
+
+
+
+				<div class="col-12 text-center">
+					<h3 class="my-5 ">
+						ارســـــال پــــــیام
+					</h3>
+
+				</div>
+				<div class="col-12 d-flex flex-wrap">
+					<div class="col-lg-6 col-12">
+						<div class="input-group mb-3 me-lg-0">
+							<button class="btn btn-outline-secondary" type="button" id="button-addon1">نام و نام خانوادگی</button>
+							<input type="text" class="form-control" id="commentName" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+						</div>
+					</div>
+					<div class="col-lg-6 col-12">
+						<div class="input-group mb-3 ms-lg-0">
+							<button class="btn btn-outline-secondary" type="button" id="button-addon2">تلفن تماس</button>
+							<input type="text" class="form-control" id="phone" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+						</div>
+					</div>
+				</div>
+				<div class="col-12 mb-3">
+					<textarea type="text" rows="8" class="textarea" placeholder="متن پیغام" id="commentBody"></textarea>
+				</div>
+				<div class="col-12 text-center">
+					<button type="button" class="btn contact-us-send m-auto  navbar-btn-top d-inline-block" onclick="SubmitContactUs();">
+						ارسال
+					</button>
+			
+				</div>
+				<div class="col-12 text-center">
+					<p class="alert alert-danger" id="errorDivContact"></p>
+					<p class="alert alert-success" id="SuccessDivContact">پیام شما با موفقیت ثبت گردید. همکاران ما به زودی به پیام شما رسیدگی خواهند کرد.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+@section scripts
+{
+	<script src="~/Scripts/function.js"></script>
+
+}

@@ -1,0 +1,292 @@
+﻿@model ViewModels.Products.ProductDetailViewModel
+
+@{
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    ViewBag.Canonical = "https://parikatan.shop/product-detail/" + Model.Product.Id;
+}
+@section head{
+    <style>
+        .slider-nav {
+            width: 100% !important;
+        }
+    </style>
+}
+<div class="container-fluid p-0 m-0">
+    <section id="section08">
+        <div class="container">
+            <div class="row d-flex justify-content-center align-items-center shop-row position-relative">
+                <div class="col-lg-5 col-10 text-center order-lg-2 order-0  position-relative" dir="ltr">
+                    <div class="row justify-content-center align-content-center slider-for ">
+                        @foreach (var image in Model.ProductImages)
+                        {
+                            <img class="slider-for-img" src="@image.ImageUrl" alt="@image.Title" />
+                        }
+                    </div>
+                    <div class="row justify-content-center align-content-center ">
+                        <div class="col-9 slider-nav">
+                            @foreach (var image in Model.ProductImages)
+                            {<img class="slider-for-img" src="@image.ImageUrl" alt="@image.Title" style="width: 100px !important; height: 100px" />}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-2 d-none d-lg-block text-center order-1">
+                    <img class="flower-top" src="~/Assets/images/Asset 03.png" />
+                    <img class="flower-down" src="~/Assets/images/Asset 02.png" />
+                </div>
+
+                <div class="col-lg-5 text-center order-lg-0 order-1 shop-box-contain">
+                    <div class="shop-box">
+                        <h1>@Model.Product.Title</h1>
+                        <div class="row d-flex" dir="rtl">
+                            <div class="col-6"><span> قیمت:</span></div>
+                            <div class="col-6">
+                                <span>@Model.Product.AmountStr</span>
+                            </div>
+                        </div>
+                        <div class="row d-flex" dir="rtl">
+                            <div class="col-6 "><span> تعداد:</span></div>
+                            <div class="col-6 ">
+                                <div class="counter-box">
+                                    <button type="button" class="btn" id="plus-product" onclick="PluscounterDet()">+</button>
+                                    <span id="counter-product">1 </span>
+                                    <button type="button" class="btn" id="minus-product" onclick="minuscounterDet()">-</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button onclick="addToBasket('@Model.Product.Id')" role="button" class="btn  navbar-btn-top" id="add-to-basket-pdp">
+                            <img class="shop-icon" src="~/Assets/images/shopicon.png" />افزودن به سبد خرید
+                        </button>
+                    </div>
+                    <div class="row d-flex" dir="rtl">
+                        <div class="col-12">
+                            <p class="text-justify">@Model.Product.Summery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="section09">
+        <div class="container" dir="rtl">
+            <div class="row">@Html.Raw(Model.Product.Body)</div>
+        </div>
+        <img class="img" src="~/Assets/images/Asset 05.png" />
+    </section>
+    @*<section id="section12">
+            <div class="container" dir="rtl">
+                <div class="row">
+                    <div class="col-12 text-end">
+                        <h3 class="my-5">
+                            نــــــــــــــــظــــرات
+                        </h3>
+
+                    </div>
+                    <div class="col-12">
+                        <div class="faq-box">
+                            <div class="col-6 text-end">
+                                <span>
+                                    میهمان
+                                </span>
+                            </div>
+                            <div class="col-6 text-start">
+                                <span>1401/05/12</span>
+                            </div>
+                            <div class="col-12 text-end">
+                                <p>
+                                    لطفااا ابرسان و برای دورچشم این محصول و شارژ کینین با قیمت خیلی مناسب!
+                                </p>
+                            </div>
+                            <div class="col-12 text-start">
+                                <span>
+                                    این دیدگاه مفید بود؟
+
+                                </span>
+                                <img class="like" src="~/Assets/images/Asset like.png" />
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 text-end">
+                        <h3 class="my-5">
+                            نـــــــــــظــــر  شما
+                        </h3>
+
+                    </div>
+                    <div class="col-12 d-flex flex-wrap">
+                        <div class="col-lg-6 col-12">
+                            <div class="input-group mb-3 me-lg-0">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">نام و نام خانوادگی</button>
+                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="input-group mb-3 ms-lg-0">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">ایمیل</button>
+                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+
+
+
+                        <textarea type="text" rows="8" class="textarea" placeholder=""></textarea>
+
+
+
+                    </div>
+                    <div class="col-12 text-center">
+                        <a role="button" class="btn contact-us-send m-auto  navbar-btn-top d-inline-block" href="/product-detail//1">
+                            ارسال
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+</div>
+<div class="container-fluid p-0 m-0 d-md-none d-block">
+    <div class="btn-fix-box">
+        <div class=" text-center mb-3">
+            <button onclick="addToBasket('@Model.Product.Id')" role="button" class="btn m-auto navbar-btn-top justify-content-center" id="add-to-basket-pdp-bottom">
+                <img class="shop-icon me-3" src="~/Assets/images/shopicon.png" />افزودن به سبد خرید
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="modal-leater" class="modal">
+    <div class="modal-content" dir="rtl">
+        <span class="close">&times;</span>
+        <div class="card-footer m-auto">
+            <div class="footer-card-head">
+                <h3 class="title">
+                    عضویت در خبرنامـه
+                </h3>
+            </div>
+            <div class="card-footer-body text-center">
+	            <p class="text-center">
+                جهت اطلاع از تخفیفات و محصولات جدید، شماره موبایل خـــود را وارد کــــنید
+	            </p>
+                <div class="input-group mb-3">
+
+                    <input type="text" class="form-control d-block" id="mobileInput">
+                    <p id="errorMsg" class="error-msg"></p>
+                    <button class="btn btn-outline-secondary d-block" type="button" id="button-addon1">ثبت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <link rel="stylesheet" href="/dist/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+    <script src="~/Assets/scripts/counter.js"></script>
+    <script>
+
+
+        var modal = document.getElementById('modal-leater');
+        var mobileInput = document.getElementById('mobileInput');
+        var submitBtn = document.getElementById('button-addon1');
+        var errorMsg = document.getElementById('errorMsg');
+        var span = document.getElementsByClassName("close")[0];
+        window.onload = function () {
+            modal.style.display = "block";
+        }
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function validateMobileNumber(mobileNumber) {
+            var regex = /^(09)\d{9}$/;
+            return regex.test(mobileNumber);
+        }
+
+        function handleSubmit() {
+            var mobileNumber = mobileInput.value.trim();
+            if (mobileNumber.length !== 11 || !validateMobileNumber(mobileNumber)) {
+
+                errorMsg.textContent = "شماره موبایل به درستی وارد نشده,لطفا بررسی کنید.";
+                errorMsg.style.display = "block";
+                mobileInput.style.border = "1px solid red";
+            } else {
+
+                $.ajax({
+                        url: "/Products/NewsLetterPhoneNumberPost",
+                        data: {
+
+                            phoneNumber: mobileNumber
+                        },
+                        cache: false,
+                        type: "POST",
+                        success: function (data) {
+                            if (data.includes("true")) {
+
+                }
+                        },
+                        error: function (reponse) {
+                            alert("error : " + reponse);
+                        }
+                    });
+            
+
+                errorMsg.textContent = "ثبت با موفقیت انجام شد ";
+                errorMsg.style.display = "block";
+                errorMsg.style.color = "green";
+                alert("ثبت با موفقیت انجام شد");
+                  modal.style.display = "none";
+
+            }
+        }
+
+        submitBtn.addEventListener('click', handleSubmit);
+
+    </script>
+    <script>
+        function addToBasket(productCode) {
+            var isValid = true;
+            var qty = $('#counter-product').html();
+            var stock = $('#hiddenStock').val();
+            if (qty > stock) {
+                alert('حداکثر تعداد سفارش از این محصول ' + stock + ' عدد است.');
+                isValid = false;
+            }
+
+            if (isValid) {
+                $.ajax(
+                    {
+                        url: "/Basket/AddToCart",
+                        data: {
+                            code: productCode,
+                            qty: qty
+                        },
+                        type: "Post"
+                    }).done(function (result) {
+                        if (result === "true") {
+                            window.location.href = "/basket";
+                        } else if (result === "invalid") {
+                            alert('محصول انتخابی شما موجود نمی باشد');
+                        } else if (result === "false") {
+                            alert('خطایی رخ داده است');
+                        }
+                    });
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,64 @@
+﻿@model ViewModels.Blogs.BlogListViewModel
+@{
+	ViewBag.Title = "  مجله پریکاتن ";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+	
+}
+
+
+<div class="full-row bg-light py-5">
+	<div class="container breadcrump-wrapper">
+		<div class="row text-secondary ">
+			<div class="col-sm-6">
+				<h3 class="mb-2 text-secondary">مجله پریکاتن</h3>
+			</div>
+			<div class="col-sm-6">
+				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100">
+					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
+						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>خانه</a></li>
+						<li class="breadcrumb-item active" aria-current="page">مجله پریکاتن</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+            <section id="section02">
+            <div class="container">
+                <div class="row justify-content-center align-items-center ">
+                    <div class="col-lg-12 text-center">
+	                    <h3 style="font-weight: 900; color: #22489e;"> مجــــــــــــــلــه پــــریکـــاتن</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <section id="section16">
+            <div class="container">
+	            <div class="row justify-content-center align-items-center  ">
+                @foreach (var blog in Model.Blogs)
+                {
+	                <div class="col-lg-4 mb-5 text-center">
+	                    <div class="card" style="width: 18rem;">
+		                    <a href="/blog/post/@blog.UrlParam">
+		                    <img src="@blog.ImageUrl" class="card-img-top" alt="@blog.Title">
+		                    </a>
+                            <div class="card-body text-center">
+	                            <h5 class="card-title">
+		                            <a href="/blog/post/@blog.UrlParam">
+
+			                            @blog.Title
+		                            </a>
+	                            </h5>
+                                @*<p class="card-text">
+                                @blog.Summery
+                                </p>*@
+                                <a href="/blog/post/@blog.UrlParam" class="btn btn-primary">ادامه مطلب</a>
+                            </div>
+                        </div>
+	                </div>
+                }
+                </div>
+            </div>
+        </section>

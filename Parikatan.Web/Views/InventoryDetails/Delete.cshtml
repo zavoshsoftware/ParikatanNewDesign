@@ -1,0 +1,81 @@
+﻿@model Models.Entities.InventoryDetail
+
+@{
+    ViewBag.Title = "حذف " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>آیا از حذف این مورد اطمینان دارید؟</h3>
+<div>    
+    <hr />
+    <div class="form-horizontal">        
+    
+         <div class="form-group">
+            @Html.LabelFor(model => model.Inventory.Description, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Inventory.Description)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.RefrenceId, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.RefrenceId)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Stock, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Stock)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.InventoryDetailType, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.InventoryDetailType)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.TransactionDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.TransactionDate)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.IsActive)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.CreationDate)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.LastModifiedDate)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Description)
+      </div></div>
+
+  </div>  
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+       <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="تایید حذف" class="btn btn-primary" />
+				@Html.ActionLink("بازگشت به فهرست", "Index")
+            </div>
+        </div>
+    }
+</div>

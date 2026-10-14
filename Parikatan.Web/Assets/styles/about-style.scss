@@ -1,0 +1,31 @@
+.section07{
+    .icon-box {
+        width: 66px;
+        height: 60px;
+        padding-top: 10px;
+        margin: 22px !important;
+        background-color: #ff7c41;
+        border-radius: 20px;
+        box-shadow: 0px 0px 0px 6px rgba(178, 166, 126, 0.4);
+        text-align: center;
+        position: relative;
+        top: -25px;
+        
+    }
+    .fun-man-woman{
+        filter: invert(1);
+    }
+    ul{
+        margin-right: 75px;
+        text-align: justify;
+    }
+    p{
+        text-align: justify;
+    }
+} 
+
+@media only screen and (max-width: 990px){
+    .section07 {
+        height: 100% !important; 
+    }
+}

@@ -1,0 +1,63 @@
+﻿body {
+}
+@font-face {
+    font-family: iranyekan;
+    font-style: normal;
+    font-weight: normal;
+    src: url('/assets/fonts/IranYekan/eot/iranyekanwebregular(fanum).eot');
+    src: url('/assets/fonts/IranYekan/eot/iranyekanwebregular(fanum).eot?#iefix') format('embedded-opentype'), /* IE6-8 */
+         url('/assets/fonts/IranYekan/woff2/iranyekanwebregular(fanum).woff2') format('woff2'), /* FF39+,Chrome36+, Opera24+*/
+         url('/assets/fonts/IranYekan/woff/iranyekanwebregular(fanum).woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+         url('/assets/fonts/IranYekan/IranYekan/ttf/iranyekanwebregular(fanum).ttf') format('truetype');
+}
+body {
+    font-family: iranyekan;
+    color: #000;
+}
+.container{
+	padding:0;
+}
+.panel-info {
+    border: none;
+}
+.panel-body {
+    padding: 20px;
+}
+.panel-body .row {
+    padding: 0;
+}
+.table {
+    margin-bottom: 5px;
+}
+.table-bordered {
+    border: 2px solid #000 !important;
+}
+.panel .table thead > tr > th {
+    border-left: 1px solid #000 !important;
+	border-bottom: 1px solid #000 !important;
+	border-right:0px;
+	border-top:0px;
+	background:#ccc !important;
+    padding: 6px 3px;
+	font-size:10px
+}
+.panel .table thead > tr > th:last-child{
+    border-left: 0px !important;
+}
+.panel .table td {
+    border-left: 1px solid #000 !important;
+	border-bottom: 1px solid #000 !important;
+	border-right:0px;
+	border-top:0px;
+	padding: 5px 3px;
+	font-size:10px
+}
+.panel .table td:last-child{
+    border-left: 0px !important;
+}
+@media print{
+        .table thead tr th{
+			background:#ccc !important;
+            -webkit-print-color-adjust:exact ;
+        }
+    }

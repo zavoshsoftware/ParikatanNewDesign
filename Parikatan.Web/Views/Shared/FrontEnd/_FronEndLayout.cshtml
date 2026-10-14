@@ -1,0 +1,158 @@
+﻿@{
+	Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>@ViewBag.Title </title>
+	<meta name="description" content="@ViewBag.Description">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="/assets/images/Faveicon.png">
+	<link rel="canonical" href="@ViewBag.Canonical" />
+	<meta name="robots" content="index, follow">
+    <style>
+
+                .whatsappicon {
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    z-index: 10;
+                }
+        @@media only screen and (max-width: 990px){
+            .whatsappicon {
+                
+                bottom: 70px;
+               
+            }
+        }
+    </style>
+	@RenderSection("head", required: false)
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P7F9GCM9');</script>
+	<!-- End Google Tag Manager -->
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7F9GCM9"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    @Html.Partial("FrontEnd/_MenuPartial")
+
+
+    <main>
+        @RenderBody()
+
+    </main>
+    @Html.Partial("FrontEnd/_FooterPartial")
+
+<div class="whatsappicon moving-div d-md-none">
+	<a href="whatsapp://send?phone=989014852865&text=سلام">
+		<img src="~/assets/images/whatssapp.png" />
+	</a>
+ 
+</div>
+<div class="whatsappicon moving-div d-none d-md-block">
+ 
+	<a href="https://web.whatsapp.com/send?phone=989014852865&text=سلام">
+		<img src="~/assets/images/whatssapp.png" />
+	</a>
+</div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="/dist/bootstrap-v-5-2/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles/style.css">
+
+    <script src="/dist/popper/popper.min.js">
+    </script>
+    <script src="~/Assets/scripts/jquery.min.js"></script>
+    <script src="/dist/bootstrap-v-5-2/bootstrap.min.js"></script>
+    <script src="/dist/jquery-1.11.0.min.js"></script>
+    <script src="/dist/jquery-migrate-1.2.1.min.js"></script>
+  
+    <script type="text/javascript" src="/dist/slick/slick.js"></script>
+
+
+ 
+    <script>
+
+
+
+        $('.slider-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            fade: true,
+            asNavFor: '.slider-nav',
+
+        });
+        $('.slider-nav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slider-for',
+            dots: false,
+            centerMode: true,
+            focusOnSelect: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: false,
+        });
+
+        if ($(window).width() < 990) {
+            $('.env-slider').slick({
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+
+            });
+
+            $('.blog-slider').slick({
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000,
+
+            });
+
+        } else {
+            $('.env-slider').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                 autoplay: true,
+                 autoplaySpeed: 2000,
+
+            });
+
+            $('.blog-slider').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                 autoplay: true,
+                 autoplaySpeed: 2000,
+
+            });
+
+        }
+
+
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

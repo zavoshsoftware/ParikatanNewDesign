@@ -1,0 +1,142 @@
+﻿@font-face {
+    font-family: 'Iransans';
+    src: url(/fonts/IranSans/IRANSansWebFaNum.eot) format('embedded-opentype'), url(/fonts/IranSans/IRANSansWebFaNum.woff2) format('woff2'), url(/fonts/IranSans/IRANSansWebFaNum.woff) format('woff'), url(/fonts/IranSans/IRANSansWebFaNum.ttf) format('truetype');
+    font-display: fallback;
+}
+
+@font-face {
+    font-family: 'Awesome';
+    src: url(/fonts/fontAwesome/fontawesome-webfont.eot) format('embedded-opentype'), url(/fonts/IranSans/IRANSansWebFaNum.woff2) format('woff2'), url(/fonts/fontAwesome/fontawesome-webfont.woff) format('woff'), url(/fonts/fontAwesome/fontawesome-webfont.ttf) format('truetype');
+    font-display: fallback;
+}
+
+
+body, p, a, h1, h2, h3, h4, h5, h6, ul, li, input, button, table, th, td, input::placeholder, select, option, select option {
+    font-family: IRANSans !important;
+}
+
+container {
+    font-family: IRANSans !important;
+}
+
+
+.search_bar {
+    direction: rtl;
+    text-align: right;
+}
+
+.nice-select .option {
+    direction: rtl;
+    text-align: right;
+}
+
+.header_bottom .row {
+    direction: rtl;
+    text-align: right;
+}
+
+.product_details .row {
+    direction: rtl;
+    text-align: right;
+}
+.coupon_area .row {
+    direction: rtl;
+    text-align: right;
+}
+
+.Checkout_section .row {
+    direction: rtl;
+    text-align: right;
+}
+
+.shop_wrapper {
+    direction: rtl;
+    text-align: right;
+}
+.breadcrumb_content ul {
+    direction: rtl;
+    text-align: right;
+}
+.product_d_inner {
+    direction: rtl;
+    text-align: right;
+}
+    .product_d_inner p {
+        text-align: justify
+}
+.product_desc p {
+    text-align: justify
+}
+
+footer {
+    background-color: #f6f6f6;
+    padding-top: 30px !important
+}
+.cart_page table {
+    direction: rtl;
+}
+
+.account_form {
+    text-align: right;
+    direction: rtl;
+}
+.account_form h2{
+    text-align: center
+}
+
+.product_content {
+    text-align: center;
+    direction: rtl
+}
+
+.banner_text {
+    text-align: right;
+    direction: rtl;
+    padding-right: 120px
+
+}
+
+.blog_content {
+    text-align: right;
+    direction: rtl;
+}
+.blog_content p{
+    text-align: justify;
+    direction: rtl;
+}
+footer .row {
+    text-align: right;
+    direction: rtl;
+}
+
+.footer_custom_links {
+    text-align: left;
+}
+
+.about-section .row {
+    direction: rtl;
+}
+
+    .about-section .row p {
+        text-align: justify;
+    }
+
+.theme-button {
+    font-weight: 700;
+    /*height: 42px;
+    line-height: 42px;*/
+    padding: 0 30px;
+    text-transform: uppercase;
+    border: none;
+    background: #ff6a28;
+    color: #ffffff;
+    cursor: pointer;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+    .theme-button:hover {
+        color: #ff6a28;
+        border:1px solid #ff6a28;
+    }

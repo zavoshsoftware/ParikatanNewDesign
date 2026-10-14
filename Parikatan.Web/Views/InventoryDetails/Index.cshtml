@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Models.Entities.InventoryDetail>
+
+@{
+ViewBag.Title = "فهرست "  ;
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                              columns.Bound(model => model.Inventory.Description);
+        columns.Bound(model => model.RefrenceId);
+        columns.Bound(model => model.Stock);
+        columns.Bound(model => model.InventoryDetailType);
+        columns.Bound(model => model.TransactionDate);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(model => model.CreationDate);
+					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									</text>).Width(200);  
+		})
+		.ToolBar(toolbar =>
+					{				
+						toolbar.Custom().Action("Create","InventoryDetails").Text("ورود محصول");                          
+					}
+		)         
+		.DataSource(dataSource => dataSource
+									.Server()
+							
+									.Model(model => model.Id(item => item.Id))
+					)              
+	)

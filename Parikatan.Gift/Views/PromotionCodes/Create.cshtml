@@ -1,0 +1,136 @@
+﻿@model Parikatan.Gift.Models.Entities.Promotion.PromotionCode
+
+@{
+    ViewBag.Title = "افزودن " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>افزودن @Html.DisplayNameFor(model => model)</h2>
+
+@using (Html.BeginForm("Create", "PromotionCodes",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.Code)
+
+                @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExpireDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.ExpireDate)
+
+                @Html.ValidationMessageFor(model => model.ExpireDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.Amount)
+
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+			<div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsUsed)
+
+				@Html.LabelFor(model => model.IsUsed)
+                @Html.ValidationMessageFor(model => model.IsUsed)
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reciever, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.Reciever)
+
+                @Html.ValidationMessageFor(model => model.Reciever)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.UserFullName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserFullName)
+
+                @Html.ValidationMessageFor(model => model.UserFullName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UseDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.UseDate)
+
+                @Html.ValidationMessageFor(model => model.UseDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserPhoneNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserPhoneNumber)
+
+                @Html.ValidationMessageFor(model => model.UserPhoneNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserService, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserService)
+
+                @Html.ValidationMessageFor(model => model.UserService)
+            </div>
+        </div>*@
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.UserId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("UserId", String.Empty)
+                @Html.ValidationMessageFor(model => model.UserId)
+            </div>
+        </div>*@
+
+        <div class="form-group">
+			<div class="col-md-2">
+            </div>
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.IsActive)
+
+				@Html.LabelFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description)
+
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ایجاد" class="btn btn-primary" />
+				@Html.ActionLink("بازگشت به فهرست", "Index")
+            </div>
+        </div>
+        </div>
+}
+

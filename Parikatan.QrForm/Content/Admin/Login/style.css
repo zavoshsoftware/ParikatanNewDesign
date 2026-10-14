@@ -1,0 +1,86 @@
+﻿@font-face {
+    font-family: 'Iransans';
+    src: url(/fonts/IranSans/IRANSansWebFaNum.eot) format('embedded-opentype'), url(/fonts/IranSans/IRANSansWebFaNum.woff2) format('woff2'), url(/fonts/IranSans/IRANSansWebFaNum.woff) format('woff'), url(/fonts/IranSans/IRANSansWebFaNum.ttf) format('truetype');
+}
+
+body, p, a, h1, h2, h3, h4, h5, ul, li, input {
+    font-family: IRANSans;
+}
+
+.card-body input, textarea.form-control {
+    text-align: right;
+}
+
+.button-box {
+    direction: rtl;
+}
+
+.k-grid table {
+    direction: rtl;
+}
+
+.k-filter-row > th:first-child, .k-grid tbody td:first-child, .k-grid tfoot td:first-child, .k-grid-header th.k-header:first-child {
+    border-left-width: 1px !important;
+}
+
+.k-filter-row > th:last-child, .k-grid tbody td:last-child, .k-grid tfoot td:last-child, .k-grid-header th.k-header:last-child {
+    border-left-width: 0;
+}
+
+.btn-box, select.form-control {
+    direction: rtl;
+    text-align: right;
+}
+
+.app-main__inner .col-md-8, .app-main__inner .col-md-4 {
+    float: left;
+}
+
+iframe.k-content {
+    direction: rtl;
+    text-align: right;
+}
+
+.project-dashboard .widget-content-wrapper {
+    direction: rtl;
+}
+
+.project-dashboard .widget-content .widget-content-right {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.billboard-selection .main-card {
+    width: 100%;
+}
+
+    .billboard-selection .main-card .card-header {
+        text-align: right;
+        direction: rtl;
+        margin-bottom: 10px;
+    }
+
+    .billboard-selection .main-card .card-body input {
+        margin: 0 3px 0 10px;
+    }
+
+.billboard-card {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 10px;
+    direction: rtl;
+}
+
+    .billboard-card span {
+        color: #3f6ad8
+    }
+
+.projectdetail-details {
+    direction: rtl;
+}
+
+    .projectdetail-details label {
+        color: #3f6ad8;
+        font-weight: bold;
+    }

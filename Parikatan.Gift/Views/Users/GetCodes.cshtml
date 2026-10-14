@@ -1,0 +1,27 @@
+﻿@model IEnumerable<string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetCodes</title>
+</head>
+<body>
+<div>
+	<table>
+		@foreach (var code in Model)
+		{
+			<tr>
+				<td>
+					@code
+				</td>
+			</tr>
+		}
+	</table>
+</div>
+</body>
+</html>

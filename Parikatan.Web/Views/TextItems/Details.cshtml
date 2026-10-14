@@ -1,0 +1,63 @@
+﻿@model ViewModels.TextItem.TextItemDetailsViewModel
+@{
+
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    ViewBag.Title = Model.TextItem.Title;
+}
+
+
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/">خانه</a></li>
+                        <li>/</li>
+                        <li>@Model.TextItem.TextItemType.Title</li>
+                        <li>/</li>
+                        <li>@Model.TextItem.Title</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--shop  area start-->
+<div class="shop_area shop_fullwidth shop_reverse">
+    <div class="container">
+        <div class="shop_inner_area">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row shop_wrapper">
+                        @if (!string.IsNullOrEmpty(Model.TextItem.ImageUrl))
+                        { 
+                            <p class="text-center">
+                                <img src="@Model.TextItem.ImageUrl" width="300" />
+                            </p>
+                        }
+                        <p>
+                            @Model.TextItem.Summery
+                        </p>
+
+                        <p>
+                            @Html.Raw(Model.TextItem.Body)
+                        </p>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+

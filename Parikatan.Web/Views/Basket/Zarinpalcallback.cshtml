@@ -1,0 +1,129 @@
+﻿@model ViewModels.Basket.CallBackViewModel
+@{
+    ViewBag.Title = "نتیجه پرداخت";
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+
+@section head{
+
+	<link href="~/Assets_Old/css/style.css" rel="stylesheet" />
+	<link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />
+	<style>
+		.user-info-form label {
+			text-align: left
+		}
+		#success-checkout-box, #error-box {
+			display: none;
+		}
+	</style>
+}
+ 
+<div class="error_section">
+	<div class="container">   
+		<div class="row">
+			<div class="col-12">
+				<div class="callback_form">
+					@if (Model.IsSuccess)
+					{
+						<h1 class="text-success">
+							پرداخت موفقیت آمیز
+						</h1>
+
+						<h2>شماره پیگیری: @Model.RefrenceId</h2>
+						<h2>شماره فاکتور: @Model.OrderCode</h2>
+
+						<p>با تشکر از خرید شما. سفارش شما در مرحله آماده سازی قرار گرفته است و کارشناسان ما جهت هماهنگی ارسال با شما تماس خواهند گرفت:
+					</p>
+							@*<br/>
+							تلفن پشتیبانی: 02122201146</p>*@
+
+					if (Model.Order.Description == "quickBasket")
+					{
+						<div class="container user-info-form" style="direction: rtl; text-align: right">
+							<div class="row ">
+								<label class="col-4">
+									نام و نام خانوادگی*
+								</label>
+								<div class="col-8">
+									<input class="form-control" type="text" id="fullname" value="@Model.Order.DeliverFullName">
+
+								</div>
+							</div>
+							<div class="row">
+								<label class="col-4">
+									شماره موبایل*
+								</label>
+								<div class="col-8">
+									<input class="form-control" type="text" id="cellnumber" value="@Model.Order.DeliverCellNumber">
+
+								</div>
+							</div>
+							<div class="row">
+								<label class="col-4">
+									شهر*
+								</label>
+								<div class="col-8">
+									<input class="form-control" type="text" id="ddlcity">
+
+								</div>
+							</div>
+
+
+							<div class="row">
+								<label class="col-4">
+									آدرس*
+								</label>
+								<div class="col-8">
+									<textarea class="form-control" type="text" id="address" rows="5">
+</textarea>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<label class="col-4">
+									کد پستی
+								</label>
+								<div class="col-8">
+									<input class="form-control" type="text" id="postalCode">
+
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-4"></div>
+								<div class="col-8">
+									<button type="button" class="btn btn-success" onclick="finalizeOrderInCallBack('@Model.Order.Id')">ثبت اطلاعات ارسال</button>
+
+
+									<p class="alert alert-danger" id="error-box"></p>
+									<p class="alert alert-success" id="success-checkout-box"></p>
+								</div>
+
+
+							</div>
+						</div>
+					}
+					}
+					else
+					{
+						<h1 class="text-danger">
+							پرداخت نا موفقیت
+						</h1>
+
+						<h2>
+							کد خطا: @Model.RefrenceId
+						</h2>
+						<p>کاربر گرامی متاسفانه فرایند پرداخت شما تکمیل نشده است. اگر مبلغی از حساب شما کسر شده باشد، حداکثر ظرف مدت 72 سایت به حساب شما عودت می گردد.</p>
+
+					}
+ 
+					@*<a href="/">بازگشت به صفحه اصلی سایت</a>*@
+				</div>
+			</div>
+		</div>
+	</div>    
+</div>
+
+@section scripts{
+	<script src="~/Scripts/function.js"></script>}

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Models.Entities.Order>
+
+@{
+	ViewBag.Title = ViewBag.CurrentOrder;
+
+	Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+@{
+	string qs = Request["Grid-page"];
+	int counter = 1;
+
+	if (!string.IsNullOrEmpty(qs))
+	{
+		int pageid = Convert.ToInt32(qs);
+
+		counter = ((pageid - 1) * 10) + 1;
+	}
+}
+@(Html.Kendo().Grid(Model)
+								.Name("Grid")
+								.Columns(columns =>
+								{
+
+									columns.Template(@<text><span>@(counter++)</span></text>).Title("#");
+
+
+								columns.Bound(model => model.OrderStatusStr);
+
+								columns.Bound(model => model.User.FullName).Width(150);
+					
+								columns.Bound(model => model.DiscountCode.Code).Width(150);
+								columns.Bound(model => model.TotalAmountStr).Width(100);
+								columns.Bound(model => model.IsPaid).Width(100);
+								//if (ViewBag.OrderType == "pos")
+								//{
+								//           columns.Bound(model => model.PaymentTypeTitle);
+								//}
+								//else
+								//{
+								//	columns.Bound(model => model.PaymentTypeTitleTranslate);
+
+								//}
+
+									@*columns.Bound(item => @item.Id).Title("نحوه پرداخت")
+										.Template(@<text>
+
+												          @if (item.IsPos)
+												          {
+													          @item.PaymentTypeTitle
+
+												          }
+												          else
+												          {
+													          <span>
+														           @item.PaymentTypeTitleTranslate - @item.SaleReferenceId
+													          </span>
+												          }
+											           </text>);*@
+
+columns.Bound(model => model.OrderDateStr).Width(150);
+columns.Bound(item => @item.Id).Width(200).Title("دستورات").Filterable(false).Groupable(false)
+.Template(@<text>
+								 
+
+							           </text>);
+								})
+		.ToolBar(toolbar =>
+		{
+		}
+		).Filterable().Sortable().Scrollable(s => s.Height("auto"))
+		.DataSource(dataSource => dataSource
+									.Server()
+
+									.Model(model => model.Id(item => item.Id))
+					).Pageable(pager => pager.PageSizes(new object[] { 10, 20, 50, 100, "All" }))
+	)

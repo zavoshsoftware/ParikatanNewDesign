@@ -1,0 +1,156 @@
+﻿
+@{
+		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+	ViewBag.Canonical = "https://parikatan.shop/how";
+}
+@section head{
+	<style>
+		#SuccessDivBlog, #errorDivBlog {
+			display: none;
+		}
+
+
+		.blog-row {
+			direction: rtl;
+			text-align: justify;
+			margin-top: 20px
+		}
+
+			.blog-row img {
+				max-width: 100%
+			}
+
+		.single-post-title h1 {
+			font-size: 28px;
+		}
+
+		.post-content h2 {
+			font-size: 24px;
+		}
+
+		.post-content h3 {
+			font-size: 20px;
+		}
+
+		.date {
+			color: aqua;
+		}
+
+		#section16 .card {
+			height: 46vh !important;
+			padding: 20px !important;
+		}
+
+			#section16 .card .card-text {
+				height: 8vh !important;
+			}
+
+		.title {
+			color: #22489e;
+			font-weight: 700;
+		}
+
+		p {
+			color: #22489e;
+		}
+
+		@@media only screen and (max-width: 990px) {
+			#section16 .card {
+				height: 50vh !important;
+			}
+		}
+
+		.blog-content-body {
+			text-align: center;
+			color: #000;
+		}
+		.blog-content-body p{
+			direction: rtl;
+			color: #000;
+		}
+			.blog-content-body h2, .blog-content-body h3  {
+				color: #22489e;
+			}
+			 .blog-content-body a {
+				color: #3070ff;
+			}
+			 .blog-content-body img {
+			max-width: 100%
+			}
+	</style>
+}
+
+<div class="full-row bg-light py-5 my-5">
+	<div class="container breadcrump-wrapper">
+		<div class="row text-secondary " dir="rtl">
+			<div class="col-sm-6">
+
+			</div>
+			<div class="col-sm-6">
+				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100" style="direction: rtl">
+					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0" dir="ltr">
+						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>خانه</a></li>
+						<li class="breadcrumb-item active" aria-current="page">نحوه استفاده</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="full-row blog-row">
+	<div class="container">
+		<div class="row justify-content-center">
+
+			<div class="col-lg-8 m-auto order-lg-1">
+				<div class="single-post">
+					<div class="single-post-title">
+						<h1 class="mb-2 title text-center">نحوه استفاده از کرم های ضد چروک پریکاتن </h1>
+
+
+						<div class="container">
+							<div class="text-center blog-content-body" >
+								<p>
+									کرم رفع چروک پریکاتن دو بار در روز یکبار صبح و یکبار شب باید استفاده شود
+								</p>
+								<p>
+									حتما قبل از مصرف صورت را با شوینده مناسب شسته و صورت تمیز باشد.
+								 
+								</p>
+								<p>
+								تا نیم ساعت بعد از مصرف از هیچ گونه کرم، پودر، لوازم آرایشی و ضد افتاب استفاده نکیند.
+								</p>
+								<p>
+									بعد از 56 روز معجزه پریکاتن را مشاهده کنید
+								</p>
+								<p>
+									<img src="~/Uploads/photo_2024-02-10_10-58-02.jpg" style="max-width: 100%" />
+								</p>
+							</div>
+						 
+							</div>
+						</div>
+
+
+					</div>
+
+		 
+
+				</div>
+
+		
+			</div>
+
+
+
+	 
+	</div>
+</div>
+
+@section scripts
+{
+	<script src="~/Scripts/function.js"></script>
+	<link rel="stylesheet" href="/dist/slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+}

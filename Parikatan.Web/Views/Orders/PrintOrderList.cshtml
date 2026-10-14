@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ViewModels.Orders.OrderPrintViewModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>PrintOrderList</title>
+	<link href="~/dist/bootstrap-v-5-2/bootstrap.rtl.min.css" rel="stylesheet" />
+	<style>
+		html {
+			direction: rtl
+		}
+		td img {
+			max-width: 100px
+		}
+		@@media print {
+		.col-md-4 {
+			float: left;
+			width: 50%; /* معادل col-md-4 */
+			padding: 10px; /* برای ایجاد حاشیه */
+			box-sizing: border-box; /* اطمینان از اینکه padding به عرض اضافه نشود */
+		}
+
+		.row {
+			display: flex; /* برای جلوگیری از شکستگی خطوط در هنگام پرینت */
+			flex-wrap: wrap; /* برای تنظیم درست عناصر در خط */
+		}
+
+		table {
+			width: 100%; /* تنظیم عرض جدول بر اساس عرض والد */
+		}
+
+		body {
+			margin: 0; /* حذف حاشیه پیش‌فرض */
+			padding: 20px; /* حاشیه مناسب برای کل صفحه */
+		}
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div class="row">
+
+			@foreach (var order in Model)
+			{
+				<div class="col-md-4">
+					<table class="table table-bordered">
+						<tr class="text-center">
+							<td colspan="2">
+								<img src="~/Assets/logo.png" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>
+									فرستنده:
+								</b>
+								پریکاتن 09124806404
+							</td>
+							<td>
+								<b>
+									آدرس فرستنده:
+								</b>
+								تهران، اشرفی اصفهانی
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>
+									گیرنده:
+								</b>
+								@order.FullName - @order.PhoneNumber
+							</td>
+							<td>
+								<b>
+									آدرس گیرنده:
+								</b>@order.Address
+								@if (!string.IsNullOrEmpty(order.PostalCode))
+								{
+									<span>کد پستی: </span>
+									@order.PostalCode
+								}
+							</td>
+						</tr>
+					</table>
+				</div>
+			}
+		</div>
+	</div>
+</body>
+</html>

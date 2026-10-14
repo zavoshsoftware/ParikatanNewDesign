@@ -1,0 +1,398 @@
+﻿@using Core.Enums
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="app">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<title>@ViewBag.Title</title>
+
+
+	<link href="~/Content/admin/app.v2.css" rel="stylesheet" />
+	<script src="/Scripts/AdminJS/app.v2.js"></script>
+
+
+	<!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
+
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.default.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.dataviz.default.min.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/kendo/2017.3.913/kendo.rtl.min.css")" rel="stylesheet" type="text/css" />
+	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/jquery.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/jszip.min.js")"></script>
+	@*<script src="@Url.Content("~/Scripts/kendo/2016.2.504/kendo.all.min.js")"></script>*@
+	<script src="~/Scripts/kendo/2017.3.913/kendo.all.min.js"></script>
+
+
+	@RenderSection("styles", required: false)
+
+	<script src="@Url.Content("~/Scripts/kendo/2017.3.913/kendo.aspnetmvc.min.js")"></script>
+	@*<script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>*@
+	<link href="~/Content/admin/admin-font-awesome.css" rel="stylesheet" />
+	<link href="~/Content/admin/AdminStyle.css" rel="stylesheet" />
+	<link href="~/Content/Admin/style.css" rel="stylesheet" />
+	@RenderSection("head", required: false)
+	<style>.menu-footer {
+		       text-align: center;
+		       direction: ltr;
+		       position: absolute;
+		       bottom: 0;
+		       right: 0;
+		       width: 100%;
+	       }</style>
+</head>
+
+<body class="k-rtl">
+
+    <section class="vbox">
+        <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+            <div class="navbar-header aside-md">
+                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"><i class="fa fa-bars"></i></a><a href="/" class="navbar-brand">
+	<img src="/assets/img/clotho/white-logo.png" class="m-r-sm">
+</a><a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".nav-user"><i class="fa fa-cog"></i></a>
+            </div>
+            <ul class="nav navbar-nav hidden-xs"></ul>
+            <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
+                @*<li class="hidden-xs">
+                        <a href="#" class="dropdown-toggle dk" data-toggle="dropdown">
+                            <i class="fa fa-gears"></i>
+                            <span class="badge badge-sm up bg-danger m-l-n-sm count">
+                                0
+                            </span>
+                        </a>
+                        <section class="dropdown-menu aside-xl">
+                            <section class="panel bg-white panel-info">
+
+                                <header class="panel-heading b-light bg-light">
+                                    <strong>
+                                        شما <span class="count">
+
+                                        </span> اعلان دارید
+                                    </strong>
+                                </header>
+
+                                <footer class="panel-footer text-sm"></footer>
+                            </section>
+                        </section>
+                    </li>*@
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="thumb-sm avatar pull-left">
+                            <img src="/assets/img/avatar_default.jpg" />
+                        </span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <span class="arrow top"></span>
+                        <li><a href="#">پروفایل</a> </li>
+                        <li><a href="#">Help</a> </li>
+                        <li class="divider"></li>
+                        <li>
+                            @Html.ActionLink("خروج", "LogOff", "Accounts")
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+        <section>
+            <section class="hbox stretch">
+                <!-- .aside -->
+                <aside class="bg-dark lter aside-md hidden-print nav-xs-right" id="nav" style="width:260px;">
+                    <section class="vbox">
+
+                        <section class="w-f scrollable">
+                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px" data-color="#333333">
+                                <!-- nav -->
+															<nav class="nav-primary hidden-xs">
+																@if (User.Identity.IsAuthenticated)
+																{
+																	var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+																	string role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role).Value;
+																	if (role.ToLower() == SecurityRole.Marketing.ToLower())
+																	{
+																		<li id="supportLi" class="menuitem">
+																			<a href="/orders/indexmarketing">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت سفارشات</span>
+																			</a>
+																		</li>
+
+																	}
+																	else{
+
+
+
+
+
+																	<ul class="nav">
+
+
+
+
+																		<li id="supportLi" class="menuitem">
+																			<a href="/admindashboard/orderlist">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>داشبورد سفارشات</span>
+																			</a>
+																		</li>
+
+																		<li id="supportLi" class="menuitem">
+																			<a href="/Inventories">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>موجودی انبار</span>
+																			</a>
+																		</li>
+																		<li id="supportLi" class="menuitem">
+																			<a href="/Costs">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>هزینه ها</span>
+																			</a>
+																		</li>
+
+																		<li id="productLi" class="menuitem">
+																			<a href="#">
+																				<i class="fa fa-sitemap icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>مدیریت محصولات</span>
+																			</a>
+																			<ul class="nav lt">
+
+																				<li>
+																					<a href="/products">
+																						<i class="fa fa-angle-left"></i><span>مدیریت محصولات</span>
+																					</a>
+																				</li>
+
+
+																			</ul>
+																		</li>
+
+																		<li id="productLi" class="menuitem">
+																			<a href="#">
+																				<i class="fa fa-sitemap icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>مدیریت مطالب وبلاگ</span>
+																			</a>
+																			<ul class="nav lt">
+																				<li>
+																					<a href="/BlogGroups">
+																						<i class="fa fa-angle-left"></i><span>مدیریت گروه وبلاگ</span>
+																					</a>
+																				</li>
+																				<li>
+																					<a href="/Blogs">
+																						<i class="fa fa-angle-left"></i><span>مدیریت مطالب وبلاگ</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+
+
+
+																		<li id="productLi" class="menuitem">
+																			<a href="#">
+																				<i class="fa fa-sitemap icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>مدیریت سفارشات</span>
+																			</a>
+																			<ul class="nav lt">
+																				<li>
+																					<a href="/orders/index/11869F4D-D6D1-434C-A2F1-7945227CD3BB">
+																						<i class="fa fa-angle-left"></i><span>سفارشات جاری</span>
+																					</a>
+																				</li>
+																				<li>
+																					<a href="/orders/index/68490C34-A666-44DA-8D9F-7B6DEE2E4DE0">
+																						<i class="fa fa-angle-left"></i><span>سفارشات تحویل شده</span>
+																					</a>
+																				</li>
+																				<li>
+																					<a href="/orders/index/99C42AD7-AE29-46C5-BAE2-00D2DA31DDCD">
+																						<i class="fa fa-angle-left"></i><span>سفارشات لغو شده</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/orders">
+																						<i class="fa fa-angle-left"></i><span>همه سفارشات</span>
+																					</a>
+																				</li>
+																				<li>
+																					<a href="/orders/ManualOrder">
+																						<i class="fa fa-angle-left"></i><span>ثبت سفارش دستی</span>
+																					</a>
+																				</li>
+
+																			</ul>
+																		</li>
+
+																		<li id="productLi" class="menuitem">
+																			<a href="#">
+																				<i class="fa fa-sitemap icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>نظرات</span>
+																			</a>
+																			<ul class="nav lt">
+
+																				<li>
+																					<a href="/ProductComments">
+																						<i class="fa fa-angle-left"></i><span>مدیریت نظرات محصولات</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/BlogComments">
+																						<i class="fa fa-angle-left"></i><span>مدیریت نظرات وبلاگ</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/ContactUsForms">
+																						<i class="fa fa-angle-left"></i><span>مدیریت پیام های دریافتی تماس با ما</span>
+																					</a>
+																				</li>
+																			</ul>
+																		</li>
+
+																		<li id="supportLi" class="menuitem">
+																			<a href="/DiscountCodes">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کد تخفیف</span>
+																			</a>
+																		</li>
+
+
+																		<li id="supportLi" class="menuitem">
+																			<a href="/users/index?role=@SecurityRole.SuperAdmin">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت کاربران مدیر</span>
+																			</a>
+																		</li>
+																		<li id="supportLi" class="menuitem">
+																			<a href="/users/index?role=@SecurityRole.Customer">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت مشتریان</span>
+																			</a>
+																		</li>
+
+																		<li id="supportLi" class="menuitem">
+																			<a href="/sliders">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت تصاویر اسلایدر</span>
+																			</a>
+																		</li>
+
+
+
+																		<li id="productLi" class="menuitem">
+																			<a href="#">
+																				<i class="fa fa-sitemap icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>مدیریت متن ها</span>
+																			</a>
+																			<ul class="nav lt">
+																				<li>
+																					<a href="/TextItems/index?typename=home-banner">
+																						<i class="fa fa-angle-left"></i><span>بنر صفحه اصلی</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/TextItems/index?typename=contact">
+																						<i class="fa fa-angle-left"></i><span>اطلاعات تماس</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/TextItems/index?typename=customer-services">
+																						<i class="fa fa-angle-left"></i><span>خدمات مشتریان</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/TextItems/index?typename=info">
+																						<i class="fa fa-angle-left"></i><span>همکاری با ما</span>
+																					</a>
+																				</li>
+
+																				<li>
+																					<a href="/faqs">
+																						<i class="fa fa-angle-left"></i><span>سوالات متداول</span>
+																					</a>
+																				</li>
+
+
+																			</ul>
+																		</li>
+																		<li id="supportLi" class="menuitem">
+																			<a href="/NewsLetters">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>اعضای خبرنامه</span>
+																			</a>
+																		</li>
+																		<li id="supportLi" class="menuitem">
+																			<a href="/orders/NoPaymentList">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>سفارشات پرداخت نشده</span>
+																			</a>
+																		</li>
+																		<li id="supportLi" class="menuitem">
+																			<a href="/Referrals">
+																				<i class="fa fa-bars icon"><b class="bg-info"></b></i><span>مدیریت لینک های تبلیغات (رفرال)</span>
+																			</a>
+																		</li>
+																	</ul>
+																}
+																}
+
+
+
+															</nav>
+                            </div>
+                        </section>
+											
+											
+                    <div class="menu-footer">
+	                    powered by
+	                    <br/>
+											<a href="https://zavoshsoftware.com" target="_blank">
+												<img src="~/assets/img/zavosh.png" alt="زاوش" />
+											</a>
+                    </div>
+                    </section>
+                </aside>
+                <!-- /.aside -->
+                <section id="content">
+                    <section class="vbox">
+                        <section class="scrollable padder" style="margin-top: 5px;">
+                            @RenderBody()
+                        </section>
+                    </section>
+                    <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+                </section>
+            </section>
+        </section>
+    </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var URL = window.location.pathname;
+            if (URL.includes('ProductCategories') || URL.includes('products')) {
+                $('.menuitem').removeClass('active');
+                $('#productLi').addClass('active');
+            }
+
+            else if (URL.includes('/Orders')) {
+                $('.menuitem').removeClass('active');
+                $('#orderLi').addClass('active');
+            }
+
+            else if (URL.includes('/users')) {
+                $('.menuitem').removeClass('active');
+                $('#userLi').addClass('active');
+            }
+            else if (URL.includes('/Texts')) {
+                $('.menuitem').removeClass('active');
+                $('#textLi').addClass('active');
+            }
+            else if (URL.includes('/Comments')) {
+                $('.menuitem').removeClass('active');
+                $('#commentLi').addClass('active');
+            }
+            else if (URL.includes('/Texts')) {
+                $('.menuitem').removeClass('active');
+                $('#textLi').addClass('active');
+            }
+            else if (URL.includes('/Colors')) {
+                $('.menuitem').removeClass('active');
+                $('#colorLi').addClass('active');
+            }
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

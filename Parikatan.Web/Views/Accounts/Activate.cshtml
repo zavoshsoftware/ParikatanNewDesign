@@ -1,0 +1,139 @@
+﻿@model ViewModels.ActivateAccountViewModel
+@{
+    ViewBag.Title = "ورود";
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+@section head{
+
+    <link href="~/Assets_Old/css/style.css" rel="stylesheet" />
+    <link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />
+}
+
+<div class="breadcrumbs_area other_bread">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/">خانه</a></li>
+                        <li>/</li>
+                        <li>ورود</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="customer_login">
+    <div class="container">
+        <div class="row">
+            <!--login area start-->
+            <div class="col-lg-3 col-md-3"></div>
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form text-center">
+
+
+                    @if (TempData["WrongActivationCode"] != null)
+                    {
+                        <p class="alert alert-danger" id="wrongEmail">@TempData["WrongActivationCode"]</p>
+                    }
+                    @using (Html.BeginForm("Activate", "Accounts", new { returnUrl = ViewBag.ReturnUrl, code = ViewBag.code }, FormMethod.Post, new { @class = "", role = "form", id = "activationForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+                        @Html.HiddenFor(c => c.CellNumber)
+
+                        if (TempData["WrongMobile"] != null)
+                        {
+                            <p class="alert alert-danger" id="wrongEmail">@TempData["WrongMobile"]</p>
+                        }
+
+                        <img src="/Assets/images/Asset 2.png" style="width: auto; height: 100px ; margin:auto;">
+                        <h3 class="mt-4">ورود به حساب کاربری</h3>
+                        <p class="text-center">
+                            کد تایید ارسال شده به شماره موبایل @Model.CellNumber   را وارد نمایید.
+
+                        </p>
+
+                        <p>
+
+
+                            @Html.TextBoxFor(m => m.ActivationCode, new { @class = "form-control m-auto w-75", @placeholder = "کد تایید ", @pattern = @"\d*", inputmode = "numeric" })
+
+                        </p>
+
+                        <div class="text-center">
+
+
+
+                            <button type="submit" name="login" value="Log in" class="m-auto w-75" style="width: 100%" id="btnActivate">تایید</button>
+                            <p class="text-center mt-3">
+                                <a href="/login" style="color: #22489e; font-size: 14px; border-bottom: 1px solid; ">
+
+                                    تغییر شماره موبایل
+
+                                </a>
+                            </p>
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+        document.addEventListener('DOMContentLoaded', function () {
+   
+            const form = document.getElementById('activationForm');
+        if (!form) return;
+
+        
+        const input = form.querySelector('input[name="ActivationCode"]');
+        if (!input) return;
+
+       
+        const btn = form.querySelector('#btnActivate');
+        if (!btn) return;
+
+       
+        function convertPersianToEnglish(str) {
+        const persianNumbers = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        const englishNumbers = ['0','1','2','3','4','5','6','7','8','9'];
+        let result = '';
+        for (let i = 0; i < str.length; i++) {
+            const index = persianNumbers.indexOf(str[i]);
+        result += index !== -1 ? englishNumbers[index] : str[i];
+        }
+        return result;
+    }
+
+        
+        input.addEventListener('input', function () {
+            setTimeout(() => {
+                const code = convertPersianToEnglish(input.value.trim());
+                input.value = code;
+
+                if (code.length === 5) {
+                    btn.disabled = true;
+                    btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+                    
+                    form.requestSubmit();
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = 'تایید';
+                }
+            }, 0);
+    });
+});
+</script>
+
+
+

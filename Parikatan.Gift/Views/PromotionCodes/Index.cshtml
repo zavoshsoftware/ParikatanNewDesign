@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Parikatan.Gift.Models.Entities.Promotion.PromotionCode>
+
+@{
+ViewBag.Title = "فهرست " ;
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+                                        columns.Bound(model => model.User.FullName);
+        columns.Bound(model => model.Code);
+        columns.Bound(model => model.ExpireDate);
+        columns.Bound(model => model.Amount);
+        columns.Bound(model => model.IsUsed);
+        columns.Bound(model => model.Reciever);
+        columns.Bound(model => model.UserFullName);
+        columns.Bound(model => model.UseDate);
+        columns.Bound(model => model.UserPhoneNumber);
+        columns.Bound(model => model.IsActive);
+					columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("ویرایش", "Edit", new {id = @item.Id}, new {@class = "k-button"})
+									@Html.ActionLink("حذف", "Delete", new {id = @item.Id}, new {@class = "k-button"})
+									</text>).Width(200);  
+		})
+		.ToolBar(toolbar =>
+					{				
+						toolbar.Custom().Action("Create","PromotionCodes").Text("افزودن");                          
+					}
+		)         
+		.DataSource(dataSource => dataSource
+									.Server()
+							
+									.Model(model => model.Id(item => item.Id))
+					)              
+	)

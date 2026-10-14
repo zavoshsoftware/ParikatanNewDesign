@@ -1,0 +1,209 @@
+﻿@model ViewModels.Blogs.BlogDetailViewModel
+
+@{
+		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+	ViewBag.Canonical = "https://parikatan.shop/blog/post/" + Model.Blog.UrlParam;
+}
+@section head{
+	<style>
+		#SuccessDivBlog, #errorDivBlog {
+			display: none;
+		}
+
+
+		.blog-row {
+			direction: rtl;
+			text-align: justify;
+			margin-top: 20px
+		}
+
+			.blog-row img {
+				max-width: 100%
+			}
+
+		.single-post-title h1 {
+			font-size: 28px;
+		}
+
+		.post-content h2 {
+			font-size: 24px;
+		}
+
+		.post-content h3 {
+			font-size: 20px;
+		}
+
+		.date {
+			color: aqua;
+		}
+
+		#section16 .card {
+			height: 46vh !important;
+			padding: 20px !important;
+		}
+
+			#section16 .card .card-text {
+				height: 8vh !important;
+			}
+
+		.title {
+			color: #22489e;
+			font-weight: 700;
+		}
+
+		p {
+			color: #22489e;
+		}
+
+		@@media only screen and (max-width: 990px) {
+			#section16 .card {
+				height: 50vh !important;
+			}
+		}
+
+		.blog-content-body {
+			text-align: center;
+			color: #000;
+		}
+		.blog-content-body p{
+			direction: rtl;
+			color: #000;
+		}
+			.blog-content-body h2, .blog-content-body h3  {
+				color: #22489e;
+			}
+			 .blog-content-body a {
+				color: #3070ff;
+			}
+			 .blog-content-body img {
+			max-width: 100%
+			}
+	</style>
+}
+
+<div class="full-row bg-light py-5 my-5">
+	<div class="container breadcrump-wrapper">
+		<div class="row text-secondary " dir="rtl">
+			<div class="col-sm-6">
+
+			</div>
+			<div class="col-sm-6">
+				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100" style="direction: rtl">
+					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0" dir="ltr">
+						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>خانه</a></li>
+						<li class="breadcrumb-item"><a href="/blog">@*<i class="fas fa-home me-1"></i>*@مجله پریکاتن</a></li>
+						<li class="breadcrumb-item active" aria-current="page">@Model.Blog.Title</li>
+					</ol>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="full-row blog-row">
+	<div class="container">
+		<div class="row justify-content-center">
+
+			<div class="col-lg-8 m-auto order-lg-1">
+				<div class="single-post">
+					<div class="single-post-title">
+						<h1 class="mb-2 title text-center">@Model.Blog.Title </h1>
+
+
+						<div class="container">
+							<div>
+
+								<p>
+									@Model.Blog.Summery
+								</p>
+							</div>
+							<div class="row mt-5">
+
+								<div class="col-sm-12 order-0 order-lg-1 text-center">
+
+									<img src="@Model.Blog.ImageUrl" alt="website template image" class="img-responsive mb-4"><br>
+									<div class="text-center blog-content-body" >
+										@Html.Raw(Model.Blog.Body)
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+
+					</div>
+
+					<section id="section16" dir="ltr">
+						<div class="container mt-5">
+							<div class="row justify-content-center align-items-center  ">
+								<h5 class="text-center title ">مقــــــالــات مرتبــــــــــــط</h5>
+							</div>
+							<div class="row justify-content-center align-items-center  blog-slider">
+								@if (Model.RelatedBlogs.Any())
+								{
+									foreach (var blog in Model.RelatedBlogs)
+									{
+										<div class="col-lg-4 mb-5 text-center">
+											<div class="card" style="width: 18rem;">
+												<a href="/blog/post/@blog.UrlParam">
+													<img src="@blog.ImageUrl" class="card-img-top" alt="@blog.Title">
+												</a>
+												<div class="card-body text-center">
+													<h5 class="card-title">
+														<a href="/blog/post/@blog.UrlParam">
+															@blog.Title
+														</a>
+													</h5>
+													@*<p class="card-text">
+														@blog.Summery
+													</p>*@
+													<a href="/blog/post/@blog.UrlParam" class="btn btn-primary">ادامه مطلب</a>
+												</div>
+											</div>
+
+										</div>
+									}
+								}
+							</div>
+							</div>
+					</section>
+
+				</div>
+
+				<div class="mt-5 form-boder">
+					<h3 class="down-line mb-4">نظر خود را ثبت نمایید</h3>
+					<div class="contact_message" action="email.php" method="post" novalidate="novalidate">
+						<div class="row">
+							<div class="col-md-6 col-sm-6 mb-4">
+								<input class="form-control" id="commentName" name="commentName" placeholder="نام" type="text">
+							</div>
+							<div class="col-md-6 col-sm-6 mb-4">
+								<input class="form-control" id="commentEmail" name="commentEmail" placeholder="ایمیل" type="text">
+							</div>
+							<div class="col-md-12 col-sm-12 mb-4">
+								<textarea class="form-control" id="commentBody" rows="5" name="commentBody" placeholder="نظر شما"></textarea>
+							</div>
+							<div class="col-md-12 col-sm-6 mb-4">
+								<button class="btn btn-primary" id="send" onclick="SubmitBlogComment();" type="button">ثبت نظر</button>
+							</div>
+
+							<div class="alert alert-danger" id="errorDivBlog"></div>
+							<div class="alert alert-success" id="SuccessDivBlog">نظر شما با موفقیت ثبت گردید و پس از تایید در سایت به نمایش در خواهد آمد.</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+</div>
+
+@section scripts
+{
+	<script src="~/Scripts/function.js"></script>
+	<link rel="stylesheet" href="/dist/slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+}

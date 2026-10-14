@@ -1,0 +1,83 @@
+
+
+@font-face {
+    font-family: 'Iransans';
+    src: url(/fonts/IranSans/IRANSansWebFaNum.eot) format('embedded-opentype'), url(/fonts/IranSans/IRANSansWebFaNum.woff2) format('woff2'), url(/fonts/IranSans/IRANSansWebFaNum.woff) format('woff'), url(/fonts/IranSans/IRANSansWebFaNum.ttf) format('truetype');
+    font-display: fallback;
+}
+
+
+html {
+    box-sizing: border-box;
+    font-family: "Iransans";
+}
+
+body {
+    font-family: "Iransans";
+    background-color: #f1f4fb;
+    direction: rtl;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+@media only screen and (max-width: 990px) {
+    body {
+        overflow: auto;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.5s ease;
+}
+
+a:hover {
+    color: #22489e;
+}
+
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+.form-box {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.p-form  {
+    padding-top: 40px
+}
+.p-form h1 {
+    text-align: center;
+    padding: 10px 0
+}
+    .p-form .form-box {
+        padding: 22px
+    }
+    .p-form .form-box button{
+        margin-top: 10px
+    }
+        .p-form .form-box .online-shop {
+            text-align: center;
+            padding-top: 100px
+        }
+
+.card-img {
+    text-align: center;
+}
+
+#errorDiv, #SuccessDiv {
+    display: none
+}
+
+#loading-box  {
+    display: none;
+    text-align: center
+}
+#loading-box img {
+    max-width: 20%;
+}

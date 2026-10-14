@@ -1,0 +1,144 @@
+﻿@model ViewModels.Products.ProductListViewModel
+@{
+	 
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+@section head
+{
+	<style>
+		#section08 {
+			text-align: center;
+			padding: 30px 0 60px 0;
+			margin-bottom: 100px;
+			background-color: #fff !important;
+			height: auto !important;
+		}
+
+	</style>
+}
+ 
+<!--breadcrumbs area end-->
+<!--shop  area start-->
+<div class="container-fluid p-0 m-0">
+	<section id="section08">
+	<div class="container">
+
+		<div class="shop_inner_area">
+			<div class="row">
+				<div class="col-12">
+					<h1 style="margin-bottom: 30px">محصولات پریکاتن</h1>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12">
+					<!--shop toolbar start-->
+
+					<div class="row shop_wrapper">
+
+						@foreach (var product in Model.Products)
+						{
+							<div class="col-lg-4 col-md-4 col-12 ">
+								<div class="single_product mb-2">
+									<div class="product_thumb" style="position: relative">
+										<a class="primary_img" href="/product-detail/@product.Id">
+											<img src="@System.Configuration.ConfigurationManager.AppSettings["baseUrl"]@product.ImageUrl" alt="@product.Title" style="max-width: 100%">
+										</a>
+										@if (product.DiscountPercent != null)
+										{
+									<div  style=" position: absolute; top: 10px; right: 10px; width: 54px; height:54px; background-image: url('Assets/images/site-pome.png'); background-size: contain; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: bold; "
+>
+										%		@product.DiscountPercent
+
+									</div>
+										}
+									</div>
+
+									<div class="product_content grid_content">
+										<h3><a href="/product-detail/@product.Id">@product.Title</a></h3>
+										@if (product.IsAvailable && product.Stock > 0)
+										{
+											if (product.IsInPromotion)
+											{
+												<span  style="text-decoration: line-through;  display: block" class="old_price">@product.AmountStr</span>
+												<span  style=" display: block" class="current_price">@product.DiscountAmountStr</span>
+
+											}
+											else
+											{
+
+												<span class="current_price">@product.AmountStr</span>
+											}
+											<a href="/product-detail/@product.Id" class="btn  navbar-btn-top">
+												<img class="shop-icon" src="~/Assets/images/shopicon.png" />افزودن به سبد خرید
+											</a>
+
+										}
+										else
+										{
+											<span style="color:red">ناموجود</span>
+											<button class="btn  navbar-btn-top" style="background-color:#adadad !important " disabled="disabled">
+												<img class="shop-icon" src="~/Assets/images/shopicon.png" />ناموجود
+											</button>
+										}
+
+									</div>
+
+
+								</div>
+							</div>
+						}
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+	</div>
+	</section>
+</div>
+
+
+
+@section scripts
+{
+ 
+	<script src="~/Assets/scripts/counter.js"></script>
+
+	<script>
+		function addToBasket(productCode) {
+			var isValid = true;
+			var qty = '1';
+			//var stock = $('#hiddenStock').val();
+			//if (qty > stock) {
+			//	alert('حداکثر تعداد سفارش از این محصول ' + stock + ' عدد است.');
+			//	isValid = false;
+			//}
+
+			if (isValid) {
+				$.ajax(
+					{
+						url: "/Basket/AddToCart",
+						data: {
+							code: productCode,
+							qty: qty
+						},
+						type: "Post"
+					}).done(function (result) {
+					if (result === "true") {
+						window.location.href = "/basket";
+					} else if (result === "invalid") {
+						alert('محصول انتخابی شما موجود نمی باشد');
+					} else if (result === "false") {
+						alert('خطایی رخ داده است');
+					}
+				});
+			}
+		}
+	</script>
+}
+

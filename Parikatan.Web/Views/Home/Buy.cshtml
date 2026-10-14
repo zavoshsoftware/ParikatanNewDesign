@@ -1,0 +1,76 @@
+﻿@{
+	ViewBag.Title = "خرید محصولات پریکاتن";
+	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+	ViewBag.Canonical = "https://parikatan.shop/buy";
+}
+@section head{
+	<style>
+		#errorDivBuy, #successDivBuy {
+			display: none;
+		}
+	</style>
+}
+<div class="container-fluid p-0 m-0">
+	<section id="section12" class="py-5" style="background-color: #efeef1; margin-top: 10vh;">
+		<div class="container" dir="rtl">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 col-12 text-center">
+					<h3 class="my-4">
+						برای خرید محصولات پریکاتن شماره موبایل خود را وارد کنید
+					</h3>
+					<div class="input-group mb-3">
+						<button class="btn btn-outline-secondary" type="button" id="button-addon1">شماره موبایل</button>
+						<input type="text" class="form-control" id="buyPhoneNumber" placeholder="09xxxxxxxxx" dir="ltr" aria-describedby="button-addon1" />
+					</div>
+					<button type="button" class="btn contact-us-send m-auto navbar-btn-top d-inline-block" onclick="SubmitBuyPhoneNumber();">
+						ثبت شماره موبایل
+					</button>
+					<div class="mt-3">
+						<p class="alert alert-danger" id="errorDivBuy"></p>
+						<p class="alert alert-success" id="successDivBuy">شماره موبایل شما با موفقیت ثبت شد. همکاران ما به زودی با شما تماس خواهند گرفت.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+@section scripts
+{
+	<script>
+		function validateMobileNumber(mobileNumber) {
+			var regex = /^(09)\d{9}$/;
+			return regex.test(mobileNumber);
+		}
+
+		function SubmitBuyPhoneNumber() {
+			var phoneNumber = $("#buyPhoneNumber").val().trim();
+			$("#errorDivBuy").css('display', 'none');
+			$("#successDivBuy").css('display', 'none');
+
+			if (!validateMobileNumber(phoneNumber)) {
+				$("#errorDivBuy").html('شماره موبایل به درستی وارد نشده، لطفا بررسی کنید.');
+				$("#errorDivBuy").css('display', 'block');
+				return;
+			}
+
+			$.ajax({
+				url: "/Products/NewsLetterPhoneNumberPost",
+				data: { phoneNumber: phoneNumber },
+				cache: false,
+				type: "POST"
+			}).done(function (result) {
+				if (result === "true") {
+					$("#buyPhoneNumber").val('');
+					$("#successDivBuy").css('display', 'block');
+				} else {
+					$("#errorDivBuy").html('خطایی رخ داده است، لطفا دوباره تلاش کنید.');
+					$("#errorDivBuy").css('display', 'block');
+				}
+			}).fail(function () {
+				$("#errorDivBuy").html('خطایی رخ داده است، لطفا دوباره تلاش کنید.');
+				$("#errorDivBuy").css('display', 'block');
+			});
+		}
+	</script>
+}

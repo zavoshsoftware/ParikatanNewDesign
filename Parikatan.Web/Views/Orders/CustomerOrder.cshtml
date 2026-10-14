@@ -1,0 +1,196 @@
+﻿@model ViewModels.Orders.OrderDetailViewModel
+@{
+
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="app">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<title>@ViewBag.Title</title>
+
+
+	<link href="~/Content/admin/app.v2.css" rel="stylesheet" />
+	<script src="/Scripts/AdminJS/app.v2.js"></script>
+
+	<link href="~/Content/Admin/customer-order.css" rel="stylesheet" />
+	<!--This bundle was moved by the Telerik VS Extensions for compatibility reasons-->
+
+	<link href="~/Content/admin/admin-font-awesome.css" rel="stylesheet" />
+	<link href="~/Content/admin/AdminStyle.css" rel="stylesheet" />
+	<link href="~/Content/Admin/style.css" rel="stylesheet" />
+	<link href="~/Content/Admin/factor.css" rel="stylesheet" />
+</head>
+
+
+<body class="k-rtl">
+	<div class="container">
+		<div class="panel panel-info">
+			<div class="panel-body" style="font-family: iranyekan;">
+				<table class="table table-bordered table-responsive">
+					<tbody>
+						<tr>
+							<td class="text-right" style="border:0px !important">
+								<span style="font-size:17px; font-weight:bold;text-decoration: underline">فرستنده:</span>
+								<span style="font-size:14px; font-weight:bold">
+									 تهران – الهیه – بالاتر از مریم غربی شماره ۳۳ 
+									: 02122201146
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="text-right" style="border:0px !important">
+								<span style="font-size:17px; font-weight:bold;text-decoration: underline">گیرنده:</span>
+								<span style="font-size: 15px; font-weight: bold">
+									@if (Model.Order.CityId != null)
+									{
+									<span>استان @ViewBag.ProvinceTitle - @Model.Order.City.Title - @Model.Order.Address - کد پستی @Model.Order.PostalCode- تلفن: @Model.Order.DeliverCellNumber  (@Model.Order.User.FullName)</span>
+									}
+									else
+									{
+										<span>@Model.Order.Address - تلفن: @Model.Order.DeliverCellNumber (@Model.Order.User.FullName)</span>
+
+									}
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="mt-5" style="padding-top:5px;display:flex;justify-content:space-between;">
+					<div class="col-lg-auto text-center">
+						<img src="/assets/img/clotho/logo.png" style="height: 30px" />
+						<br>
+						https://clotho.me/
+						<br>
+						02122201146
+					</div>
+					<div class="col-lg-auto">
+						<div style="font-size:20px;font-weight:bold">فاکتور فروش</div>
+					</div>
+					<div class="col-lg-auto">
+						<br>
+						<label class="col-md-* ">شماره:</label>
+						@Model.Order.Id
+						<br>
+						<label class="col-md-*">تاریخ:</label>
+						@if (Model.Order.PaymentDate != null)
+						{
+							<span>
+								@Model.Order.PaymentDate.Value.ToShortDateString()
+							</span>
+						}
+						else
+						{
+					<span>	@Model.Order.CreationDateStr</span>
+						}
+						</div>
+				</div>
+
+				<table class="table table-bordered table-responsive">
+					<tbody>
+						<tr>
+							<td class="text-right" width="70%" style="border:0px !important">
+								<span style="font-size:13px; font-weight:bold">خریدار:</span>
+								<span style="font-size:13px">@Model.Order.User.FullName</span>
+							</td>
+							<td class="text-left" width="30%" style="border:0px !important">
+								<span style="font-size:13px; font-weight:bold">تلفن:</span>
+								<span style="font-size:13px">@Model.Order.User.CellNum</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="text-right" colspan="2" style="border:0px !important">
+								<span style="font-size:11px; font-weight:bold">آدرس:</span>
+								<span style="font-size: 11px">
+									
+									@if (Model.Order.CityId != null)
+									{
+										<span>استان @ViewBag.ProvinceTitle - @Model.Order.City.Title - @Model.Order.Address - کد پستی @Model.Order.PostalCode- تلفن: @Model.Order.DeliverCellNumber</span>
+									}
+									else
+									{
+										<span>@Model.Order.Address - تلفن: @Model.Order.DeliverCellNumber</span>
+
+									}
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="row">
+					<div style="overflow-x:auto;" class="col-md-12">
+						<table class="table table-bordered table-responsive">
+							<thead>
+								<tr>
+									<th class="text-center" width="1%">ردیف</th>
+									<th class="text-right" width="77%">شرح کالا</th>
+									<th class="text-center" width="1%">تعداد</th>
+									<th class="text-center" width="12%">قیمت واحد</th>
+									<th class="text-center" width="5%">مبلغ کل</th>
+								</tr>
+							</thead>
+							<tbody>
+							@{
+								int j = 1;
+								foreach (var orderDetail in Model.OrderDetails)
+								{
+									<tr>
+										<td class="text-center">@j</td>
+										<td class="text-right" onclick="window.location.href = '/product/@orderDetail.Product.Id';"  style="text-decoration: none; color: dodgerblue;">@orderDetail.Product.Title</td>
+										<td class="text-center">@orderDetail.Quantity</td>
+										 
+										<td class="text-center">@orderDetail.AmountStr</td>
+										<td class="text-center">@orderDetail.RowAmountStr</td>
+									</tr>
+									j++;
+								}
+							}
+							
+						 
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<table class="table table-bordered table-responsive" style="font-weight:bold">
+					<tbody>
+						<tr>
+							<td class="text-right" width="61%" style="font-size:12px">وضعیت پرداخت: @Model.Order.IsPaid</td>
+							<td class="text-center" width="24%">جمع فاکتور (تومان)</td>
+							<td class="text-center" width="15%">@Model.Order.SubTotalStr</td>
+						</tr>
+						<tr>
+							<td class="text-right" style="font-size:12px">وضعیت سفارش: @Model.Order.OrderStatus</td>
+							<td class="text-center">هزینه های کسر شونده</td>
+							<td class="text-center">@Model.Order.DiscountAmountStr</td>
+						</tr>
+						<tr>
+							<td class="text-right" style="font-size:11px" rowspan="5">
+								<span>توضیحات:</span>
+								<span>@Model.Order.Description</span>
+							</td>
+						</tr>
+						<tr>
+						</tr>
+					<td class="text-center" style="font-size:13px;background:#d2d2d2 !important">جمع کل (تومان)</td>
+					<td class="text-center" style="font-size:13px;background:#d2d2d2 !important">@Model.Order.TotalAmountStr</td>
+					<tr>
+						<td class="text-center">مبلغ پرداخت شده</td>
+						<td class="text-center">@Model.Order.PaymentAmountStr</td>
+					</tr>
+					<tr>
+						<td class="text-center">مبلغ باقیمانده</td>
+						<td class="text-center">@Model.Order.RemainAmountStr</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

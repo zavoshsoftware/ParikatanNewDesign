@@ -1,0 +1,227 @@
+﻿@model ViewModels.Basket.CheckOutViewModel
+@{
+    ViewBag.Title = "نهایی سازی خرید";
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+@section head{
+
+    <link href="~/Assets_Old/css/style.css" rel="stylesheet" />
+    <link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />
+
+    <style>
+        .form-select {
+            background-position: left .75rem center;
+        }
+
+        #success-checkout-box, #error-box {
+            display: none;
+        }
+
+            #error-box a {
+                color: #0000ff;
+                font-weight: bold;
+            }
+    </style>
+}
+<!--breadcrumbs area start-->
+@*<div class="breadcrumbs_area other_bread">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb_content">
+                        <ul>
+                            <li><a href="/">خانه</a></li>
+                            <li>/</li>
+                            <li>نهایی سازی پرداخت</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<!--breadcrumbs area end-->
+<!--Checkout page section-->
+<div class="container-fluid p-0 m-0">
+    <section id="section11">
+        <div class="container">
+            <div class="Checkout_section" id="accordion">
+                <div class="container">
+
+                    <div class="checkout_form">
+                        <div class="row">
+
+	                        <div class="col-12 ">
+		                        <div>
+			                        <h3>سفارش شما</h3>
+			                        <div class="order_table table-responsive">
+				                        <table>
+					                        <thead>
+					                        <tr>
+						                        <th>محصول</th>
+						                        <th>قیمت</th>
+					                        </tr>
+					                        </thead>
+					                        <tbody>
+					                        @foreach (var product in Model.Products)
+					                        {
+						                        <tr>
+							                        <td>
+								                        <div>
+									                        @product.Product.Title
+								                        </div>
+
+								                        <div>
+									                        <span>تعداد:</span>
+									                        <strong class="order-number">  @product.Quantity</strong>
+								                        </div>
+							                        </td>
+
+							                        <td> @product.RowAmount</td>
+						                        </tr>
+					                        }
+					                        </tbody>
+					                        <tfoot>
+					                        <tr>
+						                        <th>جمع سفارش</th>
+						                        <td>@Model.SubTotal</td>
+					                        </tr>
+					                        <tr>
+						                        <th>هزینه ارسال</th>
+						                        <td><strong>@Model.ShipmentAmount</strong></td>
+					                        </tr>
+					                        <tr>
+						                        <th>تخفیف</th>
+						                        <td><strong>@Model.DiscountAmount</strong></td>
+					                        </tr>
+					                        <tr class="order_total">
+						                        <th>مبلغ قابل پرداخت</th>
+						                        <td><strong>@Model.Total</strong></td>
+					                        </tr>
+
+					                        </tfoot>
+				                        </table>
+			                        </div>
+
+		                        </div>
+	                        </div>
+                          
+	                        <div class="col-12 ">
+		                        <div>
+			                        <p class=" p-3 my-4" style="color: #204393; background-color: white; " >
+																سفارش شما از طریق تیپاکس ارسال خواهد شد.
+			                        </p>
+		                        </div>
+															</div>
+
+			                        <div class="col-12 ">
+				                        <h3>اطلاعات کاربر</h3>
+				                        <form action="#" class="form-user-info">
+
+					                        <div class="row">
+
+						                        <div class="col-lg-6 mb-20">
+							                        <label>نام و نام خانوادگی <span>*</span></label>
+							                        <input class="input" type="text" id="fullname">
+						                        </div>
+						                        <div class="col-lg-6 mb-20">
+							                        <label>شماره موبایل <span>*</span></label>
+							                        <input class="input" type="text" id="cellnumber" value="@Model.UserInformation.CellNumber">
+						                        </div>
+
+
+						                        <div class="col-lg-6 mb-20">
+							                        <label>ایمیل</label>
+							                        <input class="input" type="text">
+						                        </div>
+
+						                        <div class="col-lg-6 mb-20">
+							                        <label>کد پستی</label>
+							                        <input type="text" class="input" id="postalCode">
+						                        </div>
+
+						                        <div class="col-lg-6 mb-20">
+							                        <label for="country">استان <span>*</span></label>
+							                        <select id="ddlProvince" class="form-select">
+								                        <option>انتخاب استان</option>
+								                        @foreach (var province in Model.Provinces)
+								                        {
+									                        <option value="@province.Id">@province.Title</option>
+
+								                        }
+							                        </select>
+						                        </div>
+
+						                        <div class="col-lg-6 mb-20">
+							                        <label for="country">شهر <span>*</span></label>
+							                        <select id="ddlcity" class="form-select">
+								                        <option value="0">انتخاب شهر</option>
+
+							                        </select>
+						                        </div>
+
+						                        <div class="col-12 mb-20 ">
+							                        <label>آدرس <span>*</span></label>
+							                        <input placeholder="آدرس کامل" class="input" type="text" id="address">
+						                        </div>
+
+					                        </div>
+
+
+
+					                        <div class="payment_method">
+
+						                        <p class="p-3" style=" color: #d00215; background-color: #ffe6e6; border-color: #f5c2c700;" id="error-box"></p>
+						                        <p class="alert alert-success" id="success-checkout-box"></p>
+						                        <div class="order_button">
+							                        <button type="button" id="btnPayment" class="navbar-btn-top finalize-order" onclick="finalizeOrder();">پرداخت</button>
+							                        <p class="alert alert-success" id="redirect-to-bank" style="display: none">لطفا منتظر بمانید....در حال انتقال به درگاه پرداخت بانک</p>
+						                        </div>
+					                        </div>
+																	
+																	
+					                     
+				                        </form>
+			                        </div>
+		                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/function.js"></script>
+    <script>
+        function setCities(SelectedValue, callType) {
+            var procemessage = "<option value='0'> صبرکنید...</option>";
+            $("#ddlcity").html(procemessage).show();
+            $.ajax(
+                {
+                    url: "/Basket/FillCities",
+                    data: { id: SelectedValue },
+                    cache: false,
+                    type: "POST",
+                    success: function (data) {
+                        var markup = "<option value='0'>انتخاب شهر</option>";
+                        for (var x = 0; x < data.length; x++) {
+                            markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                        }
+                        $("#ddlcity").html(markup).show();
+
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                    }
+                });
+        }
+
+        $('#ddlProvince').on('change',
+            function () {
+                var SelectedValue = $(this).val();
+                if (SelectedValue !== "") {
+                    setCities(SelectedValue, 'onChange');
+                }
+            });
+    </script>
+}

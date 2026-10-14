@@ -1,0 +1,97 @@
+﻿@model Parikatan.Gift.ViewModel.UsePromotionViewModel
+
+@{
+	ViewBag.Title = "استفاده از کد";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en" class="bg-dark">
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>ورود</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<link href="~/Content/Admin/Login/main.css" rel="stylesheet" />
+	<link href="~/Content/Admin/Login/style.css" rel="stylesheet" />
+
+	<style>
+		body, html {
+			height: 100%;
+			margin: 0;
+		}
+
+		.card-body {
+			text-align: right;
+		}
+
+			.card-body h5 {
+				text-align: center;
+				font-size: 1.3rem;
+			}
+
+		.btn-primary {
+			width: 100%;
+			font-size: 1rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+		<div class="container">
+
+
+			<div class="row" style="padding-top: 50px;">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<div class="main-card mb-3 card">
+						<div class="card-body">
+							<div style="text-align: center; padding-bottom: 30px">
+								<img src="~/Content/Admin/logo.png" style="max-width: 100%" />
+							</div>				<h5 style="direction:rtl" class="card-title">کد روی کارت را وارد نمایید</h5>
+							@using (Html.BeginForm("Use", "PromotionCodes", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "panel-body wrapper-lg", role = "form" }))
+							{
+								@Html.AntiForgeryToken()
+								@Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+
+								if (TempData["success"] != null)
+								{
+									<p class="alert alert-success">کد وارد شده تایید شد.</p>
+								}
+								if (TempData["danger"] != null)
+								{
+									<p class="alert alert-danger">کد وارد شده مورد تایید نیست.</p>
+								}
+								<div class="position-relative form-group">
+									@Html.TextBoxFor(m => m.PromotionCode, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.PromotionCode) })
+
+								</div>
+								<div class="position-relative form-group">
+									@Html.TextBoxFor(m => m.UserFullName, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.UserFullName) })
+
+								</div>
+						 
+								<div class="position-relative form-group">
+									@Html.TextBoxFor(m => m.UserPhoneNumber, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.UserPhoneNumber) })
+
+								</div>
+								<div class="position-relative form-group">
+									@Html.TextBoxFor(m => m.UserService, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.UserService) })
+
+								</div>
+						 
+								<button style="background-color:#f5aa3b; color:black;" type="submit" class="mt-1 btn btn-primary">اعتبار سنجی</button>
+
+							}
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<script src="~/Content/Admin/Login/main.js"></script>
+</body>
+</html>
+
