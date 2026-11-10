@@ -11,5 +11,7 @@ namespace ViewModels.Blogs
     {
         public BlogGroup BlogGroup { get; set; }
         public List<Blog> Blogs { get; set; }
+        /// <summary>Groups that have at least one published article (topic chips).</summary>
+        public System.Collections.Generic.List<BlogGroup> Groups { get; set; }
     }
 }

@@ -1,129 +1,135 @@
-﻿@model ViewModels.Basket.CallBackViewModel
+﻿@using Helpers
+@model ViewModels.Basket.CallBackViewModel
 @{
-    ViewBag.Title = "نتیجه پرداخت";
-    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    ViewBag.Title = (Model.IsSuccess ? "پرداخت موفق" : "پرداخت ناموفق") + " | پریکاتن";
+    ViewBag.Robots = "noindex, nofollow";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    var fallbackImg = Url.Content("~/Assets/site/cream-closed.png");
+    bool quick = Model.IsSuccess && Model.Order != null && Model.Order.Description == "quickBasket";
+    bool cancelled = !Model.IsSuccess && Model.RefrenceId == "414";
+}
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/cart.css")" rel="stylesheet">
+    <link href="@SiteFormat.Asset("~/Assets/site/checkout.css")" rel="stylesheet">
 }
 
-@section head{
+<div class="co">
+    <section class="co-wrap">
+        <div class="wrap">
 
-	<link href="~/Assets_Old/css/style.css" rel="stylesheet" />
-	<link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />
-	<style>
-		.user-info-form label {
-			text-align: left
-		}
-		#success-checkout-box, #error-box {
-			display: none;
-		}
-	</style>
-}
- 
-<div class="error_section">
-	<div class="container">   
-		<div class="row">
-			<div class="col-12">
-				<div class="callback_form">
-					@if (Model.IsSuccess)
-					{
-						<h1 class="text-success">
-							پرداخت موفقیت آمیز
-						</h1>
+            <ol class="co-steps" aria-label="مراحل خرید">
+                <li class="done"><span class="n"><svg class="i"><use href="#check" /></svg></span>سبد خرید</li>
+                <li class="done"><span class="n"><svg class="i"><use href="#check" /></svg></span>اطلاعات ارسال</li>
+                <li class="@(Model.IsSuccess ? "done" : "on")" aria-current="step"><span class="n">@if (Model.IsSuccess) { <svg class="i"><use href="#check" /></svg> } else { <text>۳</text> }</span>پرداخت</li>
+            </ol>
 
-						<h2>شماره پیگیری: @Model.RefrenceId</h2>
-						<h2>شماره فاکتور: @Model.OrderCode</h2>
+            @if (Model.IsSuccess)
+            {
+                <div class="co-done">
+                    <div class="big"><svg class="i"><use href="#check" /></svg></div>
+                    <h2>پرداخت با موفقیت انجام شد</h2>
+                    <p class="sub">با تشکر از خرید شما. سفارش شما در مرحله‌ی آماده‌سازی قرار گرفت و کارشناسان ما برای هماهنگی ارسال با شما تماس می‌گیرند.</p>
 
-						<p>با تشکر از خرید شما. سفارش شما در مرحله آماده سازی قرار گرفته است و کارشناسان ما جهت هماهنگی ارسال با شما تماس خواهند گرفت:
-					</p>
-							@*<br/>
-							تلفن پشتیبانی: 02122201146</p>*@
+                    <dl class="co-recap">
+                        <dt>شماره‌ی پیگیری</dt><dd dir="ltr">@SiteFormat.Digits(Model.RefrenceId)</dd>
+                        <dt>شماره‌ی فاکتور</dt><dd dir="ltr">@SiteFormat.Digits(Model.OrderCode)</dd>
+                        @if (Model.Order != null && !string.IsNullOrWhiteSpace(Model.Order.DeliverFullName))
+                        {
+                            <dt>گیرنده</dt><dd>@Model.Order.DeliverFullName</dd>
+                        }
+                        @if (Model.Order != null)
+                        {
+                            <dt>مبلغ پرداخت‌شده</dt><dd>@SiteFormat.Price(Model.Order.PaymentAmount)</dd>
+                        }
+                    </dl>
 
-					if (Model.Order.Description == "quickBasket")
-					{
-						<div class="container user-info-form" style="direction: rtl; text-align: right">
-							<div class="row ">
-								<label class="col-4">
-									نام و نام خانوادگی*
-								</label>
-								<div class="col-8">
-									<input class="form-control" type="text" id="fullname" value="@Model.Order.DeliverFullName">
+                    @if (Model.OrderDetails != null && Model.OrderDetails.Count > 0)
+                    {
+                        <ul class="co-items" style="width:100%;text-align:right;margin-top:8px">
+                            @foreach (var d in Model.OrderDetails)
+                            {
+                                <li>
+                                    <span class="th"><img src="@(d.Product != null && !string.IsNullOrEmpty(d.Product.ImageUrl) ? SiteFormat.Img(d.Product.ImageUrl) : fallbackImg)" alt=""><i>@SiteFormat.Digits(d.Quantity)</i></span>
+                                    <div><b>@(d.Product != null ? d.Product.Title : "")</b><small>@SiteFormat.Digits(d.Quantity) × @SiteFormat.Price(d.Amount)</small></div>
+                                    <span class="lp">@SiteFormat.Price(d.RowAmount)</span>
+                                </li>
+                            }
+                        </ul>
+                    }
 
-								</div>
-							</div>
-							<div class="row">
-								<label class="col-4">
-									شماره موبایل*
-								</label>
-								<div class="col-8">
-									<input class="form-control" type="text" id="cellnumber" value="@Model.Order.DeliverCellNumber">
+                    @if (quick)
+                    {
+                        <form class="co-form" id="cb-form" novalidate style="width:100%;text-align:right;margin-top:18px" data-order="@Model.Order.Id">
+                            <div class="co-card">
+                                <div class="co-card-h"><span class="ic"><svg class="i"><use href="#pin" /></svg></span><div><h2>اطلاعات ارسال</h2><p>برای ارسال سفارش، اطلاعات زیر را تکمیل کنید.</p></div></div>
+                                <div class="fgrid2">
+                                    <div class="fld"><label for="cb-name">نام و نام خانوادگی</label><input id="cb-name" type="text" value="@Model.Order.DeliverFullName"><div class="f-err"></div></div>
+                                    <div class="fld"><label for="cb-mobile">شماره موبایل</label><input id="cb-mobile" type="tel" dir="ltr" value="@Model.Order.DeliverCellNumber"><div class="f-err"></div></div>
+                                    <div class="fld"><label for="cb-city">شهر</label><input id="cb-city" type="text"><div class="f-err"></div></div>
+                                    <div class="fld"><label for="cb-postal">کد پستی</label><input id="cb-postal" type="text" inputmode="numeric" dir="ltr"><div class="f-err"></div></div>
+                                    <div class="fld full"><label for="cb-address">آدرس</label><textarea id="cb-address" rows="3"></textarea><div class="f-err"></div></div>
+                                </div>
+                            </div>
+                            <div class="co-err" id="cb-err" role="alert" hidden></div>
+                            <div class="co-err" id="cb-ok" role="status" hidden style="background:#EEF6F0;border-color:#BFD8C6;color:#2F5A3E"></div>
+                            <button class="btn" type="submit" style="margin-top:12px">ثبت اطلاعات ارسال</button>
+                        </form>
+                    }
 
-								</div>
-							</div>
-							<div class="row">
-								<label class="col-4">
-									شهر*
-								</label>
-								<div class="col-8">
-									<input class="form-control" type="text" id="ddlcity">
+                    <div class="co-done-act"><a class="btn sec" href="/product">ادامه‌ی خرید</a><a class="btn" href="/">بازگشت به صفحه‌ی اصلی</a></div>
+                </div>
+            }
+            else
+            {
+                <div class="co-done" style="--fail:1">
+                    <div class="big" style="background:linear-gradient(140deg,#fff,#F3DCD6);color:#A0493C"><svg class="i"><use href="#x" /></svg></div>
+                    <h2>@(cancelled ? "پرداخت لغو شد" : "پرداخت انجام نشد")</h2>
+                    <p class="sub">
+                        @if (cancelled)
+                        {
+                            <text>فرایند پرداخت تکمیل نشد. اگر مبلغی از حساب شما کسر شده باشد، حداکثر ظرف ۷۲ ساعت به حساب شما بازگردانده می‌شود.</text>
+                        }
+                        else
+                        {
+                            <text>متأسفانه فرایند پرداخت شما تکمیل نشد. اگر مبلغی از حساب شما کسر شده باشد، حداکثر ظرف ۷۲ ساعت به حساب شما بازگردانده می‌شود.</text>
+                        }
+                    </p>
+                    @if (!string.IsNullOrWhiteSpace(Model.RefrenceId))
+                    {
+                        <dl class="co-recap">
+                            <dt>کد خطا</dt><dd dir="ltr">@SiteFormat.Digits(Model.RefrenceId)</dd>
+                        </dl>
+                    }
+                    <div class="co-done-act"><a class="btn sec" href="/">صفحه‌ی اصلی</a><a class="btn" href="/basket">بازگشت به سبد خرید</a></div>
+                </div>
+            }
 
-								</div>
-							</div>
-
-
-							<div class="row">
-								<label class="col-4">
-									آدرس*
-								</label>
-								<div class="col-8">
-									<textarea class="form-control" type="text" id="address" rows="5">
-</textarea>
-								</div>
-							</div>
-
-
-							<div class="row">
-								<label class="col-4">
-									کد پستی
-								</label>
-								<div class="col-8">
-									<input class="form-control" type="text" id="postalCode">
-
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-4"></div>
-								<div class="col-8">
-									<button type="button" class="btn btn-success" onclick="finalizeOrderInCallBack('@Model.Order.Id')">ثبت اطلاعات ارسال</button>
-
-
-									<p class="alert alert-danger" id="error-box"></p>
-									<p class="alert alert-success" id="success-checkout-box"></p>
-								</div>
-
-
-							</div>
-						</div>
-					}
-					}
-					else
-					{
-						<h1 class="text-danger">
-							پرداخت نا موفقیت
-						</h1>
-
-						<h2>
-							کد خطا: @Model.RefrenceId
-						</h2>
-						<p>کاربر گرامی متاسفانه فرایند پرداخت شما تکمیل نشده است. اگر مبلغی از حساب شما کسر شده باشد، حداکثر ظرف مدت 72 سایت به حساب شما عودت می گردد.</p>
-
-					}
- 
-					@*<a href="/">بازگشت به صفحه اصلی سایت</a>*@
-				</div>
-			</div>
-		</div>
-	</div>    
+        </div>
+    </section>
 </div>
 
-@section scripts{
-	<script src="~/Scripts/function.js"></script>}
+@section scripts
+{
+    @if (quick)
+    {
+        <script>
+            (function () {
+                var f = document.getElementById('cb-form'); if (!f) return;
+                var err = document.getElementById('cb-err'), ok = document.getElementById('cb-ok');
+                var v = function (id) { return document.getElementById(id).value.trim(); };
+                f.addEventListener('submit', function (e) {
+                    e.preventDefault(); err.hidden = ok.hidden = true;
+                    if (!v('cb-name') || !v('cb-mobile') || !v('cb-city') || !v('cb-address')) {
+                        err.textContent = 'تمامی فیلدهای ضروری باید تکمیل شود.'; err.hidden = false; return;
+                    }
+                    var q = new URLSearchParams({ orderId: f.dataset.order, cellnumber: v('cb-mobile'), postal: v('cb-postal'), address: v('cb-address'), city: v('cb-city'), fullname: v('cb-name'), bank: 'zarinpal' });
+                    fetch('/Basket/FinalizeInCallBack?' + q.toString(), { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (res) {
+                        if (String(res) === 'true') { ok.textContent = 'اطلاعات شما با موفقیت ثبت شد.'; ok.hidden = false; }
+                        else { err.textContent = 'خطایی رخ داده است. لطفاً دوباره تلاش کنید.'; err.hidden = false; }
+                    }).catch(function () { err.textContent = 'ارتباط با سرور برقرار نشد.'; err.hidden = false; });
+                });
+            })();
+        </script>
+    }
+}

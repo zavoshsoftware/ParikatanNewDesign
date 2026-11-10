@@ -1,0 +1,53 @@
+﻿@model ViewModels.Site.SiteMenuViewModel
+<footer id="footer">
+    <div class="wrap news-row">
+        <div><h4>از تازه‌ترین‌های پریکاتن باخبر شوید</h4><p>مطالب مجله، محصولات جدید و پیشنهادهای ویژه را در ایمیل خود دریافت کنید.</p></div>
+        <form class="news-form" data-post="/Home/Subscribe">
+            <input type="email" name="email" placeholder="ایمیل شما" required aria-label="ایمیل شما">
+            <button class="btn" type="submit">عضویت</button>
+        </form>
+    </div>
+    <div class="wrap">
+        <div class="fgrid">
+            <div>
+                <a class="logo" href="/" style="margin-right:-6px"><img src="~/Assets/site/logo.png" alt="پریکاتن"></a>
+                <p style="margin-top:12px">پریکاتن برند تخصصی مراقبت و جوان‌سازی پوست است؛ با سرم، کرم و پاک‌کننده‌هایی که بر پایه فرمولاسیون علمی و مواد مؤثر ساخته می‌شوند.</p>
+                <div class="soc">                    <a href="https://wa.me/989014852865" rel="noopener" aria-label="واتس‌اپ"><svg class="i"><use href="#send" /></svg></a>
+                </div>
+            </div>
+            <div>
+                <h4>محصولات</h4>
+                <ul>
+                    @foreach (var p in Model.Products)
+                    {
+                        <li><a href="/product-detail/@p.Id">@p.Title</a></li>
+                    }
+                </ul>
+            </div>
+            <div>
+                <h4>دسترسی سریع</h4>
+                <ul>
+                    <li><a href="/about">درباره ما</a></li>
+                    <li><a href="/blog">مجله پریکاتن</a></li>
+                    <li><a href="/#deal">فرم نمایندگی</a></li>
+                    <li><a href="/pharmacies">داروخانه‌های عرضه‌کننده</a></li>
+                    <li><a href="/how">نحوه استفاده</a></li>
+                    <li><a href="/contact">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="contact">
+                <h4>تماس با ما</h4>
+                <ul>
+                    <li><svg class="i"><use href="#pin" /></svg><span>تهران، بزرگراه اشرفی اصفهانی، بین بلوار مرزداران و پل حکیم، خیابان گلستان ۲۶، پلاک ۱، واحد ۶، طبقه‌ی سوم</span></li>
+                    <li><svg class="i"><use href="#phone" /></svg><a href="tel:02144063290" dir="ltr">۰۲۱-۴۴۰۶۳۲۹۰</a></li>
+                    <li><svg class="i"><use href="#mail" /></svg><a href="mailto:info@parikatan.shop">info@parikatan.shop</a></li>
+                    <li><svg class="i"><use href="#send" /></svg><a href="https://wa.me/989014852865" dir="ltr">واتس‌اپ: ۰۹۰۱۴۸۵۲۸۶۵</a></li>
+                </ul>
+                <a class="enamad" referrerpolicy="origin" target="_blank" rel="noopener" href="https://trustseal.enamad.ir/?id=447103&amp;Code=IFbG12oYjyWBIP9s2IejGZ1nvUkdRrsd" aria-label="نماد اعتماد الکترونیکی">
+                    <img referrerpolicy="origin" src="https://trustseal.enamad.ir/logo.aspx?id=447103&amp;Code=IFbG12oYjyWBIP9s2IejGZ1nvUkdRrsd" alt="نماد اعتماد الکترونیکی (eNAMAD)">
+                </a>
+            </div>
+        </div>
+        <div class="copy"><span>© @Helpers.SiteFormat.Digits(new System.Globalization.PersianCalendar().GetYear(DateTime.Now)) پریکاتن. تمامی حقوق محفوظ است.</span><span>شرکت پویا ورزان تجارت سپاهان</span></div>
+    </div>
+</footer>

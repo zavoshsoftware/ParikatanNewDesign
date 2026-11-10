@@ -1,0 +1,88 @@
+﻿
+/* ================= contact ================= */
+.ct-hero{padding:4px 0 28px}
+.ct-hero h1{font-size:48px;line-height:1.3;font-weight:800;margin:16px 0 8px;letter-spacing:-.01em}
+.ct-hero .sub{font-size:16px;max-width:620px}
+
+/* SMS line */
+.ct-sms{position:relative;overflow:hidden;display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:32px;padding:0 56px;border-radius:34px;color:#fff;
+  background:radial-gradient(90% 130% at 100% 0%,#3B4774 0%,var(--primary) 46%,var(--primary-dark) 100%);transform:scale(calc(.95 + var(--g,1) * .05));opacity:calc(.5 + var(--g,1) * .5)}
+.ct-sms::before{content:"";position:absolute;width:520px;height:520px;left:-160px;top:50%;margin-top:-260px;border-radius:50%;border:1px solid rgba(255,255,255,.09);box-shadow:0 0 0 80px rgba(255,255,255,.025),0 0 0 160px rgba(255,255,255,.018);pointer-events:none}
+.ct-sms>*{position:relative}
+.sms-text{padding:52px 0}
+.sms-text h2{color:#fff;font-size:34px;line-height:1.6;margin:16px 0 14px}
+.sms-text .hl{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:14px;background:var(--gold);color:#fff;font-weight:800;vertical-align:middle;margin:0 2px}
+.sms-text .num{font-weight:800;color:var(--gold-soft);letter-spacing:.04em;unicode-bidi:isolate}
+.sms-text p{color:var(--on-soft);font-size:15px;line-height:2.1;max-width:560px}
+.sms-act{display:flex;align-items:center;gap:22px;margin-top:26px;flex-wrap:wrap}
+.sms-act .btn.white{border-radius:16px}
+.sms-act .btn.white .i{font-size:18px}
+.sms-act .btn.link{color:var(--gold-soft);border-bottom-color:var(--gold-soft);font-family:inherit;background:none;cursor:pointer}
+/* phone mock */
+.sms-phone{display:grid;place-items:center;padding:36px 0}
+.ph{width:250px;border-radius:34px;padding:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);box-shadow:0 30px 60px rgba(0,0,0,.3);backdrop-filter:blur(8px);animation:phf 6s ease-in-out infinite}
+.ph-top{display:flex;align-items:center;gap:10px;padding:6px 6px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+.ph-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--gold);font-size:15px}
+.ph-top b{font-size:14px;letter-spacing:.04em}
+.ph-body{display:flex;flex-direction:column;gap:10px;padding:18px 4px 22px;min-height:190px}
+.bub{max-width:80%;padding:10px 14px;border-radius:18px;font-size:13px;line-height:1.8}
+.bub.me{align-self:flex-start;background:var(--gold);color:#fff;font-weight:800;font-size:16px;border-bottom-right-radius:6px;animation:bub .6s .4s cubic-bezier(.16,1,.3,1) both}
+.bub.them{align-self:flex-end;background:#FFFEFB;color:var(--text);border-bottom-left-radius:6px;animation:bub .6s 1.2s cubic-bezier(.16,1,.3,1) both}
+.ph-input{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 14px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;color:var(--on-soft)}
+.ph-input i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#fff;font-size:14px}
+@keyframes phf{50%{transform:translateY(-10px) rotate(1deg)}}
+@keyframes bub{from{opacity:0;transform:translateY(10px) scale(.9)}}
+
+/* details + form */
+.ct-main{padding-top:56px}
+.ct-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px;align-items:start}
+.ct-info{display:grid;gap:14px}
+.ct-card{display:flex;align-items:center;gap:16px;padding:18px 20px;background:#FFFEFB;border:1px solid var(--border);border-radius:24px;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,border-color .3s}
+a.ct-card:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(20,16,8,.08);border-color:transparent}
+.ct-card .ic{width:50px;height:50px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:21px;background:linear-gradient(140deg,#fff,var(--gold-soft));color:var(--gold-dark);box-shadow:0 10px 22px rgba(156,122,60,.16)}
+.ct-card div{flex:1;min-width:0}
+.ct-card small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.ct-card b{display:block;font-size:16px;font-weight:800;color:var(--text);line-height:1.8}
+.ct-card b[dir="ltr"]{text-align:right;letter-spacing:.03em}
+.ct-card.addr b{font-size:14.5px;font-weight:700;line-height:2}
+.ct-card .go{flex:none;color:var(--muted);font-size:18px;transition:transform .3s,color .3s}
+a.ct-card:hover .go{transform:translateX(-4px);color:var(--primary)}
+.ct-map{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--border);aspect-ratio:400/220}
+.ct-map>svg{width:100%;height:100%;display:block}
+.ct-map .btn{position:absolute;left:14px;bottom:14px;border-radius:14px;box-shadow:0 12px 26px rgba(38,46,74,.25)}
+.ct-form-card{background:#FFFEFB;border:1px solid var(--border);border-radius:30px;padding:34px 34px 30px;box-shadow:0 30px 64px rgba(20,16,8,.07)}
+.ct-form-card h2{font-size:24px;margin:0 0 4px}
+.ct-form-card .sub{font-size:14px;margin-bottom:22px}
+.ct-go{width:100%;height:56px;border-radius:18px;font-size:15.5px;margin-top:4px}
+.ct-go.loading{pointer-events:none}
+.ct-go.loading span{opacity:.6}
+.ct-go.loading .i{display:none}
+.ct-go.loading::after{content:"";width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ct-done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 0 20px}
+.ct-done[hidden],#ct-form-view[hidden]{display:none}
+.ct-done .big{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;font-size:36px;background:linear-gradient(140deg,#fff,var(--gold-soft));color:var(--gold-dark);box-shadow:0 18px 40px rgba(156,122,60,.22);margin-bottom:8px}
+.ct-done .big .i{stroke-width:2.2}
+.ct-done .btn{border-radius:14px;margin-top:6px}
+
+@media (max-width:1100px){
+  .ct-sms{grid-template-columns:1fr;padding:0 40px}
+  .sms-phone{display:none}
+  .ct-grid{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .ct-hero h1{font-size:32px}
+  .ct-sms{padding:0 22px;border-radius:26px}
+  .sms-text{padding:32px 0}
+  .sms-text h2{font-size:24px}
+  .sms-act{flex-direction:column;align-items:stretch;gap:14px}
+  .sms-act .btn.link{align-self:center}
+  .ct-main{padding-top:32px}
+  .ct-card{border-radius:20px;padding:14px 16px}
+  .ct-form-card{padding:24px 18px;border-radius:24px}
+  .fgrid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){ .ph,.bub{animation:none} }
+
+.ct-map iframe{display:block;position:absolute;inset:0;border:0}
+.ct-map{min-height:240px}

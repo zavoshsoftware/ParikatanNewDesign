@@ -14,6 +14,11 @@ namespace ViewModels.Basket
         public string Total { get; set; }
         public string DiscountAmount { get; set; }
         public string ShipmentAmount { get; set; }
+        public decimal SubTotalValue { get; set; }
+        public decimal DiscountValue { get; set; }
+        public decimal ShipmentValue { get; set; }
+        public decimal TotalValue { get; set; }
+        public int ItemCount { get; set; }
         public List<Product> RelatedProducts { get; set; }
     }
 

@@ -73,7 +73,116 @@ namespace Parikatan.Web.Controllers
 
             cart.Total = (total + shipmentAmount).ToString("n0") + " تومان";
             cart.RelatedProducts = GetRelatedProduct(productInCarts);
+
+            cart.SubTotalValue = subTotal;
+            cart.DiscountValue = discountAmount;
+            cart.ShipmentValue = shipmentAmount;
+            cart.TotalValue = total + shipmentAmount;
+            cart.ItemCount = productInCarts.Sum(c => c.Quantity);
+
+            ViewBag.Title = "سبد خرید | پریکاتن";
+            ViewBag.Robots = "noindex, follow";
             return View(cart);
+        }
+
+        /// <summary>Current cart totals as numbers (the cart page formats them itself).</summary>
+        private object CartTotals()
+        {
+            List<ProductInCart> items = GetProductInBasketByCoockie();
+            decimal subTotal = GetSubtotal(items);
+            decimal discount = Math.Min(GetDiscount(), subTotal);
+            decimal shipment = items.Count == 0 ? 0 : GetShipmentAmountByTotal(subTotal - discount);
+
+            return new
+            {
+                count = items.Sum(c => c.Quantity),
+                subTotal = subTotal,
+                discount = discount,
+                shipping = shipment,
+                total = subTotal - discount + shipment,
+                rows = items.Select(c => new
+                {
+                    id = c.Product.Id,
+                    qty = c.Quantity,
+                    amount = (c.Product.IsInPromotion && c.Product.DiscountAmount != null ? c.Product.DiscountAmount.Value : c.Product.Amount) * c.Quantity
+                }).ToList()
+            };
+        }
+
+        [HttpPost]
+        public ActionResult SetQuantity(int code, int qty)
+        {
+            Product product = db.Products.FirstOrDefault(c => c.Id == code && c.IsDeleted == false);
+            if (product == null)
+                return Json(new { ok = false, message = "محصول یافت نشد." });
+
+            int max = product.Stock > 0 ? Math.Min(10, product.Stock) : 10;
+            qty = Math.Max(1, Math.Min(max, qty));
+
+            SetCookie(code.ToString(), qty.ToString());
+            RemoveCookie("discount");   // the discount depends on the subtotal
+
+            // the response cookie is not visible to GetCookie() in this request, so compute from the edited list
+            var items = GetProductInBasketByCoockie();
+            var row = items.FirstOrDefault(c => c.Product.Id == code);
+            if (row != null)
+                row.Quantity = qty;
+            else
+                items.Add(new ProductInCart { Product = product, Quantity = qty });
+
+            decimal subTotal = GetSubtotal(items);
+            decimal shipment = items.Count == 0 ? 0 : GetShipmentAmountByTotal(subTotal);
+
+            return Json(new
+            {
+                ok = true,
+                count = items.Sum(c => c.Quantity),
+                subTotal = subTotal,
+                discount = 0,
+                shipping = shipment,
+                total = subTotal + shipment,
+                rows = items.Select(c => new
+                {
+                    id = c.Product.Id,
+                    qty = c.Quantity,
+                    amount = (c.Product.IsInPromotion && c.Product.DiscountAmount != null ? c.Product.DiscountAmount.Value : c.Product.Amount) * c.Quantity
+                }).ToList()
+            });
+        }
+
+        [HttpPost]
+        public ActionResult RemoveItem(int code)
+        {
+            var items = GetProductInBasketByCoockie().Where(c => c.Product.Id != code).ToList();
+
+            string cookievalue = string.Concat(items.Select(c => c.Product.Id + "^" + c.Quantity + "/"));
+            HttpContext.Response.Cookies.Set(new HttpCookie("basket-parikatan")
+            {
+                Name = "basket-parikatan",
+                Value = cookievalue,
+                Expires = DateTime.Now.AddDays(1)
+            });
+            RemoveCookie("discount");
+
+            decimal subTotal = GetSubtotal(items);
+            decimal shipment = items.Count == 0 ? 0 : GetShipmentAmountByTotal(subTotal);
+
+            return Json(new
+            {
+                ok = true,
+                count = items.Sum(c => c.Quantity),
+                subTotal = subTotal,
+                discount = 0,
+                shipping = shipment,
+                total = subTotal + shipment,
+                rows = items.Select(c => new { id = c.Product.Id, qty = c.Quantity }).ToList()
+            });
+        }
+
+        [HttpGet]
+        public ActionResult CartSummary()
+        {
+            return Json(CartTotals(), JsonRequestBehavior.AllowGet);
         }
 
         public List<Product> GetRelatedProduct(List<ProductInCart> currentProducts)
@@ -178,6 +287,10 @@ namespace Parikatan.Web.Controllers
                                                            current.IsDeleted == false && current.IsActive);
 
             List<ProductInCart> productInCarts = GetProductInBasketByCoockie();
+
+            // user-bound / first-order codes are validated against the signed-in user
+            if (discount != null && (discount.IsForFirstOrder || discount.UserId != null) && !User.Identity.IsAuthenticated)
+                return Json("login", JsonRequestBehavior.AllowGet);
 
             string result = CheckCouponValidation(discount, GetSubtotal(productInCarts));
 
@@ -522,6 +635,14 @@ namespace Parikatan.Web.Controllers
 
                 checkOut.Total = (total + shipmentAmount).ToString("n0") + " تومان";
 
+                checkOut.SubTotalValue = subTotal;
+                checkOut.DiscountValue = discountAmount;
+                checkOut.ShipmentValue = shipmentAmount;
+                checkOut.TotalValue = total + shipmentAmount;
+                checkOut.ItemCount = productInCarts.Sum(c => c.Quantity);
+                ViewBag.Title = "تکمیل سفارش | پریکاتن";
+                ViewBag.Robots = "noindex, nofollow";
+
 
                 checkOut.Provinces = db.Provinces.OrderBy(current => current.Title).ToList();
                 checkOut.Cities = db.Cities.OrderBy(current => current.Title).ToList();
@@ -606,6 +727,17 @@ namespace Parikatan.Web.Controllers
         {
             try
             {
+                // a signed-in customer always orders with the number of their own account
+                // (the checkout page shows it read-only; this keeps a tampered request from changing it)
+                if (User.Identity.IsAuthenticated)
+                {
+                    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+                    var role = identity.FindFirst(System.Security.Claims.ClaimTypes.Role);
+                    var cell = identity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                    if (role != null && role.Value == SecurityRole.Customer && cell != null && !string.IsNullOrEmpty(cell.Value))
+                        cellnumber = cell.Value;
+                }
+
                 //if (cellnumber.Length < 11)
                 //{
 

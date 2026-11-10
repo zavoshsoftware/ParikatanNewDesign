@@ -139,15 +139,24 @@ namespace Parikatan.Web.Controllers
         public ActionResult SubmitComment(string name, string email, string body, string phone)
         {
           
+            name = (name ?? string.Empty).Trim();
+            body = (body ?? string.Empty).Trim();
+            phone = (phone ?? string.Empty).Trim();
+
+            // the entity limits (name 300, message 300, ip 50) would otherwise throw on SaveChanges
+            if (name.Length == 0 || body.Length == 0 || phone.Length == 0)
+                return Json("invalid", JsonRequestBehavior.AllowGet);
+
             ContactUsForm comment = new ContactUsForm();
 
-            comment.Name = name;
-            comment.Message = body;
+            comment.Name = name.Length > 300 ? name.Substring(0, 300) : name;
+            comment.Message = body.Length > 300 ? body.Substring(0, 300) : body;
             comment.CreationDate = DateTime.Now;
             comment.IsDeleted = false;
             comment.IsActive = false;
-            comment.Ip = Request.UserHostAddress;
-            comment.PhoneNumber = phone;
+            string ip = Request.UserHostAddress ?? string.Empty;
+            comment.Ip = ip.Length > 50 ? ip.Substring(0, 50) : ip;
+            comment.PhoneNumber = phone.Length > 50 ? phone.Substring(0, 50) : phone;
 
             db.ContactUsForms.Add(comment);
             db.SaveChanges();

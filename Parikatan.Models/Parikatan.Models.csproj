@@ -75,6 +75,8 @@
     <Compile Include="Entities\Blog\Blog.cs" />
     <Compile Include="Entities\Blog\BlogComment.cs" />
     <Compile Include="Entities\Blog\BlogGroup.cs" />
+    <Compile Include="Entities\Product\ProductCategory.cs" />
+    <Compile Include="Entities\Content\Pharmacy.cs" />
     <Compile Include="Entities\Content\ContactUsForm.cs" />
     <Compile Include="Entities\Content\Slider.cs" />
     <Compile Include="Entities\Content\TextItem.cs" />

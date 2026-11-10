@@ -1,0 +1,30 @@
+﻿@model Models.Entities.ProductCategory
+
+@{
+    ViewBag.Title = "حذف دسته‌بندی محصول";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>آیا از حذف این مورد اطمینان دارید؟ محصولات این دسته بدون دسته می‌شوند.</h3>
+<div>
+    <hr />
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">@Html.DisplayFor(model => model.Title)</div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UrlParam, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">@Html.DisplayFor(model => model.UrlParam)</div>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-danger" />
+            @Html.ActionLink("بازگشت به فهرست", "Index")
+        </div>
+    }
+</div>

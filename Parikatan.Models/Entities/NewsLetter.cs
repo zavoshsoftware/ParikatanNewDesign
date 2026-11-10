@@ -11,5 +11,8 @@ namespace Models.Entities
     {
         [Display(Name = "موبایل")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "ایمیل")]
+        public string Email { get; set; }
     }
 }

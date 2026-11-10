@@ -1,139 +1,75 @@
-﻿@model ViewModels.ActivateAccountViewModel
+﻿@using Helpers
+@model ViewModels.ActivateAccountViewModel
 @{
-    ViewBag.Title = "ورود";
-    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    ViewBag.Title = "تأیید شماره موبایل | پریکاتن";
+    ViewBag.Robots = "noindex, follow";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    string error = TempData["WrongActivationCode"] as string;
+    string cell = Model.CellNumber ?? "";
+    string prettyCell = cell.Length == 11 ? cell.Substring(0, 4) + " " + cell.Substring(4, 3) + " " + cell.Substring(7) : cell;
+    string returnUrl = ViewBag.ReturnUrl as string;
 }
-@section head{
-
-    <link href="~/Assets_Old/css/style.css" rel="stylesheet" />
-    <link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/auth.css")" rel="stylesheet">
 }
 
-<div class="breadcrumbs_area other_bread">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcrumb_content">
-                    <ul>
-                        <li><a href="/">خانه</a></li>
-                        <li>/</li>
-                        <li>ورود</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="auth">
+    <div class="wrap auth-grid">
 
+        <section class="auth-card" aria-labelledby="auth-title">
+            <div id="otp-view">
+                <div class="k">تأیید شماره موبایل</div>
+                <h1 id="auth-title">کد تأیید را وارد کنید</h1>
+                <p class="sub">کد تأیید به شماره‌ی <b class="vphone" dir="ltr">@SiteFormat.Digits(prettyCell)</b> پیامک شد.</p>
+                <a class="edit-phone" href="/login@(string.IsNullOrEmpty(returnUrl) ? "" : "?returnUrl=" + Server.UrlEncode(returnUrl))"><svg class="i"><use href="#arrow" /></svg>ویرایش شماره</a>
 
+                @using (Html.BeginForm("Activate", "Accounts", new { returnUrl = returnUrl, code = ViewBag.code }, FormMethod.Post, new { id = "otp-form", novalidate = "novalidate" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.CellNumber)
+                    <input type="hidden" name="ActivationCode" id="ActivationCode" value="">
 
-<div class="customer_login">
-    <div class="container">
-        <div class="row">
-            <!--login area start-->
-            <div class="col-lg-3 col-md-3"></div>
-            <div class="col-lg-6 col-md-6">
-                <div class="account_form text-center">
-
-
-                    @if (TempData["WrongActivationCode"] != null)
-                    {
-                        <p class="alert alert-danger" id="wrongEmail">@TempData["WrongActivationCode"]</p>
-                    }
-                    @using (Html.BeginForm("Activate", "Accounts", new { returnUrl = ViewBag.ReturnUrl, code = ViewBag.code }, FormMethod.Post, new { @class = "", role = "form", id = "activationForm" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
-                        @Html.HiddenFor(c => c.CellNumber)
-
-                        if (TempData["WrongMobile"] != null)
-                        {
-                            <p class="alert alert-danger" id="wrongEmail">@TempData["WrongMobile"]</p>
-                        }
-
-                        <img src="/Assets/images/Asset 2.png" style="width: auto; height: 100px ; margin:auto;">
-                        <h3 class="mt-4">ورود به حساب کاربری</h3>
-                        <p class="text-center">
-                            کد تایید ارسال شده به شماره موبایل @Model.CellNumber   را وارد نمایید.
-
-                        </p>
-
-                        <p>
-
-
-                            @Html.TextBoxFor(m => m.ActivationCode, new { @class = "form-control m-auto w-75", @placeholder = "کد تایید ", @pattern = @"\d*", inputmode = "numeric" })
-
-                        </p>
-
-                        <div class="text-center">
-
-
-
-                            <button type="submit" name="login" value="Log in" class="m-auto w-75" style="width: 100%" id="btnActivate">تایید</button>
-                            <p class="text-center mt-3">
-                                <a href="/login" style="color: #22489e; font-size: 14px; border-bottom: 1px solid; ">
-
-                                    تغییر شماره موبایل
-
-                                </a>
-                            </p>
-                        </div>
-
-                    }
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<script>
-    
-        document.addEventListener('DOMContentLoaded', function () {
-   
-            const form = document.getElementById('activationForm');
-        if (!form) return;
-
-        
-        const input = form.querySelector('input[name="ActivationCode"]');
-        if (!input) return;
-
-       
-        const btn = form.querySelector('#btnActivate');
-        if (!btn) return;
-
-       
-        function convertPersianToEnglish(str) {
-        const persianNumbers = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-        const englishNumbers = ['0','1','2','3','4','5','6','7','8','9'];
-        let result = '';
-        for (let i = 0; i < str.length; i++) {
-            const index = persianNumbers.indexOf(str[i]);
-        result += index !== -1 ? englishNumbers[index] : str[i];
-        }
-        return result;
-    }
-
-        
-        input.addEventListener('input', function () {
-            setTimeout(() => {
-                const code = convertPersianToEnglish(input.value.trim());
-                input.value = code;
-
-                if (code.length === 5) {
-                    btn.disabled = true;
-                    btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
-                    
-                    form.requestSubmit();
-                } else {
-                    btn.disabled = false;
-                    btn.innerHTML = 'تایید';
+                    <div class="otp @(error != null ? "bad" : "")" id="otp" dir="ltr" role="group" aria-label="کد تأیید">
+                        <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="5" aria-label="رقم ۱">
+                        <input type="text" inputmode="numeric" maxlength="1" aria-label="رقم ۲">
+                        <input type="text" inputmode="numeric" maxlength="1" aria-label="رقم ۳">
+                        <input type="text" inputmode="numeric" maxlength="1" aria-label="رقم ۴">
+                        <input type="text" inputmode="numeric" maxlength="1" aria-label="رقم ۵">
+                    </div>
+                    <div class="f-err" id="otp-err" role="alert">@error</div>
+                    <div class="otp-meta">
+                        <span id="otp-timer">ارسال مجدد کد تا <b id="otp-left">۰۲:۰۰</b></span>
+                        <button class="resend" id="otp-resend" type="button" hidden>ارسال مجدد کد</button>
+                    </div>
+                    <button class="btn auth-btn" type="submit" disabled><span>تأیید و ورود</span><svg class="i"><use href="#arrow" /></svg></button>
                 }
-            }, 0);
-    });
-});
-</script>
 
+                @* resend = post the number again to the login action, which sends a new code and returns here *@
+                @using (Html.BeginForm("OtpLogin", "Accounts", FormMethod.Post, new { id = "resend-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="ReturnUrl" value="@returnUrl">
+                    <input type="hidden" name="UserCellNumber" value="@cell">
+                }
+            </div>
+        </section>
 
+        <aside class="auth-vis" aria-hidden="true">
+            <div class="av-glow"></div>
+            <div class="av-jar">
+                <img class="j-open" src="~/Assets/site/cream-open.png" alt="" width="500" height="500">
+                <img class="j-closed" src="~/Assets/site/cream-closed.png" alt="" width="500" height="500">
+            </div>
+            <div class="av-chip c1"><span><svg class="i"><use href="#shield" /></svg></span><b>کارآزمایی بالینی</b></div>
+            <div class="av-chip c2"><span><svg class="i"><use href="#flask" /></svg></span><b>فرموله‌شده در SEPPIC فرانسه</b></div>
+            <p class="av-cap">مراقبت علمی و جوان‌سازی پوست</p>
+        </aside>
 
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="@SiteFormat.Asset("~/Assets/site/auth.js")"></script>
+}

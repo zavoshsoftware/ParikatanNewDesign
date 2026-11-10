@@ -182,14 +182,26 @@ namespace Parikatan.Web.Controllers
         [AllowAnonymous]
         public ActionResult List()
         {
-            List<Blog> blogs = db.Blogs.Where(c => c.IsDeleted == false && c.IsActive)
+            List<Blog> blogs = db.Blogs.Include(c => c.BlogGroup).Where(c => c.IsDeleted == false && c.IsActive)
                 .OrderByDescending(c => c.CreationDate).ToList();
 
             BlogListViewModel blogList = new BlogListViewModel()
             {
-                Blogs = blogs
+                Blogs = blogs,
+                Groups = GroupsOf(blogs)
             };
+
+            ViewBag.Title = "مجله پریکاتن | راهنمای مراقبت از پوست";
+            ViewBag.Description = "مقاله‌های مجله پریکاتن: راهنمای مراقبت از پوست، شناخت مواد مؤثر و انتخاب درست محصول.";
+            ViewBag.Canonical = "https://parikatan.shop/blog";
+            ViewBag.NavActive = "blog";
             return View(blogList);
+        }
+
+        private static List<BlogGroup> GroupsOf(List<Blog> blogs)
+        {
+            return blogs.Where(b => b.BlogGroup != null && b.BlogGroup.IsActive && !b.BlogGroup.IsDeleted)
+                .Select(b => b.BlogGroup).Distinct().OrderBy(g => g.Title).ToList();
         }
 
 
@@ -202,15 +214,24 @@ namespace Parikatan.Web.Controllers
             if (blogGroup == null)
                 return Redirect("/blog");
 
-            List<Blog> blogs = db.Blogs.Where(c => c.BlogGroupId == blogGroup.Id && c.IsDeleted == false && c.IsActive)
+            List<Blog> blogs = db.Blogs.Include(c => c.BlogGroup)
+                .Where(c => c.BlogGroupId == blogGroup.Id && c.IsDeleted == false && c.IsActive)
                 .OrderByDescending(c => c.CreationDate).ToList();
+
+            var all = db.Blogs.Include(c => c.BlogGroup).Where(c => c.IsDeleted == false && c.IsActive).ToList();
 
             BlogListViewModel blogList = new BlogListViewModel()
             {
                 Blogs = blogs,
-                BlogGroup = blogGroup
+                BlogGroup = blogGroup,
+                Groups = GroupsOf(all)
             };
-            return View(blogList);
+
+            ViewBag.Title = blogGroup.Title + " | مجله پریکاتن";
+            ViewBag.Description = blogGroup.Summery;
+            ViewBag.Canonical = "https://parikatan.shop/blog/" + blogGroup.UrlParam;
+            ViewBag.NavActive = "blog";
+            return View("List", blogList);
         }
 
 
@@ -219,7 +240,8 @@ namespace Parikatan.Web.Controllers
         public ActionResult Details(string urlParam)
         {
 
-            Blog blog = db.Blogs.FirstOrDefault(c => c.UrlParam == urlParam);
+            Blog blog = db.Blogs.Include(c => c.BlogGroup)
+                .FirstOrDefault(c => c.UrlParam == urlParam && c.IsActive && c.IsDeleted == false);
             if (blog == null)
             {
                 return Redirect("/blog");
@@ -238,7 +260,10 @@ namespace Parikatan.Web.Controllers
 
                 SidebarBlogGroups = db.BlogGroups.Where(c => c.IsActive && c.IsDeleted == false).ToList(),
 
-                RelatedBlogs = db.Blogs.Where(c => c.IsActive && c.IsDeleted == false&&c.Id!=blog.Id).OrderByDescending(c => c.CreationDate).Take(4).ToList(),
+                RelatedBlogs = db.Blogs.Include(c => c.BlogGroup)
+                    .Where(c => c.IsActive && c.IsDeleted == false && c.Id != blog.Id)
+                    .OrderByDescending(c => c.BlogGroupId == blog.BlogGroupId)
+                    .ThenByDescending(c => c.CreationDate).Take(3).ToList(),
 
 
 
@@ -250,8 +275,9 @@ namespace Parikatan.Web.Controllers
             else
                 ViewBag.Title = blog.PageTitle;
 
-            if (!string.IsNullOrEmpty(blog.MetaDescription))
-                ViewBag.Description = blog.MetaDescription;
+            ViewBag.Description = !string.IsNullOrEmpty(blog.MetaDescription) ? blog.MetaDescription : blog.Summery;
+            ViewBag.Canonical = "https://parikatan.shop/blog/post/" + blog.UrlParam;
+            ViewBag.NavActive = "blog";
 
             return View(detail);
         }

@@ -1,144 +1,170 @@
-﻿@model ViewModels.Products.ProductListViewModel
+﻿@using Helpers
+@model ViewModels.Products.ProductListViewModel
 @{
-	 
-	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    var fallbackImg = Url.Content("~/Assets/site/cream-closed.png");
+    string selected = Model.SelectedCategory;
+    Func<Models.Entities.ProductCategory, string> CatKey = c => string.IsNullOrEmpty(c.UrlParam) ? c.Id.ToString() : c.UrlParam;
+    bool selectedExists = selected != null && Model.Categories.Any(c => CatKey(c) == selected);
+    var schema = new
+    {
+        @context = "https://schema.org",
+        @type = "CollectionPage",
+        name = "محصولات پریکاتن",
+        mainEntity = new
+        {
+            @type = "ItemList",
+            itemListElement = Model.Products.Select((p, i) => new
+            {
+                @type = "ListItem",
+                position = i + 1,
+                name = p.Title,
+                url = "https://parikatan.shop/product-detail/" + p.Id
+            }).ToList()
+        }
+    };
 }
 @section head
 {
-	<style>
-		#section08 {
-			text-align: center;
-			padding: 30px 0 60px 0;
-			margin-bottom: 100px;
-			background-color: #fff !important;
-			height: auto !important;
-		}
-
-	</style>
+    <link href="@Helpers.SiteFormat.Asset("~/Assets/site/list.css")" rel="stylesheet">
+    <script type="application/ld+json">@Html.Raw(Json.Encode(schema))</script>
 }
- 
-<!--breadcrumbs area end-->
-<!--shop  area start-->
-<div class="container-fluid p-0 m-0">
-	<section id="section08">
-	<div class="container">
 
-		<div class="shop_inner_area">
-			<div class="row">
-				<div class="col-12">
-					<h1 style="margin-bottom: 30px">محصولات پریکاتن</h1>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-12">
-					<!--shop toolbar start-->
-
-					<div class="row shop_wrapper">
-
-						@foreach (var product in Model.Products)
-						{
-							<div class="col-lg-4 col-md-4 col-12 ">
-								<div class="single_product mb-2">
-									<div class="product_thumb" style="position: relative">
-										<a class="primary_img" href="/product-detail/@product.Id">
-											<img src="@System.Configuration.ConfigurationManager.AppSettings["baseUrl"]@product.ImageUrl" alt="@product.Title" style="max-width: 100%">
-										</a>
-										@if (product.DiscountPercent != null)
-										{
-									<div  style=" position: absolute; top: 10px; right: 10px; width: 54px; height:54px; background-image: url('Assets/images/site-pome.png'); background-size: contain; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: bold; "
->
-										%		@product.DiscountPercent
-
-									</div>
-										}
-									</div>
-
-									<div class="product_content grid_content">
-										<h3><a href="/product-detail/@product.Id">@product.Title</a></h3>
-										@if (product.IsAvailable && product.Stock > 0)
-										{
-											if (product.IsInPromotion)
-											{
-												<span  style="text-decoration: line-through;  display: block" class="old_price">@product.AmountStr</span>
-												<span  style=" display: block" class="current_price">@product.DiscountAmountStr</span>
-
-											}
-											else
-											{
-
-												<span class="current_price">@product.AmountStr</span>
-											}
-											<a href="/product-detail/@product.Id" class="btn  navbar-btn-top">
-												<img class="shop-icon" src="~/Assets/images/shopicon.png" />افزودن به سبد خرید
-											</a>
-
-										}
-										else
-										{
-											<span style="color:red">ناموجود</span>
-											<button class="btn  navbar-btn-top" style="background-color:#adadad !important " disabled="disabled">
-												<img class="shop-icon" src="~/Assets/images/shopicon.png" />ناموجود
-											</button>
-										}
-
-									</div>
-
-
-								</div>
-							</div>
-						}
-
-					</div>
-				</div>
-			</div>
-
-
-
-
-		</div>
-
-	</div>
-	</section>
+<div class="wrap">
+    <nav class="crumbs" aria-label="مسیر صفحه">
+        <a href="/">خانه</a><span>/</span><b>محصولات</b>
+    </nav>
 </div>
 
+<!-- ============ PAGE HEADER ============ -->
+<section class="plp-hero">
+    <div class="wrap">
+        <div class="ph-card">
+            <div class="ph-text">
+                <div class="k">فروشگاه رسمی پریکاتن</div>
+                <h1>محصولات پریکاتن</h1>
+                <p>سرم، کرم و پاک‌کننده‌های تخصصی پوست با فرمولاسیون علمی؛ از جوان‌سازی و رفع چروک تا روشن‌کنندگی، کنترل چربی و پاک‌سازی روزانه.</p>
+                <div class="ph-meta">
+                    <span><b>@SiteFormat.Digits(Model.TotalProductCount)</b>محصول</span>
+                    @if (Model.Categories.Count > 0)
+                    {
+                        <span><b>@SiteFormat.Digits(Model.Categories.Count)</b>دسته‌بندی</span>
+                    }
+                    <span><svg class="i"><use href="#shield" /></svg>کارآزمایی بالینی · SEPPIC فرانسه</span>
+                </div>
+            </div>
+            <div class="ph-vis" aria-hidden="true">
+                <div class="ph-glow"></div>
+                <img class="ph-jar" src="~/Assets/site/cream-closed.png" alt="" width="500" height="500" data-py="-36">
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- ============ FILTER BAR ============ -->
+<div class="plp-bar" id="plpbar">
+    <div class="wrap pb-row">
+        <div class="pb-chips" role="group" aria-label="دسته‌بندی محصولات">
+            <button class="@(selectedExists ? "" : "on")" type="button" data-cat="all">همه</button>
+            @foreach (var c in Model.Categories)
+            {
+                <button class="@(selectedExists && CatKey(c) == selected ? "on" : "")" type="button" data-cat="@CatKey(c)">@(string.IsNullOrEmpty(c.ShortTitle) ? c.Title : c.ShortTitle)</button>
+            }
+        </div>
+        <div class="pb-side">
+            <span class="pb-count" id="pcount" aria-live="polite">@SiteFormat.Digits(Model.TotalProductCount) محصول</span>
+            <label class="pb-sort">
+                <span>مرتب‌سازی</span>
+                <select id="psort" aria-label="مرتب‌سازی محصولات">
+                    <option value="rec">پیشنهاد پریکاتن</option>
+                    <option value="low">ارزان‌ترین</option>
+                    <option value="high">گران‌ترین</option>
+                </select>
+                <svg class="i"><use href="#chev" /></svg>
+            </label>
+        </div>
+    </div>
+</div>
+
+<!-- ============ PRODUCT GRID ============ -->
+<section class="plp">
+    <div class="wrap">
+        @if (Model.Products.Count == 0)
+        {
+            <p style="text-align:center;padding:60px 0;color:var(--text-2)">در حال حاضر محصولی برای نمایش وجود ندارد.</p>
+        }
+        <div class="pgrid" id="plist">
+            @for (int i = 0; i < Model.Products.Count; i++)
+            {
+                var p = Model.Products[i];
+                var img = string.IsNullOrEmpty(p.ImageUrl) ? fallbackImg : SiteFormat.Img(p.ImageUrl);
+                <article class="pc" data-cat="@(p.ProductCategory != null ? CatKey(p.ProductCategory) : "")" data-price="@((long)SiteFormat.FinalAmount(p))" data-rec="@(i + 1)">
+                    <div class="img">
+                        <a href="/product-detail/@p.Id"><img src="@img" alt="@p.Title" loading="lazy"></a>
+                    </div>
+                    <div class="body">
+                        @if (p.ProductCategory != null)
+                        {
+                            <span class="tag">@p.ProductCategory.Title</span>
+                        }
+                        <h3><a href="/product-detail/@p.Id">@p.Title</a></h3>
+                        <p>@SiteFormat.PlainText(p.Summery, 130)</p>
+                        <div class="price">
+                            @if (p.IsInPromotion && p.DiscountAmount.HasValue)
+                            {
+                                <s>@SiteFormat.Price(p.Amount)</s> @SiteFormat.Price(p.DiscountAmount.Value)
+                            }
+                            else
+                            {
+                                @SiteFormat.Price(p.Amount)
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (SiteFormat.CanBuy(p))
+                        {
+                            <a class="btn sm" href="/product-detail/@p.Id" data-add="@p.Id" data-name="@p.Title">افزودن به سبد خرید</a>
+                        }
+                        else
+                        {
+                            <span class="btn sm" aria-disabled="true" style="opacity:.5;pointer-events:none">ناموجود</span>
+                        }
+                        <a class="btn sec sm" href="/product-detail/@p.Id">جزئیات</a>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ============ ROUTINE BANNER ============ -->
+<section class="routine">
+    <div class="wrap rt-row">
+        <div class="rt-text">
+            <div class="k on-dark">راهنمای انتخاب محصول</div>
+            <h2>نمی‌دانید از کدام شروع کنید؟</h2>
+            <p>در صورت نیاز به راهنمایی برای انتخاب محصول مناسب پوست خود، با کارشناسان پریکاتن در تماس باشید.</p>
+            <a class="btn white" href="/contact">تماس با ما <svg class="i"><use href="#arrow" /></svg></a>
+        </div>
+        <div class="rt-vis"><img src="~/Assets/site/eye-cream.jpg" alt=""></div>
+    </div>
+</section>
+
+<!-- ============ WHY PARIKATAN ============ -->
+<section class="s plp-why">
+    <div class="wrap">
+        <div class="sh">
+            <div><div class="k">چرا پریکاتن</div><h2>مراقبتی که پشتوانه‌ی علمی دارد</h2><p>همه‌ی محصولات پریکاتن با فرمول و مواد مؤثر مشخص ساخته شده‌اند.</p></div>
+        </div>
+        <div class="why-grid">
+            <div class="why"><span class="ic"><svg class="i"><use href="#shield" /></svg></span><h3>کارآزمایی بالینی</h3><p>اثربخشی کرم ضد چروک پریکاتن در کارآزمایی بالینی دانشگاه علوم پزشکی تهران بررسی و تأیید شده است.</p></div>
+            <div class="why"><span class="ic"><svg class="i"><use href="#flask" /></svg></span><h3>فرمولاسیون در فرانسه</h3><p>فرمولاسیون محصولات در SEPPIC فرانسه انجام شده است.</p></div>
+            <div class="why"><span class="ic"><svg class="i"><use href="#leaf" /></svg></span><h3>ساخت ایران</h3><p>برند و تولید پریکاتن ایرانی است؛ از سرم و کرم تا پاک‌کننده‌های روزانه.</p></div>
+        </div>
+    </div>
+</section>
 
 @section scripts
 {
- 
-	<script src="~/Assets/scripts/counter.js"></script>
-
-	<script>
-		function addToBasket(productCode) {
-			var isValid = true;
-			var qty = '1';
-			//var stock = $('#hiddenStock').val();
-			//if (qty > stock) {
-			//	alert('حداکثر تعداد سفارش از این محصول ' + stock + ' عدد است.');
-			//	isValid = false;
-			//}
-
-			if (isValid) {
-				$.ajax(
-					{
-						url: "/Basket/AddToCart",
-						data: {
-							code: productCode,
-							qty: qty
-						},
-						type: "Post"
-					}).done(function (result) {
-					if (result === "true") {
-						window.location.href = "/basket";
-					} else if (result === "invalid") {
-						alert('محصول انتخابی شما موجود نمی باشد');
-					} else if (result === "false") {
-						alert('خطایی رخ داده است');
-					}
-				});
-			}
-		}
-	</script>
+    <script src="@Helpers.SiteFormat.Asset("~/Assets/site/list.js")"></script>
 }
-

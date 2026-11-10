@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Models.Entities.Pharmacy>
+
+@{
+    ViewBag.Title = "مدیریت داروخانه‌ها و مراکز فروش";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@(Html.Kendo().Grid(Model)
+    .Name("Grid")
+    .Columns(columns =>
+    {
+        columns.Bound(model => model.Region);
+        columns.Bound(model => model.Title);
+        columns.Bound(model => model.Kind);
+        columns.Bound(model => model.Hours);
+        columns.Bound(model => model.Order);
+        columns.Bound(model => model.IsActive);
+        columns.Bound(item => @item.Id).Title("دستورات").Filterable(false).Groupable(false)
+            .Template(@<text>
+                @Html.ActionLink("ویرایش", "Edit", new { id = @item.Id }, new { @class = "k-button" })
+                @Html.ActionLink("حذف", "Delete", new { id = @item.Id }, new { @class = "k-button" })
+            </text>).Width(200);
+    })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Custom().Action("Create", "Pharmacies").Text("افزودن");
+    })
+    .Pageable()
+    .Filterable()
+    .DataSource(dataSource => dataSource
+        .Server()
+        .PageSize(50)
+        .Model(model => model.Id(item => item.Id))
+    )
+)

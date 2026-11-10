@@ -1,282 +1,268 @@
-﻿@model ViewModels.Home.HomeViewModel
+﻿@using Helpers
+@model ViewModels.Home.HomeViewModel
 @{
-		ViewBag.Title = "فروشگاه اینترنتی پریکاتن - خرید کرم پریکاتن اصل";
-		ViewBag.Description = "خرید کرم پریکاتن اصل شامل کرم ضد چروک صورت پریکاتن و کرم دور چشم پریکاتن و سرم روشن کننده پریکاتن اصل از فروشگاه اینترنتی رسمی شرکت پریکاتن";
-		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
-	ViewBag.Canonical = "https://parikatan.shop/";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    var fallbackImg = Url.Content("~/Assets/site/cream-closed.png");
+    var tiles = Model.Categories.Where(c => c.IsInHome).Take(3).ToList();
+    string[] ingIcons = { "atom", "drop", "sparkle", "leaf", "clock", "flask" };
 }
 
-<div class="container-fluid"></div>
-<section id="section01">
-	<div class="container">
-		<div class="row slider-row">
-			<div class="col-lg-4 text-center  ">
-				<div class="slider-img-border">
-					<img class="slider-img" src="/assets/images/Asset 5_prev_ui (1).png" alt="">
-				</div>
-			</div>
-			<div class="col-lg-4 text-center ">
-				<div class="tect-center mb-5">
-					<img src="/assets/images/Asset 2.png" alt="">
-				</div>
-				<div class="tect-center mb-5">
-					<h1 class="text-blue">
-					کرم پریکاتن اصل
-					</h1>
-					<p class="text-blue">
-						دوباره جوانی با کرم ضد چروک پریکاتن
-					</p>
-				</div>
-				<div class="tect-center">
-					<a role="button" class="btn  navbar-btn-top d-inline-block" href="/product">
-						خرید آنلاین
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-4 text-center">
-				<img class="flower-top" src="/assets/images/Asset 1.png" alt="">
-			</div>
-		</div>
-	</div>
-</section>
-<section id="section02">
-	<div class="container">
-		<div class="row justify-content-center align-items-center g-2">
-			<div class="col text-center">
-				
-					<h3 style="font-weight: 900; color: #22489e;"> پوست نو، زندگی نو</h3>
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+    <div class="hstage">
+        <div class="hbg" aria-hidden="true"></div>
+        <div class="hmark" aria-hidden="true">PARIKATAN</div>
 
-			
-			</div>
-
-		</div>
-
-	</div>
-</section>
-<section id="section03" dir="rtl">
-	<div class="container">
-		<div class="row justify-content-center align-items-center g-2">
-
-			<div class="col-lg-6 text-center mt-0">
-				<div class="product-img-border-top">
-					<a href="/product-detail/3">
-
-					<img class="products-img-top" src="/assets/images/Asset 4_prev_ui.png" alt="کرم ضد چروک پریکاتن">
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-6 text-center mb-0 text-shell-top">
-				<h2 class="mb-4 h1">
-					کـــــرم ضدچروک پریـکاتن
-				</h2>
-				<p class="mb-5 ">
-					کرم ضد چروک صورت پریکاتن (Parikatan) با استفاده از عصاره فیتوپلانکتون‌ها و به‌کارگیری فناوری پیشرفته بیوپلاسما تولید شده است. این محصول دارای مجوز وزارت بهداشت و تأییدیه سازمان غذا و دارو با نشان معتبر سیب سبز سلامت است؛ که این نشان بالاترین تأییدیه برای اثربخشی و بی‌ضرر بودن محصولات بهداشتی و آرایشی محسوب می‌شود.	</p>
-				<a href="/product-detail/1" class="btn btn-desc mt-lg-5 mt-0">
-					خرید آنلاین
-				</a>
-			</div>
-
-			<div class="col-lg-6 text-center mb-0 text-shell-down">
-
-				<h2 class="mb-4 h1">
-روتین پوستی جوانسازی پوست پریکاتن				</h2>
-				<p class="mb-5 ">
-					روتین پوستی جوانسازی پوست پریکاتن شامل کرم ضد چروک بسیار قوی پریکاتن، کرم دور چشم 3 در 1 پریکاتن و سرم رفع لک پریکاتن است. با استفاده از این روتین پوستی به مدت یک ماه پوستی تا 70 درصد جوان تر و شاداب تر داشته باشید.
-				</p>
-				<a href="/product-detail/3" class="btn btn-desc mt-lg-5 mt-0">
-					خرید آنلاین
-				</a>
-			</div>
-			<div class="col-lg-6 text-center mt-0">
-				<div class="product-img-border-down">
-					<a href="/product-detail/3">
-						<img class="products-img-down" src="/assets/images/1222.jpg" alt="روتین پوستی جوانسازی پریکاتن">
-					</a>
-
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<section id="section04" dir="rtl">
-	<div class="container mt-5 pt-5">
-		<div class="row justify-content-center align-items-center g-2">
-			<div class="col-lg-5 text-center ">
-				<div class="card-shell text-center">
-					<h2 class="h1">پوست نو، زندگی نو...</h2>
-					<div class=" text-center">
-						<a role="button" class="btn  navbar-btn-top" href="/product">
-							<h3 class="m-0" > مــــــحصــــــولـات</h3>
-
-						</a>
-					</div>
-					<img class="img-face" src="/assets/images/Asset 7.png" alt="">
-				</div>
-			</div>
-			<div class="col-lg-2 d-none d-lg-block text-center flower-box">
-				<img class="flower-center" src="/assets/images/Asset 1.png" alt="">
-			</div>
-
-
-			<div class="col-lg-5 text-center ">
-				<div class="card-shell text-center">
-					<h2 class="h1">
-						دوباره جوانی
-					</h2>
-					<div class=" text-center">
-						<a role="button" class="btn  navbar-btn-top" href="/product">
-							<h3 class="m-0"> بیشتر بخوانید</h3>
-
-						</a>
-					</div>
-					<img class="img-face img-face2" src="/assets/images/Asset 9.png" alt="">
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<section id="section05">
-	<div class="container">
-		<div class="row justify-content-center align-items-center g-2 env-slider">
-			<div class="col-lg-3">
-				<div class="card text-start">
-					<img class="card-img-top" src="/assets/images/Asset 17_prev_ui.png" alt="Title" />
-					<div class="card-body card-body-node">
-						<h4 class="card-title">بــــــــــــیـــــــــــوپـــلاســـــــــمــا </h4>
-						<p class="card-text">
-							کاهش عمق چین و چروک پوست صورت و گردن ،آبرسان روشن کننده و سفید کننده جوان کننده شاداب کننده برطرف
-							کننده چروک های پا کلاغی اطراف چشم ،ضد تخریب کلاژن
-						</p>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-lg-3">
-				<div class="card text-start">
-					<img class="card-img-top" src="/assets/images/Asset 16_prev_ui.png" alt="Title" />
-					<div class="card-body card-body-blue">
-						<h4 class="card-title">فـــــــیـــتــوپـــــلانـــــــــــکـــــتـــون</h4>
-						<p class="card-text">
-							کاهش عمق چین و چروک پوست صورت و گردن ،آبرسان روشن کننده و سفید کننده جوان کننده شاداب کننده برطرف
-							کننده چروک های پا کلاغی اطراف چشم ،ضد تخریب کلاژن
-						</p>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-lg-3">
-				<div class="card text-start">
-					<img class="card-img-top" src="/assets/images/Asset 14_prev_ui.png" alt="Title" />
-					<div class="card-body card-body-node">
-						<h4 class="card-title">تـــــــکنولــوژی بــــــیوپلاسمــــا</h4>
-						<p class="card-text">
-							کاهش عمق چین و چروک پوست صورت و گردن ،آبرسان روشن کننده و سفید کننده جوان کننده شاداب کننده برطرف
-							کننده چروک های پا کلاغی اطراف چشم ،ضد تخریب کلاژن
-						</p>
-					</div>
-				</div>
-
-			</div>
-			<div class="col-lg-3">
-				<div class="card text-start">
-					<img class="card-img-top" src="/assets/images/Asset 13_prev_ui.png" alt="Title" />
-					<div class="card-body card-body-blue">
-						<h4 class="card-title">اثــــــرات پـــوســـتی پریــــکاتن</h4>
-						<p class="card-text">
-							کاهش عمق چین و چروک پوست صورت و گردن ،آبرسان روشن کننده و سفید کننده جوان کننده شاداب کننده برطرف
-							کننده چروک های پا کلاغی اطراف چشم ،ضد تخریب کلاژن
-						</p>
-					</div>
-				</div>
-
-			</div>
-
-		</div>
-	</div>
-</section>
-<section id="section02">
-    <div class="container">
-        <div class="row justify-content-center align-items-center ">
-            <div class="col text-center">
-               
-                    <h3 style="font-weight: 900; color: #22489e;"> مقـــــــالـات تازه مــــــــنتشر شــــــــده</h3>
-
-                
+        <div class="hcopy wrap">
+            <div class="hhead">
+                <span class="hpill"><i></i>دارای کارآزمایی بالینی · فرموله‌شده در فرانسه</span>
+                <h1><em>پریکاتن</em>؛ مراقبت علمی و جوان‌سازی پوست</h1>
             </div>
-
+            <div class="hbody">
+                <p class="lead">محصولات پریکاتن با فرمولاسیون علمی و مواد مؤثر ساخته شده‌اند؛ از سرم‌های روشن‌کننده و کنترل منافذ تا کرم ضد چروک و کرم دور چشم. این سایت، وب‌سایت رسمی و فروشگاه آنلاین پریکاتن است.</p>
+                <div class="ctas">
+                    <a class="btn" href="#products">مشاهده محصولات <svg class="i"><use href="#arrow" /></svg></a>
+                    <a class="btn sec" href="/product">ورود به فروشگاه</a>
+                </div>
+            </div>
         </div>
 
+        <div class="hprod">
+            <div class="hp-glow" aria-hidden="true"></div>
+            <div class="hp-shadow" aria-hidden="true"></div>
+            <div class="hp-float">
+                <div class="jar">
+                    <img class="j-open" src="~/Assets/site/cream-open.png" alt="" width="500" height="500">
+                    <img class="j-body" src="~/Assets/site/cream-closed.png" alt="کرم ضد چروک صورت پریکاتن" width="500" height="500">
+                    <img class="j-lid" src="~/Assets/site/cream-closed.png" alt="" width="500" height="500">
+                </div>
+            </div>
+        </div>
+
+        <div class="hchip c1" style="--dx:-1;--dy:-.4"><span><svg class="i"><use href="#atom" /></svg></span><div><b>بیوپلاسما FA</b><small>حفظ و بازسازی کلاژن</small></div></div>
+        <div class="hchip c2" style="--dx:1;--dy:-.5"><span><svg class="i"><use href="#drop" /></svg></span><div><b>فیتوپلانکتون</b><small>جذب بیش از ۹۰٪</small></div></div>
+        <div class="hchip c3" style="--dx:-1.2;--dy:.3"><span><svg class="i"><use href="#shield" /></svg></span><div><b>کارآزمایی بالینی</b><small>دانشگاه علوم پزشکی تهران</small></div></div>
+        <div class="hchip c4" style="--dx:1.2;--dy:.35"><span><svg class="i"><use href="#flask" /></svg></span><div><b>SEPPIC فرانسه</b><small>فرمولاسیون · ساخت ایران</small></div></div>
+
+        <div class="hcue" aria-hidden="true"><i></i>اسکرول کنید</div>
     </div>
 </section>
-<section id="section16">
-    <div class="container">
-	    <div class="row justify-content-center align-items-center blog-slider ">
-				@foreach (var blog in Model.Blogs)
-				{
-					
-	
-		    <div class="col text-center">
 
-			    <div class="card" style="width: 18rem;">
-						<a href="/blog/post/@blog.UrlParam">
-							<img src="@blog.ImageUrl" class="card-img-top" alt="@blog.Title">
-						</a>
-				    <div class="card-body text-center">
-					    <h5 class="card-title">
-						    <a href="/blog/post/@blog.UrlParam">
-							    @blog.Title
-						    </a>
-					    </h5>
-					    <p class="card-text">
-						   @blog.Summery
-					    </p>
-					    <a href="/blog/post/@blog.UrlParam" class="btn btn-primary">ادامه مطلب</a>
-				    </div>
-			    </div>
-
-		    </div>
-				}
-
-	    </div>
-
+<!-- ============ TICKER ============ -->
+<section class="ticker" aria-label="شعار پریکاتن">
+    <div class="tk-row" aria-hidden="true">
+        <div class="tk-track">
+            @for (int t = 0; t < 3; t++)
+            {
+                <span class="tk-w">PARIKATAN</span><svg class="tk-s" viewBox="0 0 24 24"><path d="M12 0c.9 7.2 4.8 11.1 12 12-7.2.9-11.1 4.8-12 12-.9-7.2-4.8-11.1-12-12C7.2 11.1 11.1 7.2 12 0Z" /></svg>
+                <span class="tk-w o">SKINCARE</span><svg class="tk-s" viewBox="0 0 24 24"><path d="M12 0c.9 7.2 4.8 11.1 12 12-7.2.9-11.1 4.8-12 12-.9-7.2-4.8-11.1-12-12C7.2 11.1 11.1 7.2 12 0Z" /></svg>
+            }
+        </div>
     </div>
+    <p class="tk-fa">فرمول علمی · کارآزمایی بالینی · جوان‌سازی · آبرسانی · روشن‌کنندگی · پاک‌سازی</p>
 </section>
-<section id="section06">
-	<div class="container">
-		<div class="row justify-content-center align-items-center g-2">
-			<div class="col text-center">
-				<img src="/assets/images/Asset 12.png" alt="">
-			</div>
-		</div>
-	</div>
-</section>
-<section id="section07">
-	<div class="container-fluid">
-		<div class="row justify-content-center align-items-center g-2">
-			<div class="col-3 text-start">
-				<img class="img-down" src="/assets/images/Asset 10.png" alt="">
-			</div>
-			<div class="col-lg-6 text-center link-box">
-				<h2 class="h1">
-		خرید محصولات جوانسازی پوست پریکاتن
-				</h2>
-				<a  href="/product">
-					<h3 class="h1">
-				خرید آنلاین
-					</h3>
-				</a>
-				@*<a href="">
-					<img src="/assets/images/Asset 2.png" alt="">
-				</a>*@
-			</div>
-			<div class="col-3 text-end mt-0">
-				<img class="img-top" src="/assets/images/Asset 09.png" alt="">
-			</div>
-		</div>
-	</div>
-</section>
-@section scripts
+
+<!-- ============ CATEGORY QUICK-NAV STRIP ============ -->
+@if (Model.Categories.Count > 0)
 {
-	<link rel="stylesheet" href="/dist/slick/slick.css">
-	<link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+    <nav class="catstrip" aria-label="دسته‌بندی سریع محصولات">
+        <div class="wrap cs-row">
+            @foreach (var c in Model.Categories)
+            {
+                var img = string.IsNullOrEmpty(c.ImageUrl) ? fallbackImg : SiteFormat.Img(c.ImageUrl);
+                <a class="cs-item" href="/product?category=@Server.UrlEncode(c.UrlParam ?? c.Id.ToString())"><span class="cs-th"><img src="@img" alt=""></span><b>@(string.IsNullOrEmpty(c.ShortTitle) ? c.Title : c.ShortTitle)</b></a>
+            }
+        </div>
+    </nav>
 }
+
+<!-- ============ BEST-SELLERS CAROUSEL ============ -->
+@if (Model.Products.Count > 0)
+{
+    <section class="s" id="products">
+        <div class="wrap">
+            <div class="sh">
+                <div><div class="k">محصولات</div><h2>پرفروش‌ترین‌های پریکاتن</h2><p>سرم، کرم و پاک‌کننده‌های تخصصی برای مراقبت روزانه از پوست؛ هر محصول با فرمولی مشخص و مواد اثرگذار.</p></div>
+                <a class="btn link sm" href="/product">مشاهده همه محصولات <svg class="i"><use href="#arrow" /></svg></a>
+            </div>
+            <div class="car" data-car>
+                <button class="car-btn prev" aria-label="محصول قبلی"><svg class="i"><use href="#arrow" /></svg></button>
+                <div class="car-track" data-track>
+                    @foreach (var p in Model.Products)
+                    {
+                        var img = string.IsNullOrEmpty(p.ImageUrl) ? fallbackImg : SiteFormat.Img(p.ImageUrl);
+                        <article class="pc">
+                            <div class="img"><a href="/product-detail/@p.Id"><img src="@img" alt="@p.Title" loading="lazy"></a></div>
+                            <div class="body">
+                                @if (p.ProductCategory != null)
+                                {
+                                    <span class="tag">@p.ProductCategory.Title</span>
+                                }
+                                <h3><a href="/product-detail/@p.Id">@p.Title</a></h3>
+                                <p>@SiteFormat.PlainText(p.Summery, 110)</p>
+                                <div class="price">
+                                    @if (p.IsInPromotion && p.DiscountAmount.HasValue)
+                                    {
+                                        <s>@SiteFormat.Price(p.Amount)</s> @SiteFormat.Price(p.DiscountAmount.Value)
+                                    }
+                                    else
+                                    {
+                                        @SiteFormat.Price(p.Amount)
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                @if (SiteFormat.CanBuy(p))
+                                {
+                                    <a class="btn sm" href="/product-detail/@p.Id" data-add="@p.Id" data-name="@p.Title">افزودن به سبد خرید</a>
+                                }
+                                else
+                                {
+                                    <span class="btn sm" aria-disabled="true" style="opacity:.5;pointer-events:none">ناموجود</span>
+                                }
+                                <a class="btn sec sm" href="/product-detail/@p.Id">جزئیات</a>
+                            </div>
+                        </article>
+                    }
+                </div>
+                <button class="car-btn next" aria-label="محصول بعدی"><svg class="i"><use href="#arrow" /></svg></button>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- ============ ROUTINE / PRODUCT FINDER BANNER ============ -->
+<section class="routine">
+    <div class="wrap rt-row">
+        <div class="rt-text">
+            <div class="k on-dark">راهنمای انتخاب محصول</div>
+            <h2>کدام محصول برای پوست شما مناسب است؟</h2>
+            <p>نوع پوست، سن و دغدغه‌ی اصلی‌تان را بشناسید و از میان محصولات پریکاتن، گزینه‌ی مناسب را پیدا کنید.</p>
+            <a class="btn white" href="/product">مشاهده محصولات <svg class="i"><use href="#arrow" /></svg></a>
+        </div>
+        <div class="rt-vis"><img src="~/Assets/site/brightening-serum.jpg" alt=""></div>
+    </div>
+</section>
+
+<!-- ============ STATS BAND ============ -->
+<section class="statsband" aria-label="ارقام و تأییدیه‌های پریکاتن">
+    <div class="wrap">
+        <div class="sb-grid">
+            <div class="sb-item"><b>۲</b><span>محصول با کارآزمایی بالینی<small>دانشگاه علوم پزشکی تهران</small></span></div>
+            <div class="sb-item"><b>@SiteFormat.Digits(Model.ActiveProductCount)</b><span>محصول با فرمولاسیون علمی<small>سرم، کرم و پاک‌کننده</small></span></div>
+            <div class="sb-item"><b>SEPPIC</b><span>کشور فرمولاسیون<small>فرانسه</small></span></div>
+            <div class="sb-item"><b>ایران</b><span>برند و تولید<small>ساخت داخل</small></span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ INGREDIENTS ============ -->
+<section class="s ingr" id="tech">
+    <div class="wrap">
+        <div class="sh">
+            <div><div class="k">فناوری‌ها و مواد اثرگذار</div><h2>پشت هر محصول، فرمول و مواد مؤثر مشخصی است</h2><p>مهم‌ترین فناوری‌ها و مواد فعال محصولات پریکاتن را به زبان ساده بشناسید.</p></div>
+            <a class="btn link sm" href="/blog">مشاهده مقالات مجله <svg class="i"><use href="#arrow" /></svg></a>
+        </div>
+        <div class="car" data-car>
+            <button class="car-btn prev" aria-label="ماده قبلی"><svg class="i"><use href="#arrow" /></svg></button>
+            <div class="car-track" data-track>
+                @for (int i = 0; i < Model.Ingredients.Count; i++)
+                {
+                    var ing = Model.Ingredients[i];
+                    <div class="ing-item">
+                        <span class="ing-circ ing-c@((i % 6) + 1)"><svg class="i"><use href="#@ingIcons[i % ingIcons.Length]" /></svg></span>
+                        <h3>@ing.Title</h3>
+                        <p>@ing.Text</p>
+                        <a class="btn link sm" href="@(string.IsNullOrEmpty(ing.Url) ? "/blog" : ing.Url)">بیشتر بدانید</a>
+                    </div>
+                }
+            </div>
+            <button class="car-btn next" aria-label="ماده بعدی"><svg class="i"><use href="#arrow" /></svg></button>
+        </div>
+    </div>
+</section>
+
+<!-- ============ CATEGORY TILES ============ -->
+@if (tiles.Count > 0)
+{
+    <section class="s tiles">
+        <div class="wrap">
+            <div class="sh">
+                <div><div class="k">دسته‌بندی محصولات</div><h2>مراقبت را از کجا شروع کنیم؟</h2><p>بر اساس نیاز اصلی پوست خود، دسته‌ی مناسب را انتخاب کنید.</p></div>
+            </div>
+            <div class="tile-grid">
+                @foreach (var c in tiles)
+                {
+                    var img = string.IsNullOrEmpty(c.ImageUrl) ? fallbackImg : SiteFormat.Img(c.ImageUrl);
+                    <a class="tile" href="/product?category=@Server.UrlEncode(c.UrlParam ?? c.Id.ToString())"><img src="@img" alt="" loading="lazy"><span class="tile-cap"><b>@c.Title</b><i>مشاهده محصولات ←</i></span></a>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- ============ MAGAZINE ============ -->
+@if (Model.Blogs.Count > 0)
+{
+    <section class="s" id="blog">
+        <div class="wrap">
+            <div class="sh">
+                <div><div class="k">مجله پریکاتن</div><h2>بخوانید و بهتر بشناسید</h2><p>راهنمای مراقبت از پوست، شناخت مواد مؤثر و انتخاب درست محصول.</p></div>
+                <a class="btn link sm" href="/blog">مشاهده همه مقالات <svg class="i"><use href="#arrow" /></svg></a>
+            </div>
+            <div class="agrid">
+                @foreach (var blog in Model.Blogs)
+                {
+                    <article class="ac">
+                        <div class="img">
+                            <a href="/blog/post/@blog.UrlParam"><img src="@(string.IsNullOrEmpty(blog.ImageUrl) ? fallbackImg : blog.ImageUrl)" alt="@blog.Title" loading="lazy"></a>
+                        </div>
+                        <div class="body">
+                            @if (blog.BlogGroup != null)
+                            {
+                                <span class="tag">@blog.BlogGroup.Title</span>
+                            }
+                            <h3><a href="/blog/post/@blog.UrlParam">@blog.Title</a></h3>
+                            <p>@SiteFormat.PlainText(blog.Summery, 140)</p>
+                            <div class="meta"><svg class="i"><use href="#clock" /></svg>@SiteFormat.Digits(SiteFormat.ReadMinutes(blog.Body)) دقیقه مطالعه</div>
+                        </div>
+                    </article>
+                }
+            </div>
+            <div class="dots" aria-hidden="true">
+                @for (int i = 0; i < Model.Blogs.Count; i++)
+                {
+                    <i class="@(i == 0 ? "on" : "")"></i>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- ============ DISTRIBUTOR CTA ============ -->
+<section class="deal" id="deal">
+    <div class="wrap">
+        <div class="dbox">
+            <div>
+                <div class="k">همکاری با پریکاتن</div>
+                <h2>نماینده پریکاتن شوید</h2>
+                <p>اگر فروشگاه یا مرکز فروش محصولات پوستی دارید، درخواست نمایندگی خود را ثبت کنید تا تیم فروش پریکاتن با شما تماس بگیرد.</p>
+                <ul>
+                    <li><svg class="i"><use href="#check" /></svg>ثبت درخواست نمایندگی در کمتر از یک دقیقه</li>
+                    <li><svg class="i"><use href="#check" /></svg>بررسی درخواست توسط تیم فروش پریکاتن</li>
+                    <li><svg class="i"><use href="#check" /></svg>تماس کارشناسان برای هماهنگی</li>
+                </ul>
+            </div>
+            <form class="form" data-post="/Home/Dealership">
+                <h3>فرم درخواست نمایندگی</h3>
+                <div class="two">
+                    <div class="field"><label for="d-name">نام و نام‌خانوادگی</label><input id="d-name" name="name" type="text" maxlength="100" placeholder="مثلاً مریم احمدی" required></div>
+                    <div class="field"><label for="d-phone">شماره تماس</label><input id="d-phone" name="phone" type="tel" inputmode="tel" maxlength="20" placeholder="۰۹۱۲۰۰۰۰۰۰۰" required dir="ltr" style="text-align:right"></div>
+                </div>
+                <div class="field"><label for="d-city">شهر / استان</label><input id="d-city" name="city" type="text" maxlength="60" placeholder="مثلاً اصفهان"></div>
+                <div class="field"><label for="d-notes">توضیحات (اختیاری)</label><textarea id="d-notes" name="notes" rows="3" maxlength="150" placeholder="نوع فعالیت یا فروشگاه شما"></textarea></div>
+                <button class="btn" type="submit">ارسال درخواست نمایندگی</button>
+            </form>
+        </div>
+    </div>
+</section>

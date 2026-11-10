@@ -1,0 +1,111 @@
+﻿@using Helpers
+@model ViewModels.Site.SiteMenuViewModel
+@{
+    var first = Model.Products.FirstOrDefault();
+    string navActive = (ViewContext.ParentActionViewContext.ViewBag.NavActive as string) ?? "";
+}
+<header class="top">
+    <div class="wrap hbar">
+        <div class="hright">
+            <a class="logo" href="/" aria-label="پریکاتن"><img src="~/Assets/site/logo.png" alt="پریکاتن Parikatan Rejuvenate"></a>
+            <nav class="main" aria-label="منوی اصلی">
+                <a href="/"@(navActive == "home" ? " class=active" : "")>خانه</a>
+                <div class="has-mega">
+                    <a class="mega-trigger@(navActive == "products" ? " active" : "")" href="/product" aria-haspopup="true">محصولات <svg class="i"><use href="#chev" /></svg></a>
+                    <div class="mega-wrap">
+                        <div class="mega" role="menu" aria-label="محصولات پریکاتن">
+                            <div class="mega-list">
+                                <div class="mega-head"><span>محصولات پریکاتن</span><span>@SiteFormat.Digits(Model.Products.Count) محصول</span></div>
+                                @foreach (var p in Model.Products)
+                                {
+                                    var img = SiteFormat.Img(p.ImageUrl);
+                                    <a class="mi" href="/product-detail/@p.Id" role="menuitem"
+                                       data-id="@p.Id" data-img="@img" data-title="@p.Title"
+                                       data-tag="@(p.ProductCategory != null ? p.ProductCategory.Title : "")"
+                                       data-price="@SiteFormat.Price(SiteFormat.FinalAmount(p))">
+                                        <div class="th"><img src="@img" alt=""></div>
+                                        <div><b>@p.Title</b><span>@SiteFormat.PlainText(p.Summery, 60)</span></div>
+                                        <svg class="i go"><use href="#arrow" /></svg>
+                                    </a>
+                                }
+                                <a class="mi all" href="/product" role="menuitem"><div><b>مشاهده همه محصولات</b><span>ورود به فروشگاه</span></div><svg class="i go"><use href="#arrow" /></svg></a>
+                            </div>
+                            @if (first != null)
+                            {
+                                <aside class="mega-feat" aria-live="polite">
+                                    <div class="ph"><img class="feat-img" src="@SiteFormat.Img(first.ImageUrl)" alt=""></div>
+                                    <span class="tag feat-tag">@(first.ProductCategory != null ? first.ProductCategory.Title : "")</span>
+                                    <h4 class="feat-title">@first.Title</h4>
+                                    <div class="foot"><span class="fp feat-price">@SiteFormat.Price(SiteFormat.FinalAmount(first))</span><a class="btn sm" href="#" data-add="@first.Id" data-name="@first.Title">افزودن به سبد</a></div>
+                                </aside>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <a href="/#tech">فناوری‌ها</a><a href="/blog"@(navActive == "blog" ? " class=active" : "")>مجله پریکاتن</a><a href="/about"@(navActive == "about" ? " class=active" : "")>درباره ما</a><a href="/#deal">نمایندگی</a><a href="/pharmacies"@(navActive == "pharmacies" ? " class=active" : "")>داروخانه‌ها</a><a href="/contact"@(navActive == "contact" ? " class=active" : "")>تماس با ما</a>
+            </nav>
+        </div>
+        <div class="hleft">
+            <button class="ibtn menu-btn" aria-label="منو"><svg class="i"><use href="#menu" /></svg></button>
+            <a class="ibtn" href="/product" aria-label="جست‌وجو"><svg class="i"><use href="#search" /></svg></a>
+            <a class="ibtn" href="/basket" aria-label="سبد خرید"><svg class="i"><use href="#bag" /></svg><span class="badge" data-cart-count hidden>۰</span></a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="btn sec sm" href="/Accounts/LogOff">خروج</a>
+            }
+            else
+            {
+                <a class="btn sec sm" href="/login">ورود / ثبت‌نام</a>
+            }
+        </div>
+    </div>
+</header>
+
+<div class="mmenu">
+    <div class="mov" data-close></div>
+    <aside class="mdrawer" id="mdrawer" role="dialog" aria-modal="true" aria-label="منوی اصلی">
+        <div class="mtop">
+            <a class="logo" href="/" aria-label="پریکاتن"><img src="~/Assets/site/logo.png" alt="پریکاتن"></a>
+            <button class="ibtn" data-close aria-label="بستن منو"><svg class="i"><use href="#x" /></svg></button>
+        </div>
+        <nav class="mnav" aria-label="منوی موبایل">
+            <a class="ml" href="/" data-close>خانه <svg class="i"><use href="#arrow" /></svg></a>
+            <div class="macc" id="macc">
+                <button class="ml trig" aria-expanded="false" aria-controls="macc-body">محصولات <svg class="i"><use href="#chev" /></svg></button>
+                <div class="macc-body" id="macc-body">
+                    <div class="macc-in">
+                        <div class="mp-list">
+                            @foreach (var p in Model.Products)
+                            {
+                                <a class="mp" href="/product-detail/@p.Id" data-close>
+                                    <div class="th"><img src="@SiteFormat.Img(p.ImageUrl)" alt=""></div>
+                                    <div><b>@p.Title</b><span>@SiteFormat.PlainText(p.Summery, 60)</span></div>
+                                    <svg class="i"><use href="#arrow" /></svg>
+                                </a>
+                            }
+                            <a class="mp all" href="/product" data-close>مشاهده همه محصولات <svg class="i"><use href="#arrow" /></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="ml" href="/#tech" data-close>فناوری‌ها <svg class="i"><use href="#arrow" /></svg></a>
+            <a class="ml" href="/blog" data-close>مجله پریکاتن <svg class="i"><use href="#arrow" /></svg></a>
+            <a class="ml" href="/about" data-close>درباره ما <svg class="i"><use href="#arrow" /></svg></a>
+            <a class="ml" href="/#deal" data-close>نمایندگی <svg class="i"><use href="#arrow" /></svg></a>
+            <a class="ml" href="/pharmacies" data-close>داروخانه‌های عرضه‌کننده <svg class="i"><use href="#arrow" /></svg></a>
+            <a class="ml" href="/contact" data-close>تماس با ما <svg class="i"><use href="#arrow" /></svg></a>
+        </nav>
+        <div class="mfoot">
+            <a class="btn" href="/product" data-close>ورود به فروشگاه</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a class="btn sec" href="/Accounts/LogOff">خروج</a>
+            }
+            else
+            {
+                <a class="btn sec" href="/login">ورود / ثبت‌نام</a>
+            }
+            <div class="mcontact"><a href="tel:02144063290" dir="ltr">۰۲۱-۴۴۰۶۳۲۹۰</a></div>
+        </div>
+    </aside>
+</div>

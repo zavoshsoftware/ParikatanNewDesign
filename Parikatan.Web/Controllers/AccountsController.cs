@@ -156,8 +156,9 @@ namespace Parikatan.Web.Controllers
 
                     LoginTask(user);
 
-                    if (returnUrl != null)
-                        return Redirect(returnUrl);
+                    string safeReturn = SafeReturnUrl(returnUrl);
+                    if (safeReturn != null)
+                        return Redirect(safeReturn);
 
                     return RedirectToAction("index", "home");
                 }
@@ -177,6 +178,19 @@ namespace Parikatan.Web.Controllers
             return View(activateViewModel);
         }
 
+
+        /// <summary>Only local urls are allowed as post-login targets ("checkout" is the legacy short form).</summary>
+        private string SafeReturnUrl(string returnUrl)
+        {
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                return null;
+
+            returnUrl = returnUrl.Trim();
+            if (returnUrl.Equals("checkout", StringComparison.OrdinalIgnoreCase))
+                return "/checkout";
+
+            return Url.IsLocalUrl(returnUrl) ? returnUrl : null;
+        }
 
         public string RandomCode()
         {

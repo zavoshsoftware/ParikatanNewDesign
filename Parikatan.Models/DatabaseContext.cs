@@ -41,6 +41,8 @@ namespace Models
         public DbSet<InventoryDetail> InventoryDetails { get; set; }
         public DbSet<ProductPackageItem> ProductPackageItemss { get; set; }
         public DbSet<Cost> Costs { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Pharmacy> Pharmacies { get; set; }
 
         public System.Data.Entity.DbSet<Models.Entities.Referral> Referrals { get; set; }
     }

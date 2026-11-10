@@ -159,6 +159,16 @@
 																						<i class="fa fa-angle-left"></i><span>مدیریت محصولات</span>
 																					</a>
 																				</li>
+																				<li>
+																					<a href="/ProductCategories">
+																						<i class="fa fa-angle-left"></i><span>دسته‌بندی محصولات</span>
+																					</a>
+																				</li>
+																				<li>
+																						<a href="/Pharmacies/Manage">
+																							<i class="fa fa-angle-left"></i><span>داروخانه‌ها و مراکز فروش</span>
+																						</a>
+																					</li>
 
 
 																			</ul>
@@ -361,7 +371,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var URL = window.location.pathname;
-            if (URL.includes('ProductCategories') || URL.includes('products')) {
+            if (URL.includes('ProductCategories') || URL.includes('Pharmacies') || URL.includes('products')) {
                 $('.menuitem').removeClass('active');
                 $('#productLi').addClass('active');
             }

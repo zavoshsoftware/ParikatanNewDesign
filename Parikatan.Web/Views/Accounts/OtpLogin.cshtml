@@ -1,73 +1,59 @@
 ﻿@model ViewModels.ForgetPasswordViewModel
 @{
-	ViewBag.Title = "ورود";
-	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    ViewBag.Title = "ورود / ثبت‌نام | پریکاتن";
+    ViewBag.Robots = "noindex, follow";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    string error = TempData["WrongMobile"] as string;
+}
+@section head
+{
+    <link href="@Helpers.SiteFormat.Asset("~/Assets/site/auth.css")" rel="stylesheet">
 }
 
-@section head{
+<div class="auth">
+    <div class="wrap auth-grid">
 
-	<link href="~/Assets_Old/css/style.css" rel="stylesheet" />
-	@*<link href="~/Assets_Old/css/style-rtl.css" rel="stylesheet" />*@
+        <section class="auth-card" aria-labelledby="auth-title">
+            <div class="k">ورود / ثبت‌نام</div>
+            <h1 id="auth-title">به پریکاتن خوش آمدید</h1>
+            <p class="sub">برای ورود یا ساخت حساب کاربری و تکمیل سفارش، شماره موبایل خود را وارد کنید. کد تأیید برایتان پیامک می‌شود.</p>
 
-}
+            @using (Html.BeginForm("OtpLogin", "Accounts", FormMethod.Post, new { id = "login-form", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl">
+                <input type="hidden" name="UserCellNumber" id="UserCellNumber" value="">
 
-<div class="breadcrumbs_area other_bread">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="breadcrumb_content">
-					<ul>
-						<li><a href="/">خانه</a></li>
-						<li>/</li>
-						<li>ورود</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-
-<div class="customer_login">
-	<div class="container">
-		<div class="row justify-content-center align-items-center pt-5" style="min-height: 500px">
-			<!--login area start-->
-		
-			<div class="col-lg-6 col-md-6">
-                <div class="account_form text-center">
-
-                    @using (Html.BeginForm("OtpLogin", "Accounts", FormMethod.Post, new { }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="@Model.ReturnUrl">
-
-                        if (TempData["WrongMobile"] != null)
-                        {
-                            <p class="alert alert-danger" id="wrongEmail">@TempData["WrongMobile"]</p>
-                        }
-                        <img src="/Assets/images/Asset 2.png" style="width: auto; height: 100px ; margin:auto;">
-                        <h3 class="mt-4">ورود به حساب کاربری</h3>
-                        <p class="">
-                            برای تکمیل سفارش شماره موبایل خود را وارد نمایید.
-                        </p>
-                        <p>
-                           
-
-                            <input type="text" class="form-control m-auto w-75" name="UserCellNumber" id="UserCellNumber" placeholder="شماره موبایل: *********09" pattern="\d*" inputmode="numeric" />
-                        </p>
-
-                        <div class="">
-
-                            <button type="submit" class=" m-auto w-75" style="" id="btnLogin">ورود</button>
-
-                        </div>
-
-                    }
+                <label class="f-label" for="mobile">شماره موبایل</label>
+                <div class="phone-field @(error != null ? "bad" : "")">
+                    <input id="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" dir="ltr" placeholder="۰۹۱۲ ۳۴۵ ۶۷۸۹" maxlength="16" aria-describedby="phone-err">
+                    <span class="pf-ic" aria-hidden="true"><svg class="i"><use href="#phone" /></svg></span>
                 </div>
-			</div>
+                <div class="f-err" id="phone-err" role="alert">@error</div>
+                <button class="btn auth-btn" type="submit"><span>دریافت کد تأیید</span><svg class="i"><use href="#arrow" /></svg></button>
+            }
 
-		</div>
-	</div>
+            <p class="terms">ورود شما به معنای پذیرش قوانین و مقررات و حریم خصوصی پریکاتن است.</p>
+
+            <ul class="auth-perks">
+                <li><svg class="i"><use href="#check" /></svg>پیگیری سفارش‌ها</li>
+                <li><svg class="i"><use href="#check" /></svg>ذخیره‌ی سبد خرید</li>
+                <li><svg class="i"><use href="#check" /></svg>ثبت نظر برای محصولات</li>
+            </ul>
+        </section>
+
+        <aside class="auth-vis" aria-hidden="true">
+            <div class="av-glow"></div>
+            <div class="av-jar"><img class="j-closed" src="~/Assets/site/cream-closed.png" alt="" width="500" height="500"></div>
+            <div class="av-chip c1"><span><svg class="i"><use href="#shield" /></svg></span><b>کارآزمایی بالینی</b></div>
+            <div class="av-chip c2"><span><svg class="i"><use href="#flask" /></svg></span><b>فرموله‌شده در SEPPIC فرانسه</b></div>
+            <p class="av-cap">مراقبت علمی و جوان‌سازی پوست</p>
+        </aside>
+
+    </div>
 </div>
 
+@section scripts
+{
+    <script src="@Helpers.SiteFormat.Asset("~/Assets/site/auth.js")"></script>
+}

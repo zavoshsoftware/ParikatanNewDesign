@@ -1,143 +1,115 @@
-﻿@{
-	ViewBag.Title = "فروشگاه اینترنتی پریکاتن";
-	//ViewBag.Description = "فروش کرم ضد چروک اصل پریکاتن به همراه کرم دور چشم پریکاتن از فروشگاه اینترنتی رسمی شرکت پریکاتن";
-	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
-	ViewBag.Canonical = "https://parikatan.shop/contact";
+﻿@using Helpers
+@{
+    ViewBag.Title = "تماس با ما | پریکاتن";
+    ViewBag.Description = "راه‌های ارتباط با پریکاتن: تلفن، واتس‌اپ، ایمیل، نشانی و فرم ارسال پیام.";
+    ViewBag.Canonical = "https://parikatan.shop/contact";
+    ViewBag.NavActive = "contact";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
 }
-@section head{
-	<style>
-		#errorDivContact,#SuccessDivContact {
-			display: none;
-		}
-	</style>
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/contact.css")" rel="stylesheet">
 }
-<div class="container-fluid p-0 m-0">
-	<section id="section13" dir="rtl">
+<div class="contact-p">
 
-		<div class="row justify-content-center align-content-center align-items-center">
-			<div class="col-lg-6 text-center">
-				<img class="contact-text" src="~/Assets/images/Asset contact-text.png" />
-			</div>
-			<div class="col-lg-6 text-center">
-				<img class="contact-img-top" src="~/Assets/images/Asset contact-img-top.png" />
-			</div>
+<div class="wrap">
+  <nav class="crumbs" aria-label="مسیر صفحه">
+    <a href="/">خانه</a><span>/</span><b>تماس با ما</b>
+  </nav>
+</div>
 
-		</div>
+<!-- ============ HEADER ============ -->
+<section class="ct-hero">
+  <div class="wrap">
+    <div class="k">تماس با ما</div>
+    <h1>با ما در تماس باشید</h1>
+    <p class="sub">برای خرید، مشاوره درباره‌ی محصولات یا هر پرسشی، از یکی از راه‌های زیر با پریکاتن در ارتباط باشید.</p>
+  </div>
+</section>
 
-	</section>
-	<section id="section14">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 text-center">
-					<div class="card">
+<!-- ============ SMS LINE (main way in) ============ -->
+<section class="ct-sms-w">
+  <div class="wrap">
+    <div class="ct-sms">
+      <div class="sms-text">
+        <div class="k on-dark">سامانه‌ی پیامکی پریکاتن</div>
+        <h2>عدد <span class="hl">۳</span> را به <span class="num" dir="ltr">۱۰۰۰۴۹۶۹</span> پیامک کنید</h2>
+        <p>به پاس احترام و جلوگیری از اتلاف وقت شما، سامانه‌ی پیامکی پریکاتن را راه‌اندازی کرده‌ایم تا در صورت تمایل جهت خرید یا تکمیل اطلاعات درباره‌ی محصولات پریکاتن، با ارسال عدد ۳ به سامانه‌ی ۱۰۰۰۴۹۶۹، مشاورین ما در اولین فرصت با شما تماس حاصل کنند.</p>
+        <div class="sms-act">
+          <a class="btn white" href="sms:10004969?body=3"><svg class="i"><use href="#send"/></svg>ارسال پیامک</a>
+          <button class="btn link" type="button" id="copy-sms">کپی شماره‌ی سامانه</button>
+        </div>
+      </div>
+      <div class="sms-phone" aria-hidden="true">
+        <div class="ph">
+          <div class="ph-top"><span class="ph-av"><svg class="i"><use href="#send"/></svg></span><b dir="ltr">10004969</b></div>
+          <div class="ph-body">
+            <div class="bub me">۳</div>
+            <div class="bub them">ممنون از پیام شما؛ مشاورین پریکاتن در اولین فرصت با شما تماس می‌گیرند.</div>
+          </div>
+          <div class="ph-input"><span>پیامک</span><i><svg class="i"><use href="#arrow"/></svg></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-						<img class="card-img-top" src="~/Assets/images/Asset time.png" />
-						<div class="card-body" dir="rtl">
-							<di>
-								شنبه تا چهارشنبه :
-							</di>
-							<di class="mb-4">
-								8:00 تا 17:00
-							</di>
-							<di>
-								پنجشنبه :
+<!-- ============ CONTACT DETAILS + FORM ============ -->
+<section class="s ct-main">
+  <div class="wrap ct-grid">
 
-							</di>
-							<di>
-								8:00 تا 13:00
-							</di>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 text-center">
-					<div class="card">
+    <div class="ct-info">
+      <a class="ct-card" href="tel:02144063290">
+        <span class="ic"><svg class="i"><use href="#phone"/></svg></span>
+        <div><small>تلفن</small><b dir="ltr">۰۲۱-۴۴۰۶۳۲۹۰</b></div>
+        <svg class="i go"><use href="#arrow"/></svg>
+      </a>
+      <a class="ct-card" href="https://wa.me/989014852865"><span class="ic"><svg class="i"><use href="#send"/></svg></span><div><small>واتس‌اپ</small><b dir="ltr">۰۹۰۱۴۸۵۲۸۶۵</b></div><svg class="i go"><use href="#arrow"/></svg></a>
+      <a class="ct-card" href="mailto:info@parikatan.shop">
+        <span class="ic"><svg class="i"><use href="#mail"/></svg></span>
+        <div><small>ایمیل</small><b dir="ltr">info@parikatan.shop</b></div>
+        <svg class="i go"><use href="#arrow"/></svg>
+      </a>
+      <div class="ct-card"><span class="ic"><svg class="i"><use href="#clock"/></svg></span><div><small>ساعت کاری</small><b>شنبه تا چهارشنبه: ۸ تا ۱۷ · پنجشنبه: ۸ تا ۱۳</b></div></div>
+      <div class="ct-card addr">
+        <span class="ic"><svg class="i"><use href="#pin"/></svg></span>
+        <div><small>نشانی</small><b>تهران، بزرگراه اشرفی اصفهانی، بین بلوار مرزداران و پل حکیم، خیابان گلستان ۲۶، پلاک ۱، واحد ۶، طبقه‌ی سوم</b></div>
+      </div>
+      <div class="ct-map">
+        <iframe title="نقشه‌ی پریکاتن" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2278.136537305028!2d51.34755572545765!3d35.736942467079935!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e07335f7c0df1%3A0xe9a7b036ed2311e7!2z2KrYtNix24zZgdin2Kog2LTZh9in2Kg!5e0!3m2!1sen!2sus!4v1705312273098!5m2!1sen!2sus" style="border:0;width:100%;height:100%;min-height:220px" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <a class="btn sm" href="https://www.google.com/maps/search/?api=1&amp;query=تهران،+بزرگراه+اشرفی+اصفهانی،+خیابان+گلستان+۲۶" target="_blank" rel="noopener">مسیریابی در نقشه <svg class="i"><use href="#arrow"/></svg></a>
+      </div>
+    </div>
 
-						<img class="card-img-top" src="~/Assets/images/Asset phone.png" />
-						<div class="card-body" dir="rtl">
-							<div>
-								<a href="tel:02144063290" class="d-block">
-									تلفن تماس: 44063290-021
-								</a>
-							</div>
-							<div>
-								<a href="https://web.whatsapp.com/send?phone=989014852865&text=با سلام" class="d-block">
-									واتس اپ: 09014852865
-								</a>
-							</div>
-							<div>
-								<a href="mail:info@parikatan.shop">
-									ایمیل: info@parikatan.shop
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 text-center">
-					<div class="card">
+    <div class="ct-form-card">
+      <div id="ct-form-view">
+        <h2>پیام بگذارید</h2>
+        <p class="sub">پیام خود را بنویسید؛ همکاران ما در اولین فرصت پاسخ می‌دهند.</p>
+        <form id="ct-form" novalidate>
+          <div class="fgrid2">
+            <div class="fld"><label for="c-name">نام و نام خانوادگی</label><input id="c-name" type="text" autocomplete="name" placeholder="مثلاً مریم احمدی"><div class="f-err"></div></div>
+            <div class="fld"><label for="c-mobile">شماره موبایل</label><input id="c-mobile" type="tel" inputmode="numeric" autocomplete="tel-national" dir="ltr" placeholder="۰۹۱۲ ۳۴۵ ۶۷۸۹"><div class="f-err"></div></div>
+            <div class="fld full"><label for="c-topic">موضوع</label>
+              <div class="sel"><select id="c-topic"><option value="">انتخاب موضوع</option><option>مشاوره و خرید محصول</option><option>پیگیری سفارش</option><option>نمایندگی و همکاری</option><option>پیشنهاد یا انتقاد</option><option>سایر</option></select><svg class="i"><use href="#chev"/></svg></div><div class="f-err"></div></div>
+            <div class="fld full"><label for="c-msg">پیام</label><textarea id="c-msg" rows="5" maxlength="250" placeholder="پیام خود را بنویسید…"></textarea><div class="f-err"></div></div>
+          </div>
+          <button class="btn ct-go" type="submit"><span>ارسال پیام</span><svg class="i"><use href="#arrow"/></svg></button>
+        </form>
+      </div>
+      <div class="ct-done" id="ct-done" hidden>
+        <div class="big"><svg class="i"><use href="#check"/></svg></div>
+        <h2>پیام شما ثبت شد</h2>
+        <p class="sub">ممنون از پیام شما؛ همکاران ما در اولین فرصت با شما تماس می‌گیرند.</p>
+        <button class="btn sec" type="button" id="ct-again">ارسال پیام دیگر</button>
+      </div>
+    </div>
 
-						<img class="card-img-top" src="~/Assets/images/Asset loc.png" />
-						<div class="card-body" dir="rtl">
-							<p>
-								تهران ، بزرگراه اشرفی اصفهانــی ، بیـن بلوار مرزداران و پل حکیم ، خـیابان گـــلسـتان 26 ، پللـاک 1 ، واحـد 6 ، طبقه سوم
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section id="section15">
-		<div class="container text-center">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2278.136537305028!2d51.34755572545765!3d35.736942467079935!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e07335f7c0df1%3A0xe9a7b036ed2311e7!2z2KrYtNix24zZgdin2Kog2LTZh9in2Kg!5e0!3m2!1sen!2sus!4v1705312273098!5m2!1sen!2sus" width="97%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
 
-		</div>
-	</section>
-	<section id="section12" class="pb-5" style=" background-color: #efeef1;">
-		<div class="container" dir="rtl">
-			<div class="row">
-
-
-
-				<div class="col-12 text-center">
-					<h3 class="my-5 ">
-						ارســـــال پــــــیام
-					</h3>
-
-				</div>
-				<div class="col-12 d-flex flex-wrap">
-					<div class="col-lg-6 col-12">
-						<div class="input-group mb-3 me-lg-0">
-							<button class="btn btn-outline-secondary" type="button" id="button-addon1">نام و نام خانوادگی</button>
-							<input type="text" class="form-control" id="commentName" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-						</div>
-					</div>
-					<div class="col-lg-6 col-12">
-						<div class="input-group mb-3 ms-lg-0">
-							<button class="btn btn-outline-secondary" type="button" id="button-addon2">تلفن تماس</button>
-							<input type="text" class="form-control" id="phone" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-						</div>
-					</div>
-				</div>
-				<div class="col-12 mb-3">
-					<textarea type="text" rows="8" class="textarea" placeholder="متن پیغام" id="commentBody"></textarea>
-				</div>
-				<div class="col-12 text-center">
-					<button type="button" class="btn contact-us-send m-auto  navbar-btn-top d-inline-block" onclick="SubmitContactUs();">
-						ارسال
-					</button>
-			
-				</div>
-				<div class="col-12 text-center">
-					<p class="alert alert-danger" id="errorDivContact"></p>
-					<p class="alert alert-success" id="SuccessDivContact">پیام شما با موفقیت ثبت گردید. همکاران ما به زودی به پیام شما رسیدگی خواهند کرد.</p>
-				</div>
-			</div>
-		</div>
-	</section>
 </div>
 
 @section scripts
 {
-	<script src="~/Scripts/function.js"></script>
-
+    <script src="@SiteFormat.Asset("~/Assets/site/contact.js")"></script>
 }

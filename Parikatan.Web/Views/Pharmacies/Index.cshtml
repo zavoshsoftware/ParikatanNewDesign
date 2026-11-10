@@ -1,0 +1,119 @@
+﻿@using Helpers
+@model List<Models.Entities.Pharmacy>
+@{
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    var regions = Model.GroupBy(p => new { p.RegionOrder, p.Region }).OrderBy(g => g.Key.RegionOrder).ToList();
+    Func<Models.Entities.Pharmacy, string> badge = p =>
+        p.Hours == "h24" ? "<span class=\"bd h24\">شبانه‌روزی</span>" :
+        p.Hours == "eve" ? "<span class=\"bd eve\">نیمه‌وقت عصر</span>" :
+        p.Hours == "day" ? "<span class=\"bd day\">روزانه</span>" :
+        p.Kind == "store" ? "<span class=\"bd shop\">فروشگاه</span>" : "";
+}
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/pharmacies.css")" rel="stylesheet">
+}
+
+<div class="phx">
+    <div class="wrap">
+        <nav class="crumbs" aria-label="مسیر صفحه">
+            <a href="/">خانه</a><span>/</span><b>داروخانه‌های عرضه‌کننده</b>
+        </nav>
+    </div>
+
+    <section class="ph-hero">
+        <div class="wrap ph-hero-row">
+            <div>
+                <div class="k">مراکز فروش</div>
+                <h1>داروخانه‌های عرضه‌کننده‌ی پریکاتن</h1>
+                <p class="sub">محصولات پریکاتن را از داروخانه‌ها و فروشگاه‌های زیر در شهرهای مختلف تهیه کنید. نام داروخانه را جست‌وجو کنید یا شهر خود را انتخاب کنید.</p>
+                <div class="ph-stats">
+                    <span><b>@SiteFormat.Digits(Model.Count)</b>مرکز فروش</span>
+                    <span><b>@SiteFormat.Digits(regions.Count)</b>شهر و منطقه</span>
+                </div>
+            </div>
+            <a class="ph-join" href="/#deal">
+                <span class="ic"><svg class="i"><use href="#badge" /></svg></span>
+                <span><b>داروخانه دارید؟</b><small>نماینده‌ی فروش پریکاتن شوید</small></span>
+                <svg class="i go"><use href="#arrow" /></svg>
+            </a>
+        </div>
+    </section>
+
+    <div class="ph-bar" id="phbar">
+        <div class="wrap ph-bar-row">
+            <label class="ph-search"><svg class="i"><use href="#search" /></svg><input id="phq" type="search" placeholder="جست‌وجوی نام داروخانه یا شهر…" aria-label="جست‌وجوی داروخانه"></label>
+            <div class="sel ph-city">
+                <select id="phcity" aria-label="انتخاب شهر">
+                    <option value="">همه‌ی شهرها</option>
+                    @foreach (var g in regions)
+                    {
+                        <option value="r@(g.Key.RegionOrder)">@g.Key.Region (@SiteFormat.Digits(g.Count()))</option>
+                    }
+                </select><svg class="i"><use href="#chev" /></svg>
+            </div>
+            <div class="ph-kinds" role="group" aria-label="نوع مرکز فروش">
+                <button class="on" type="button" data-k="all">همه</button>
+                <button type="button" data-k="h24">شبانه‌روزی</button>
+                <button type="button" data-k="store">فروشگاه</button>
+            </div>
+            <span class="ph-count" id="phcount" aria-live="polite"></span>
+        </div>
+    </div>
+
+    <section class="ph-main">
+        <div class="wrap ph-grid-wrap">
+            <aside class="ph-side" aria-label="شهرها">
+                <b>شهرها</b>
+                <nav id="phside">
+                    @foreach (var g in regions)
+                    {
+                        <a href="#r@(g.Key.RegionOrder)" data-r="r@(g.Key.RegionOrder)"><span>@g.Key.Region</span><i>@SiteFormat.Digits(g.Count())</i></a>
+                    }
+                </nav>
+            </aside>
+            <div class="ph-list" id="phlist">
+                @foreach (var g in regions)
+                {
+                    <section class="ph-reg" id="r@(g.Key.RegionOrder)" data-region="@g.Key.Region">
+                        <div class="ph-reg-h"><h2>@g.Key.Region</h2><span class="cnt">@SiteFormat.Digits(g.Count()) فروشگاه</span></div>
+                        <ul class="ph-grid">
+                            @foreach (var p in g)
+                            {
+                                <li class="ph-item" data-kind="@(p.Kind == "store" ? "store" : "pharm")">
+                                    <span class="ic"><svg class="i"><use href="@(p.Kind == "store" ? "#bag" : "#plus")" /></svg></span>
+                                    <div>
+                                        <b>@p.Title</b>
+                                        @if (!string.IsNullOrWhiteSpace(p.Address)) { <small>@p.Address</small> }
+                                        @if (!string.IsNullOrWhiteSpace(p.Phone)) { <small dir="ltr">@SiteFormat.Digits(p.Phone)</small> }
+                                        @{ var bd = badge(p); }
+                                        @if (bd.Length > 0) { <span class="bds">@Html.Raw(bd)</span> }
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </section>
+                }
+                <div class="ph-empty" id="phempty" hidden>
+                    <svg class="i"><use href="#search" /></svg>
+                    <b>مرکز فروشی پیدا نشد</b>
+                    <span>نام دیگری را جست‌وجو کنید یا «همه‌ی شهرها» را انتخاب کنید. می‌توانید از سامانه‌ی پیامکی هم کمک بگیرید.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ph-note-w">
+        <div class="wrap">
+            <div class="ph-note">
+                <div><div class="k on-dark">نزدیک‌ترین مرکز فروش را پیدا نکردید؟</div><h2>عدد ۳ را به <span dir="ltr">۱۰۰۰۴۹۶۹</span> پیامک کنید</h2><p>مشاورین پریکاتن در اولین فرصت با شما تماس می‌گیرند. پیش از مراجعه به داروخانه هم بهتر است موجودی محصول را تلفنی بپرسید.</p></div>
+                <div class="ph-note-act"><a class="btn white" href="sms:10004969?body=3"><svg class="i"><use href="#send" /></svg>ارسال پیامک</a><a class="btn link" href="/product">خرید آنلاین از سایت</a></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section scripts
+{
+    <script src="@SiteFormat.Asset("~/Assets/site/pharmacies.js")"></script>
+}

@@ -1,0 +1,24 @@
+﻿@model Models.Entities.Pharmacy
+
+@{
+    ViewBag.Title = "حذف مرکز فروش";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>آیا از حذف این مورد اطمینان دارید؟</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(m => m.Region)</dt><dd>@Html.DisplayFor(m => m.Region)</dd>
+        <dt>@Html.DisplayNameFor(m => m.Title)</dt><dd>@Html.DisplayFor(m => m.Title)</dd>
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="حذف" class="btn btn-danger" />
+            @Html.ActionLink("بازگشت به فهرست", "Manage")
+        </div>
+    }
+</div>

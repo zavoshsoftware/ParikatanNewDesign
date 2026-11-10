@@ -32,6 +32,14 @@
 		        @Html.ValidationMessageFor(model => model.Title)
 	        </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductCategoryId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ProductCategoryId, (SelectList)ViewBag.Categories, "— بدون دسته —")
+                @Html.ValidationMessageFor(model => model.ProductCategoryId)
+            </div>
+        </div>
   
             <div class="form-group">
                 @Html.LabelFor(model => model.PageTitle, new { @class = "control-label col-md-2" })
@@ -75,6 +83,25 @@
                     @Html.ValidationMessageFor(model => model.Summery)
                 </div>
             </div>
+        @foreach (var fld in new[] { "EnglishTitle", "Badge", "Highlights", "Specs", "Benefits", "Technologies", "Ingredients", "UsageSteps", "ClinicalText", "ClinicalNumber", "ClinicalStats" })
+        {
+            var meta = ModelMetadata.FromStringExpression(fld, ViewData);
+            <div class="form-group">
+                <label class="control-label col-md-2" for="@fld">@meta.DisplayName</label>
+                <div class="col-md-10">
+                    @if (fld == "EnglishTitle" || fld == "Badge" || fld == "ClinicalNumber")
+                    {
+                        @Html.TextBox(fld, (string)meta.Model, new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextArea(fld, (string)meta.Model, 4, 80, new { @class = "form-control" })
+                    }
+                </div>
+            </div>
+        }
+
+
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Body, new { @class = "control-label col-md-2" })

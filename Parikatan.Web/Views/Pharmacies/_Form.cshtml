@@ -1,0 +1,48 @@
+﻿@model Models.Entities.Pharmacy
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreationDate)
+    @Html.HiddenFor(model => model.RegionOrder)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Region, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">@Html.EditorFor(model => model.Region)@Html.ValidationMessageFor(model => model.Region)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">@Html.EditorFor(model => model.Title)@Html.ValidationMessageFor(model => model.Title)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Kind, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Kind, new SelectList(new[] {
+                new { V = "pharmacy", T = "داروخانه" }, new { V = "store", T = "فروشگاه" } }, "V", "T", Model.Kind))
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Hours, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Hours, new SelectList(new[] {
+                new { V = "", T = "—" }, new { V = "day", T = "روزانه" }, new { V = "eve", T = "نیمه‌وقت عصر" }, new { V = "h24", T = "شبانه‌روزی" } }, "V", "T", Model.Hours))
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">@Html.EditorFor(model => model.Address)@Html.ValidationMessageFor(model => model.Address)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">@Html.EditorFor(model => model.Phone)@Html.ValidationMessageFor(model => model.Phone)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">@Html.EditorFor(model => model.Order)@Html.ValidationMessageFor(model => model.Order)</div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">@Html.EditorFor(model => model.IsActive) @Html.LabelFor(model => model.IsActive)</div>
+    </div>
+</div>

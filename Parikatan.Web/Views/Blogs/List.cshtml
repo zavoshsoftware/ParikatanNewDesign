@@ -1,64 +1,129 @@
-﻿@model ViewModels.Blogs.BlogListViewModel
+﻿@using Helpers
+@model ViewModels.Blogs.BlogListViewModel
 @{
-	ViewBag.Title = "  مجله پریکاتن ";
-	Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
-	
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    bool byGroup = Model.BlogGroup != null;
+    var blogs = Model.Blogs ?? new List<Models.Entities.Blog>();
+    var feat = blogs.FirstOrDefault();
+    var rest = blogs.Skip(1).ToList();
+    Func<Models.Entities.Blog, string> cat = b => b.BlogGroup != null ? b.BlogGroup.UrlParam : "";
+}
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/blog.css")" rel="stylesheet">
 }
 
+<div class="blog">
+    <div class="wrap">
+        <nav class="crumbs" aria-label="مسیر صفحه">
+            <a href="/">خانه</a><span>/</span>
+            @if (byGroup)
+            {
+                <a href="/blog">مجله پریکاتن</a><span>/</span><b>@Model.BlogGroup.Title</b>
+            }
+            else
+            {
+                <b>مجله پریکاتن</b>
+            }
+        </nav>
+    </div>
 
-<div class="full-row bg-light py-5">
-	<div class="container breadcrump-wrapper">
-		<div class="row text-secondary ">
-			<div class="col-sm-6">
-				<h3 class="mb-2 text-secondary">مجله پریکاتن</h3>
-			</div>
-			<div class="col-sm-6">
-				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100">
-					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
-						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>خانه</a></li>
-						<li class="breadcrumb-item active" aria-current="page">مجله پریکاتن</li>
-					</ol>
-				</nav>
-			</div>
-		</div>
-	</div>
+    <section class="bl-hero">
+        <div class="wrap">
+            <div class="bl-head">
+                <div>
+                    <div class="k">مجله پریکاتن</div>
+                    <h1>@(byGroup ? Model.BlogGroup.Title : "بخوانید و پوستتان را بهتر بشناسید")</h1>
+                    <p class="sub">@(byGroup && !string.IsNullOrWhiteSpace(Model.BlogGroup.Summery) ? Model.BlogGroup.Summery : "راهنمای مراقبت از پوست، شناخت مواد مؤثر و انتخاب درست محصول؛ به زبان ساده.")</p>
+                </div>
+                @if (!byGroup)
+                {
+                    <label class="bl-search">
+                        <svg class="i"><use href="#search" /></svg>
+                        <input id="bsearch" type="search" placeholder="جست‌وجو در مقالات…" aria-label="جست‌وجو در مقالات">
+                    </label>
+                }
+            </div>
+            @if (Model.Groups != null && Model.Groups.Count > 0)
+            {
+                <div class="bl-chips" role="group" aria-label="موضوع مقالات">
+                    @if (byGroup)
+                    {
+                        <a href="/blog">همه</a>
+                        foreach (var g in Model.Groups)
+                        {
+                            <a class="@(g.Id == Model.BlogGroup.Id ? "on" : "")" href="/blog/@g.UrlParam">@g.Title</a>
+                        }
+                    }
+                    else
+                    {
+                        <button class="on" type="button" data-cat="all">همه</button>
+                        foreach (var g in Model.Groups)
+                        {
+                            <button type="button" data-cat="@g.UrlParam">@g.Title</button>
+                        }
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="bl-list">
+        <div class="wrap">
+
+            @if (feat != null)
+            {
+                <article class="ac feat" data-cat="@cat(feat)">
+                    <a class="img @(string.IsNullOrEmpty(feat.ImageUrl) ? "noimg" : "")" href="/blog/post/@feat.UrlParam" aria-hidden="true" tabindex="-1">
+                        @if (!string.IsNullOrEmpty(feat.ImageUrl)) { <img src="@feat.ImageUrl" alt="@feat.Title"> }
+                    </a>
+                    <div class="body">
+                        <span class="feat-flag">مقاله‌ی ویژه</span>
+                        @if (feat.BlogGroup != null) { <span class="tag">@feat.BlogGroup.Title</span> }
+                        <h3><a href="/blog/post/@feat.UrlParam">@feat.Title</a></h3>
+                        <p>@SiteFormat.PlainText(feat.Summery, 220)</p>
+                        <div class="meta"><svg class="i"><use href="#clock" /></svg>@SiteFormat.Digits(SiteFormat.ReadMinutes(feat.Body)) دقیقه مطالعه</div>
+                        <a class="btn sm" href="/blog/post/@feat.UrlParam">خواندن مقاله <svg class="i"><use href="#arrow" /></svg></a>
+                    </div>
+                </article>
+            }
+            else
+            {
+                <p style="text-align:center;padding:60px 0;color:var(--text-2)">هنوز مقاله‌ای منتشر نشده است.</p>
+            }
+
+            <div class="agrid bl-grid" id="bgrid">
+                @foreach (var b in rest)
+                {
+                    <article class="ac" data-cat="@cat(b)">
+                        <a class="img @(string.IsNullOrEmpty(b.ImageUrl) ? "noimg" : "")" href="/blog/post/@b.UrlParam" aria-hidden="true" tabindex="-1">
+                            @if (!string.IsNullOrEmpty(b.ImageUrl)) { <img src="@b.ImageUrl" alt="@b.Title" loading="lazy"> }
+                        </a>
+                        <div class="body">
+                            @if (b.BlogGroup != null) { <span class="tag">@b.BlogGroup.Title</span> }
+                            <h3><a href="/blog/post/@b.UrlParam">@b.Title</a></h3>
+                            <p>@SiteFormat.PlainText(b.Summery, 140)</p>
+                            <div class="meta"><svg class="i"><use href="#clock" /></svg>@SiteFormat.Digits(SiteFormat.ReadMinutes(b.Body)) دقیقه مطالعه</div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            <div class="bl-empty" id="bempty" hidden>
+                <svg class="i"><use href="#search" /></svg>
+                <b>مقاله‌ای پیدا نشد</b>
+                <span>عبارت دیگری را جست‌وجو کنید یا موضوع «همه» را انتخاب کنید.</span>
+            </div>
+
+            <div class="bl-news">
+                <div><div class="k on-dark">خبرنامه</div><h2>مقاله‌های تازه را در ایمیل خود بخوانید</h2><p>مرور کوتاهی از مقاله‌های جدید مجله‌ی پریکاتن.</p></div>
+                <form class="bl-news-form" data-post="/Home/Subscribe"><input type="email" name="email" placeholder="ایمیل شما" aria-label="ایمیل شما" dir="ltr" required><button class="btn white" type="submit">عضویت</button></form>
+            </div>
+        </div>
+    </section>
 </div>
 
-
-            <section id="section02">
-            <div class="container">
-                <div class="row justify-content-center align-items-center ">
-                    <div class="col-lg-12 text-center">
-	                    <h3 style="font-weight: 900; color: #22489e;"> مجــــــــــــــلــه پــــریکـــاتن</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-            <section id="section16">
-            <div class="container">
-	            <div class="row justify-content-center align-items-center  ">
-                @foreach (var blog in Model.Blogs)
-                {
-	                <div class="col-lg-4 mb-5 text-center">
-	                    <div class="card" style="width: 18rem;">
-		                    <a href="/blog/post/@blog.UrlParam">
-		                    <img src="@blog.ImageUrl" class="card-img-top" alt="@blog.Title">
-		                    </a>
-                            <div class="card-body text-center">
-	                            <h5 class="card-title">
-		                            <a href="/blog/post/@blog.UrlParam">
-
-			                            @blog.Title
-		                            </a>
-	                            </h5>
-                                @*<p class="card-text">
-                                @blog.Summery
-                                </p>*@
-                                <a href="/blog/post/@blog.UrlParam" class="btn btn-primary">ادامه مطلب</a>
-                            </div>
-                        </div>
-	                </div>
-                }
-                </div>
-            </div>
-        </section>
+@section scripts
+{
+    <script src="@SiteFormat.Asset("~/Assets/site/blog.js")"></script>
+}

@@ -131,6 +131,56 @@ namespace Models.Entities
 
         [Display(Name = "قیمت خرید")]
         public decimal? PurchaseAmount { get; set; }
+
+        [Display(Name = "دسته‌بندی")]
+        public long? ProductCategoryId { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
+        // ---- structured content for the product page (one item per line; "title|text" where noted) ----
+
+        [Display(Name = "عنوان انگلیسی")]
+        [StringLength(200, ErrorMessage = "طول {0} نباید بیشتر از {1} باشد")]
+        public string EnglishTitle { get; set; }
+
+        [Display(Name = "نشان روی گالری (مثلاً کارآزمایی بالینی)")]
+        [StringLength(100, ErrorMessage = "طول {0} نباید بیشتر از {1} باشد")]
+        public string Badge { get; set; }
+
+        [Display(Name = "نکات کلیدی زیر عنوان (هر خط یک مورد)")]
+        [DataType(DataType.MultilineText)]
+        public string Highlights { get; set; }
+
+        [Display(Name = "مشخصات (هر خط: عنوان|مقدار)")]
+        [DataType(DataType.MultilineText)]
+        public string Specs { get; set; }
+
+        [Display(Name = "مزایا (هر خط: عنوان|توضیح)")]
+        [DataType(DataType.MultilineText)]
+        public string Benefits { get; set; }
+
+        [Display(Name = "فناوری و مواد اثرگذار (هر خط: عنوان|توضیح)")]
+        [DataType(DataType.MultilineText)]
+        public string Technologies { get; set; }
+
+        [Display(Name = "ترکیبات (هر خط یک ماده؛ مواد کلیدی با * در ابتدای خط)")]
+        [DataType(DataType.MultilineText)]
+        public string Ingredients { get; set; }
+
+        [Display(Name = "مراحل مصرف (هر خط: عنوان|توضیح)")]
+        [DataType(DataType.MultilineText)]
+        public string UsageSteps { get; set; }
+
+        [Display(Name = "متن تأییدیه علمی")]
+        [DataType(DataType.MultilineText)]
+        public string ClinicalText { get; set; }
+
+        [Display(Name = "شماره تأییدیه")]
+        [StringLength(100, ErrorMessage = "طول {0} نباید بیشتر از {1} باشد")]
+        public string ClinicalNumber { get; set; }
+
+        [Display(Name = "ارقام تأییدیه (هر خط: عدد یا مدت|توضیح)")]
+        [DataType(DataType.MultilineText)]
+        public string ClinicalStats { get; set; }
+
          
     }
 }

@@ -32,6 +32,7 @@ namespace Parikatan.Web.Controllers
            [Authorize(Roles = "SuperAdmin,UltraSuperAdmin")]
         public ActionResult Create(long? parentId)
         {
+            FillCategories(null);
             return View();
         }
 
@@ -81,6 +82,7 @@ namespace Parikatan.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            FillCategories(product.ProductCategoryId);
             return View(product);
         }
 
@@ -97,6 +99,7 @@ namespace Parikatan.Web.Controllers
                 return HttpNotFound();
             }
             //ViewBag.Tags = GetTagCheckboxList(null);
+            FillCategories(product.ProductCategoryId);
             return View(product);
         }
 
@@ -143,6 +146,7 @@ namespace Parikatan.Web.Controllers
                 return RedirectToAction("Index" );
             }
      
+            FillCategories(product.ProductCategoryId);
             return View(product);
         }
 
@@ -183,6 +187,12 @@ namespace Parikatan.Web.Controllers
             base.Dispose(disposing);
         }
 
+        private void FillCategories(long? selected)
+        {
+            var categories = db.ProductCategories.Where(c => c.IsDeleted == false && c.IsActive).OrderBy(c => c.Order).ToList();
+            ViewBag.Categories = new SelectList(categories, "Id", "Title", selected);
+        }
+
         private readonly int _productPagination = Convert.ToInt32(WebConfigurationManager.AppSettings["productPaginationSize"]);
         private readonly string _baseUrl = WebConfigurationManager.AppSettings["baseUrl"];
 
@@ -191,19 +201,26 @@ namespace Parikatan.Web.Controllers
         [Route("product-detail/{code:int}")]
         public ActionResult Details(int code)
         {
-            Product product = db.Products.FirstOrDefault(c => c.Id == code && c.IsDeleted == false);
+            Product product = db.Products.Include(c => c.ProductCategory)
+                .FirstOrDefault(c => c.Id == code && c.IsDeleted == false);
 
             if (product == null)
             {
                 return HttpNotFound();
             }
 
-            //ViewBag.isSizable = 0;
-            //if (product.ProductGroup.IsSizable)
-            //    ViewBag.isSizable = 1;
-
-
             ProductDetailViewModel result = new ProductDetailViewModel();
+
+            result.Faqs = db.ProductFaqs
+                .Where(f => f.ProductId == product.Id && f.IsDeleted == false && f.IsActive)
+                .OrderBy(f => f.Order).ToList();
+
+            var childIds = db.ProductPackageItemss
+                .Where(i => i.ProductId == product.Id && i.IsDeleted == false)
+                .Select(i => i.ChildId).ToList();
+            result.PackageProducts = childIds.Count == 0
+                ? new List<Product>()
+                : db.Products.Where(p => childIds.Contains(p.Id) && p.IsDeleted == false).ToList();
 
             result.Product = product;
 
@@ -214,8 +231,12 @@ namespace Parikatan.Web.Controllers
             result.ProductImages = db.ProductImages
                 .Where(c => c.ProductId == product.Id && c.IsDeleted == false && c.IsActive).OrderBy(c => c.Order).ToList();
 
-            result.RelatedProducts = db.Products.Where(c => c.IsDeleted == false && c.IsActive && c.Id != product.Id)
-                .Take(3).ToList();
+            // related: same category first, then the rest, ordered like the shop list
+            result.RelatedProducts = db.Products.Include(c => c.ProductCategory)
+                .Where(c => c.IsDeleted == false && c.IsActive && c.Id != product.Id)
+                .OrderByDescending(c => c.ProductCategoryId == product.ProductCategoryId && product.ProductCategoryId != null)
+                .ThenByDescending(c => c.IsAvailable).ThenByDescending(c => c.Order)
+                .Take(4).ToList();
             //{
             //    Product = product,
             //    ProductComments = db.ProductComments.Where(c => c.ProductId == product.Id && c.IsDeleted == false && c.IsActive).OrderByDescending(c => c.CreationDate).ToList(),
@@ -233,17 +254,61 @@ namespace Parikatan.Web.Controllers
                 ViewBag.Title = product.PageTitle;
             else
                 ViewBag.Title = product.Title;
+
+            ViewBag.Description = (product.PageDescription ?? product.Summery ?? string.Empty).Trim();
+            ViewBag.NavActive = "products";
             return View(result);
         }
 
         [AllowAnonymous]
-        [Route("product")]
-        public ActionResult List()
+        [HttpPost]
+        [Route("product-detail/{code:int}/comment")]
+        public ActionResult AddComment(int code, string name, string message)
         {
-       
+            name = (name ?? string.Empty).Trim();
+            message = (message ?? string.Empty).Trim();
+
+            if (name.Length == 0 || name.Length > 200)
+                return Json(new { ok = false, message = "لطفاً نام خود را وارد کنید." });
+            if (message.Length < 10 || message.Length > 1000)
+                return Json(new { ok = false, message = "متن نظر باید بین ۱۰ تا ۱۰۰۰ نویسه باشد." });
+
+            if (!db.Products.Any(p => p.Id == code && p.IsDeleted == false))
+                return Json(new { ok = false, message = "محصول یافت نشد." });
+
+            db.ProductComments.Add(new ProductComment
+            {
+                ProductId = code,
+                Name = name,
+                Message = message,
+                IsActive = false,          // shown after an admin approves it
+                IsDeleted = false,
+                CreationDate = DateTime.Now
+            });
+            db.SaveChanges();
+
+            return Json(new { ok = true, message = "نظر شما ثبت شد و پس از بررسی نمایش داده می‌شود." });
+        }
+
+        [AllowAnonymous]
+        [Route("product")]
+        public ActionResult List(string category = null)
+        {
+
             ProductListViewModel result = new ProductListViewModel();
 
-            result.Products = db.Products.Where(c=>c.IsDeleted==false&&c.IsActive).OrderByDescending(c=>c.IsAvailable).ThenByDescending(c=>c.Order).ToList();
+            // filtering by category happens in the browser; ?category= only preselects a chip
+            result.Products = db.Products.Include(c => c.ProductCategory)
+                .Where(c => c.IsDeleted == false && c.IsActive)
+                .OrderByDescending(c => c.IsAvailable).ThenByDescending(c => c.Order).ToList();
+
+            result.Categories = result.Products
+                .Where(p => p.ProductCategory != null && p.ProductCategory.IsActive && !p.ProductCategory.IsDeleted)
+                .Select(p => p.ProductCategory).Distinct()
+                .OrderBy(c => c.Order).ToList();
+
+            result.SelectedCategory = string.IsNullOrWhiteSpace(category) ? null : category;
+            result.TotalProductCount = result.Products.Count;
 
            
 
@@ -251,6 +316,8 @@ namespace Parikatan.Web.Controllers
          
           
                 ViewBag.Title ="خرید محصولات پریکاتن";
+            ViewBag.Description = "فروشگاه رسمی پریکاتن: کرم ضد چروک، کرم دور چشم، سرم روشن‌کننده و سایر محصولات با فرمولاسیون علمی. فیلتر بر اساس نیاز پوست و خرید آنلاین.";
+            ViewBag.NavActive = "products";
         
             return View(result);
         }

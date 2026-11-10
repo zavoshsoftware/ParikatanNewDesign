@@ -1,209 +1,137 @@
-﻿@model ViewModels.Blogs.BlogDetailViewModel
-
+﻿@using Helpers
+@model ViewModels.Blogs.BlogDetailViewModel
 @{
-		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
-	ViewBag.Canonical = "https://parikatan.shop/blog/post/" + Model.Blog.UrlParam;
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
+    var blog = Model.Blog;
+    List<string[]> toc;
+    string body = SiteFormat.AddHeadingIds(blog.Body, out toc);
+    var related = Model.RelatedBlogs ?? new List<Models.Entities.Blog>();
+    string url = "https://parikatan.shop/blog/post/" + blog.UrlParam;
+    var schema = new Dictionary<string, object>
+    {
+        { "@context", "https://schema.org" },
+        { "@type", "Article" },
+        { "headline", blog.Title },
+        { "description", SiteFormat.PlainText(blog.Summery, 300) },
+        { "image", string.IsNullOrEmpty(blog.ImageUrl) ? new string[0] : new[] { SiteFormat.Img(blog.ImageUrl) } },
+        { "datePublished", blog.CreationDate.ToString("yyyy-MM-dd") },
+        { "mainEntityOfPage", url },
+        { "publisher", new { @type = "Organization", name = "پریکاتن" } }
+    };
 }
-@section head{
-	<style>
-		#SuccessDivBlog, #errorDivBlog {
-			display: none;
-		}
-
-
-		.blog-row {
-			direction: rtl;
-			text-align: justify;
-			margin-top: 20px
-		}
-
-			.blog-row img {
-				max-width: 100%
-			}
-
-		.single-post-title h1 {
-			font-size: 28px;
-		}
-
-		.post-content h2 {
-			font-size: 24px;
-		}
-
-		.post-content h3 {
-			font-size: 20px;
-		}
-
-		.date {
-			color: aqua;
-		}
-
-		#section16 .card {
-			height: 46vh !important;
-			padding: 20px !important;
-		}
-
-			#section16 .card .card-text {
-				height: 8vh !important;
-			}
-
-		.title {
-			color: #22489e;
-			font-weight: 700;
-		}
-
-		p {
-			color: #22489e;
-		}
-
-		@@media only screen and (max-width: 990px) {
-			#section16 .card {
-				height: 50vh !important;
-			}
-		}
-
-		.blog-content-body {
-			text-align: center;
-			color: #000;
-		}
-		.blog-content-body p{
-			direction: rtl;
-			color: #000;
-		}
-			.blog-content-body h2, .blog-content-body h3  {
-				color: #22489e;
-			}
-			 .blog-content-body a {
-				color: #3070ff;
-			}
-			 .blog-content-body img {
-			max-width: 100%
-			}
-	</style>
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/blog.css")" rel="stylesheet">
+    <script type="application/ld+json">@Html.Raw(Json.Encode(schema))</script>
 }
 
-<div class="full-row bg-light py-5 my-5">
-	<div class="container breadcrump-wrapper">
-		<div class="row text-secondary " dir="rtl">
-			<div class="col-sm-6">
+<div class="rprog" aria-hidden="true"><i id="rprog"></i></div>
+<div class="art">
 
-			</div>
-			<div class="col-sm-6">
-				<nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100" style="direction: rtl">
-					<ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0" dir="ltr">
-						<li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>خانه</a></li>
-						<li class="breadcrumb-item"><a href="/blog">@*<i class="fas fa-home me-1"></i>*@مجله پریکاتن</a></li>
-						<li class="breadcrumb-item active" aria-current="page">@Model.Blog.Title</li>
-					</ol>
-				</nav>
-			</div>
-		</div>
-	</div>
-</div>
+    <div class="wrap">
+        <nav class="crumbs" aria-label="مسیر صفحه">
+            <a href="/">خانه</a><span>/</span><a href="/blog">مجله پریکاتن</a><span>/</span><b>@blog.Title</b>
+        </nav>
+    </div>
 
+    <header class="art-head">
+        <div class="wrap">
+            <div class="ah-text">
+                @if (blog.BlogGroup != null) { <a class="tag" href="/blog/@blog.BlogGroup.UrlParam">@blog.BlogGroup.Title</a> }
+                <h1>@blog.Title</h1>
+                @if (!string.IsNullOrWhiteSpace(blog.Summery)) { <p class="lede">@blog.Summery.Trim()</p> }
+                <div class="ah-meta">
+                    <span class="by"><span class="av"><img src="~/Assets/site/logo.png" alt=""></span><span><b>تیم محتوای پریکاتن</b><small>@SiteFormat.Digits(blog.CustomeCreationDate) · @SiteFormat.Digits(SiteFormat.ReadMinutes(blog.Body)) دقیقه مطالعه</small></span></span>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(blog.ImageUrl))
+            {
+                <div class="ah-vis"><img src="@blog.ImageUrl" alt="@blog.Title"></div>
+            }
+        </div>
+    </header>
 
-<div class="full-row blog-row">
-	<div class="container">
-		<div class="row justify-content-center">
+    <div class="wrap art-grid">
 
-			<div class="col-lg-8 m-auto order-lg-1">
-				<div class="single-post">
-					<div class="single-post-title">
-						<h1 class="mb-2 title text-center">@Model.Blog.Title </h1>
+        <aside class="art-side">
+            @if (toc.Count > 1)
+            {
+                <nav class="toc" aria-label="فهرست مطالب">
+                    <b>در این مقاله</b>
+                    @foreach (var t in toc)
+                    {
+                        <a href="#@t[0]">@t[1]</a>
+                    }
+                </nav>
+            }
+            <div class="share">
+                <b>اشتراک‌گذاری</b>
+                <div>
+                    <button type="button" class="sh-btn" id="copylink" aria-label="کپی لینک مقاله"><svg class="i"><use href="#send" /></svg></button>
+                    <a class="sh-btn" href="https://wa.me/?text=@Server.UrlEncode(blog.Title + " " + url)" target="_blank" rel="noopener" aria-label="اشتراک در واتس‌اپ"><svg class="i"><use href="#phone" /></svg></a>
+                </div>
+            </div>
+        </aside>
 
+        <article class="prose">
+            @Html.Raw(body)
 
-						<div class="container">
-							<div>
+            <div class="art-foot">
+                <p class="note">این مقاله برای آگاهی عمومی نوشته شده و جایگزین مشاوره‌ی پزشک نیست.</p>
+            </div>
 
-								<p>
-									@Model.Blog.Summery
-								</p>
-							</div>
-							<div class="row mt-5">
+            <section class="art-cm" id="comments" style="max-width:none">
+                <h2>نظرات@(Model.BlogComments != null && Model.BlogComments.Count > 0 ? " (" + SiteFormat.Digits(Model.BlogComments.Count) + ")" : "")</h2>
+                @foreach (var c in Model.BlogComments ?? new List<Models.Entities.BlogComment>())
+                {
+                    <div class="cm">
+                        <b>@(string.IsNullOrWhiteSpace(c.Name) ? "کاربر" : c.Name)</b><small>@SiteFormat.Digits(c.CreationDateStr)</small>
+                        <p>@c.Message</p>
+                        @if (!string.IsNullOrWhiteSpace(c.Response)) { <div class="reply"><b style="font-size:12.5px;color:var(--gold-dark)">پاسخ پریکاتن</b>@c.Response</div> }
+                    </div>
+                }
+                <form class="cm-form" id="cm-form" novalidate data-code="@blog.UrlParam">
+                    <div class="two">
+                        <input id="cm-name" type="text" maxlength="100" placeholder="نام" aria-label="نام">
+                        <input id="cm-email" type="email" dir="ltr" placeholder="ایمیل (نمایش داده نمی‌شود)" aria-label="ایمیل">
+                    </div>
+                    <textarea id="cm-body" maxlength="1000" placeholder="نظر شما" aria-label="نظر شما"></textarea>
+                    <div class="cm-msg" id="cm-msg" role="status"></div>
+                    <div><button class="btn" type="submit">ثبت نظر</button></div>
+                </form>
+            </section>
+        </article>
+    </div>
 
-								<div class="col-sm-12 order-0 order-lg-1 text-center">
-
-									<img src="@Model.Blog.ImageUrl" alt="website template image" class="img-responsive mb-4"><br>
-									<div class="text-center blog-content-body" >
-										@Html.Raw(Model.Blog.Body)
-									</div>
-								</div>
-
-							</div>
-						</div>
-
-
-					</div>
-
-					<section id="section16" dir="ltr">
-						<div class="container mt-5">
-							<div class="row justify-content-center align-items-center  ">
-								<h5 class="text-center title ">مقــــــالــات مرتبــــــــــــط</h5>
-							</div>
-							<div class="row justify-content-center align-items-center  blog-slider">
-								@if (Model.RelatedBlogs.Any())
-								{
-									foreach (var blog in Model.RelatedBlogs)
-									{
-										<div class="col-lg-4 mb-5 text-center">
-											<div class="card" style="width: 18rem;">
-												<a href="/blog/post/@blog.UrlParam">
-													<img src="@blog.ImageUrl" class="card-img-top" alt="@blog.Title">
-												</a>
-												<div class="card-body text-center">
-													<h5 class="card-title">
-														<a href="/blog/post/@blog.UrlParam">
-															@blog.Title
-														</a>
-													</h5>
-													@*<p class="card-text">
-														@blog.Summery
-													</p>*@
-													<a href="/blog/post/@blog.UrlParam" class="btn btn-primary">ادامه مطلب</a>
-												</div>
-											</div>
-
-										</div>
-									}
-								}
-							</div>
-							</div>
-					</section>
-
-				</div>
-
-				<div class="mt-5 form-boder">
-					<h3 class="down-line mb-4">نظر خود را ثبت نمایید</h3>
-					<div class="contact_message" action="email.php" method="post" novalidate="novalidate">
-						<div class="row">
-							<div class="col-md-6 col-sm-6 mb-4">
-								<input class="form-control" id="commentName" name="commentName" placeholder="نام" type="text">
-							</div>
-							<div class="col-md-6 col-sm-6 mb-4">
-								<input class="form-control" id="commentEmail" name="commentEmail" placeholder="ایمیل" type="text">
-							</div>
-							<div class="col-md-12 col-sm-12 mb-4">
-								<textarea class="form-control" id="commentBody" rows="5" name="commentBody" placeholder="نظر شما"></textarea>
-							</div>
-							<div class="col-md-12 col-sm-6 mb-4">
-								<button class="btn btn-primary" id="send" onclick="SubmitBlogComment();" type="button">ثبت نظر</button>
-							</div>
-
-							<div class="alert alert-danger" id="errorDivBlog"></div>
-							<div class="alert alert-success" id="SuccessDivBlog">نظر شما با موفقیت ثبت گردید و پس از تایید در سایت به نمایش در خواهد آمد.</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-
-		</div>
-	</div>
+    @if (related.Count > 0)
+    {
+        <section class="s art-rel">
+            <div class="wrap">
+                <div class="sh">
+                    <div><div class="k">مقاله‌های مرتبط</div><h2>بیشتر بخوانید</h2></div>
+                </div>
+                <div class="agrid bl-grid">
+                    @foreach (var b in related)
+                    {
+                        <article class="ac">
+                            <a class="img @(string.IsNullOrEmpty(b.ImageUrl) ? "noimg" : "")" href="/blog/post/@b.UrlParam" aria-hidden="true" tabindex="-1">
+                                @if (!string.IsNullOrEmpty(b.ImageUrl)) { <img src="@b.ImageUrl" alt="@b.Title" loading="lazy"> }
+                            </a>
+                            <div class="body">
+                                @if (b.BlogGroup != null) { <span class="tag">@b.BlogGroup.Title</span> }
+                                <h3><a href="/blog/post/@b.UrlParam">@b.Title</a></h3>
+                                <p>@SiteFormat.PlainText(b.Summery, 120)</p>
+                                <div class="meta"><svg class="i"><use href="#clock" /></svg>@SiteFormat.Digits(SiteFormat.ReadMinutes(b.Body)) دقیقه مطالعه</div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+    }
 </div>
 
 @section scripts
 {
-	<script src="~/Scripts/function.js"></script>
-	<link rel="stylesheet" href="/dist/slick/slick.css">
-	<link rel="stylesheet" type="text/css" href="/dist/slick/slick-theme.css" />
+    <script src="@SiteFormat.Asset("~/Assets/site/blog.js")"></script>
 }

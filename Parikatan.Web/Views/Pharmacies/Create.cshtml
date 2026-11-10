@@ -1,0 +1,20 @@
+﻿@model Models.Entities.Pharmacy
+
+@{
+    ViewBag.Title = "افزودن مرکز فروش";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Create", "Pharmacies", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.Partial("_Form", Model)
+    <div class="form-group" id="buttons">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="ایجاد" class="btn btn-primary" />
+            @Html.ActionLink("بازگشت به فهرست", "Manage")
+        </div>
+    </div>
+}

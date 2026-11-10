@@ -22,6 +22,11 @@ namespace ViewModels.Basket
         public string RecievePay { get; set; }
         public string TransferPay { get; set; }
         public string VatAmount { get; set; }
+        public decimal SubTotalValue { get; set; }
+        public decimal DiscountValue { get; set; }
+        public decimal ShipmentValue { get; set; }
+        public decimal TotalValue { get; set; }
+        public int ItemCount { get; set; }
     }
 
     public class UserInformation

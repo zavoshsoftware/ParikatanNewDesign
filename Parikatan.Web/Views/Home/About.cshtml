@@ -1,47 +1,89 @@
-﻿
+﻿@using Helpers
 @{
-    ViewBag.Title = "درباره ما";
-    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+    Layout = "~/Views/Shared/FrontEnd/_SiteLayout.cshtml";
 }
+@section head
+{
+    <link href="@SiteFormat.Asset("~/Assets/site/about.css")" rel="stylesheet">
+}
+<div class="about">
 
-
-<div class="full-row bg-light py-5" style="direction:rtl; text-align:right;">
-    <div class="container breadcrump-wrapper">
-        <div class="row text-secondary ">
-            <div class="col-sm-6">
-                <h3 class="mb-2 text-secondary">درباره ما</h3>
-            </div>
-            <div class="col-sm-6">
-                <nav aria-label="breadcrumb" class="d-flex justify-content-sm-end align-items-center h-100">
-                    <ol class="breadcrumb mb-0 d-inline-flex bg-transparent p-0">
-                        <li class="breadcrumb-item"><a href="/"><i class="fa fa-home me-1"></i>خانه/</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">درباره ما</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
+<div class="wrap">
+  <nav class="crumbs" aria-label="مسیر صفحه">
+    <a href="/">خانه</a><span>/</span><b>درباره ما</b>
+  </nav>
 </div>
-<div class="full-row about-section">
-    <div class="container">
-        <div class="row">
-            @*<div class="col-lg-6 col-md-12">
-                <div class="banner_area">
-                    <div class="banner_thumb">
-                        <a href="#"><img src="#" alt="#"></a>
-                    </div>
-                </div>
-            </div>*@
-            <div class="col-lg-12 col-md-12">
-                @*<div class="section_title">
-                    <h2>درباره ی ما</h2>
-                </div>*@
-                <br />
-                <p style="direction:rtl;">
-                    کلوتو از سال ۱۳۸۱ تا امروز ایده هایی که در کلاسهای درس اساتید و چهره های ماندگار هنر ایران در ذهن غزال بهمنی شکل گرفت و ماندگار شد وبا تلفیق آنها با پارچه و نخ تبدیل به اولین آفرینشهای کلوتو شدند و جانی دوباره گرفتند. «کلوتو» دریونان باستان نام جوان ترین فرشته از سه فرشته ای بود که ریسمان و نخ زندگی انسان را تافتند. بعدها این نام ، ریشه ی بسیاری از لغات کلیدی در زبان های مختلف شد که بیانگر منظور انسان از لباس ، پوشش و پوشاک بودند. «کلوتو» محصور در زمانی خاص نماند و در طول سالهای فعالیت خود به عنوان یک نشان تجاری ایرانی ،علاوه بر حرکت در مسیر علایق طرفداران قدیمی اش کوشید تا طیف های جدیدی از سلایق را نیز به سمت خود جذب کند. استفاده از مرغوب ترین پارچه ها و مواد اولیه ی موجود در بازارهای بین المللی ، دوختهایی دقیق و با وسواس و توجه به مراقبت از حقوق خریداران از اصول حاکم بر فعالیت های این برند هست. ” کلوتو ” همچنین به عنوان برندی پیشتاز در توجه به حقوق شاغلین در پشت صحنه ی تولید پوشاک ( دوزندگان و … ) ، همواره تمام تلاش خود را برای تامین حداکثریِ رفاه ، مزایای مازاد بر حقوق قانونی و دوام امنیت شغلی این دسته از شاغلین در هنر صنعت مد و لباس را در سر لوحه ی برنامه ریزی های خود مد نظر قرار می دهد. ” کلوتو ” تلاش میکند تا با بازنگری در فرآیندهای تولید و خدمات پس از فروش خود توجه به حفاظت از محیط زیست و منابع طبیعی را از نظر دور نگاه ندارد. «کلوتو» در سالهای اخیر شاخه های فعالیت خود را علاوه بر ادامه ی تمرکز در بخش پوشاک خانم ها به حوزه ی پوشاک کودکان و محصولات خانه و زندگی نیز گسترش داده است.
-                </p>
-            </div>
-        </div>
+
+<!-- ============ INTRO ============ -->
+<section class="ab-hero">
+  <div class="wrap ab-hero-grid">
+    <div class="ab-intro">
+      <div class="k">درباره ما</div>
+      <h1>پویا ورزان تجارت سپاهان</h1>
+      <p class="lead">شرکت ما با تمرکز بر تولید محصولات مراقبت از پوست با کیفیت بالا و استفاده از جدیدترین مواد و تکنولوژی‌های نوین، به دنبال ارائه‌ی بهترین راه‌حل‌ها برای جوان‌سازی، ضد پیری، ضد لک و مرطوب‌کنندگی پوست است. تمامی محصولات ما از طریق مطالعات بالینی گسترده آزمایش شده و دارای تأییدیه‌های ایمنی و کارایی هستند.</p>
+      <div class="ab-focus">
+        <span><svg class="i"><use href="#sparkle"/></svg>جوان‌سازی</span>
+        <span><svg class="i"><use href="#clock"/></svg>ضد پیری</span>
+        <span><svg class="i"><use href="#drop"/></svg>ضد لک</span>
+        <span><svg class="i"><use href="#leaf"/></svg>مرطوب‌کنندگی</span>
+      </div>
     </div>
+    <div class="ab-vis" aria-hidden="true">
+      <div class="av-glow"></div>
+      <img class="ab-jar" src="/Assets/site/cream-closed.png" alt="" width="500" height="500" data-py="-30">
+      <div class="av-chip c1"><span><svg class="i"><use href="#shield"/></svg></span><b>مطالعات بالینی</b></div>
+      <div class="av-chip c2"><span><svg class="i"><use href="#flask"/></svg></span><b>تأییدیه‌ی ایمنی و کارایی</b></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ QUALITY FIRST ============ -->
+<section class="s ab-quality">
+  <div class="wrap ab-q-grid">
+    <div class="ab-q-head">
+      <div class="k">تعهد ما</div>
+      <h2>در شرکت ما، کیفیت در اولویت است</h2>
+    </div>
+    <div class="ab-q-body">
+      <p>ما با افتخار محصولاتمان را با استفاده از مواد اولیه‌ی باکیفیت و تکنولوژی‌های نوین تولید می‌کنیم و هر محصول را از طریق مطالعات بالینی دقیق بررسی می‌کنیم تا اطمینان حاصل کنیم که ایمنی و کارایی بالایی دارند.</p>
+      <blockquote>انتخاب محصولات ما به معنای انتخاب کیفیت، علم و ایمنی است.</blockquote>
+      <p>ما با تعهد به استفاده از بهترین مواد اولیه و انجام مطالعات بالینی گسترده، اطمینان می‌دهیم که هر محصولی که از ما خریداری می‌کنید، نتایج واقعی و ملموسی برای پوست شما به ارمغان می‌آورد.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="ab-values">
+      <div class="ab-val"><span class="ic"><svg class="i"><use href="#badge"/></svg></span><b>کیفیت</b><p>مواد اولیه‌ی باکیفیت و تکنولوژی‌های نوین در تولید هر محصول.</p></div>
+      <div class="ab-val"><span class="ic"><svg class="i"><use href="#atom"/></svg></span><b>علم</b><p>فرمولاسیون علمی بر پایه‌ی جدیدترین مواد مؤثر.</p></div>
+      <div class="ab-val"><span class="ic"><svg class="i"><use href="#shield"/></svg></span><b>ایمنی</b><p>بررسی هر محصول با مطالعات بالینی دقیق و تأییدیه‌های ایمنی و کارایی.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISION + MISSION ============ -->
+<section class="s ab-vm">
+  <div class="wrap">
+    <div class="vm-grid">
+      <article class="vm-card vision">
+        <div class="vm-top"><span class="ic"><svg class="i"><use href="#sparkle"/></svg></span><div><span class="en">Vision</span><h2>چشم‌انداز</h2></div></div>
+        <p>ما در پی آن هستیم که به عنوان پیشروترین شرکت در عرصه‌ی تولید محصولات مراقبت از پوست با کیفیت بالا و علمی‌ترین فرمولاسیون، شناخته شویم. چشم‌انداز ما این است که با استفاده از جدیدترین مواد و تکنولوژی‌های نوین، بهترین و مؤثرترین محصولات جوان‌سازی و مراقبت از پوست را به مشتریان خود ارائه دهیم و استانداردهای جدیدی در این صنعت تعیین کنیم.</p>
+      </article>
+      <article class="vm-card mission">
+        <div class="vm-top"><span class="ic"><svg class="i"><use href="#flask"/></svg></span><div><span class="en">Mission</span><h2>مأموریت</h2></div></div>
+        <p>مأموریت ما تولید محصولات مراقبت از پوستی است که با ترکیبی از علوم آرایشی ـ بهداشتی و درماتولوژی، مواد اولیه‌ی باکیفیت و مطالعات بالینی تأییدشده، بهترین نتایج را برای مشتریان فراهم کند. ما متعهد به ایمنی، کارایی فراورده‌ها و رضایت کامل مشتریان خود هستیم و تلاش می‌کنیم تا با ارائه‌ی محصولات جوان‌ساز، ضد پیری، ضد لک و مرطوب‌کننده‌ی تأثیرگذار، به بهبود سلامت و زیبایی پوست افراد کمک کنیم.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="ab-cta-w">
+  <div class="wrap">
+    <div class="ab-cta">
+      <div><div class="k on-dark">محصولات پریکاتن</div><h2>نتیجه‌ی این تعهد را در محصولات ما ببینید</h2><p>سرم، کرم و پاک‌کننده‌های تخصصی پوست با فرمولاسیون علمی.</p></div>
+      <div class="ab-cta-act"><a class="btn white" href="/product">مشاهده‌ی محصولات <svg class="i"><use href="#arrow"/></svg></a><a class="btn link" href="/blog">مجله پریکاتن</a></div>
+    </div>
+  </div>
+</section>
+
+</div>
 
